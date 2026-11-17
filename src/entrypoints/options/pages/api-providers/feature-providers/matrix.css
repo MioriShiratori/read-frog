@@ -6,8 +6,8 @@
 .provider-matrix-viewport {
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--rf-border);
+  border-radius: var(--rf-radius);
 }
 .provider-matrix {
   width: calc(
@@ -24,8 +24,8 @@
 }
 .provider-matrix th,
 .provider-matrix td {
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--rf-border);
+  border-bottom: 1px solid var(--rf-border);
 }
 .provider-matrix tr:last-child td,
 .provider-matrix tbody tr:last-child th {
@@ -38,7 +38,7 @@
   position: sticky;
   left: 0;
   z-index: 1;
-  background: var(--background);
+  background: var(--rf-background);
   padding: 0.875rem 1rem;
   text-align: left;
 }
@@ -49,22 +49,27 @@
   height: 100%;
   place-items: center;
   cursor: pointer;
-  color: var(--muted-foreground);
+  color: var(--rf-muted-foreground);
 }
+.provider-matrix-header {
+  cursor: pointer;
+}
+.provider-matrix-header:hover,
 .provider-matrix-cell:hover:not(:disabled) {
-  background: var(--accent);
+  background: var(--rf-accent);
 }
 .provider-matrix-cell[aria-pressed="true"] {
-  color: var(--primary);
-  background: var(--accent);
+  color: var(--rf-primary);
+  background: var(--rf-accent);
 }
 .provider-matrix-cell:disabled {
   opacity: 0.3;
   cursor: not-allowed;
   pointer-events: none;
 }
+.provider-matrix-header:focus-visible,
 .provider-matrix-cell:focus-visible {
-  outline: 2px solid var(--ring);
+  outline: 2px solid var(--rf-ring);
   outline-offset: -3px;
 }
 .provider-matrix-marker {

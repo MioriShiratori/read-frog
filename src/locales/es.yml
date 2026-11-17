@@ -277,6 +277,7 @@ options:
       failed: Falló
       slow: Lento (se recomienda ajustar el modo de razonamiento)
     featureProviders:
+      assignAll: Usar $1 para todas las funciones compatibles
       function: Function
       scrollHint: Scroll anywhere in the table to view more providers horizontally
       incompatible: This provider does not support this function or translation mode

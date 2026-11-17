@@ -276,6 +276,7 @@ options:
       failed: 실패
       slow: 느림(사고 모드 조정 권장)
     featureProviders:
+      assignAll: 지원되는 모든 기능에 $1 사용
       function: Function
       scrollHint: Scroll anywhere in the table to view more providers horizontally
       incompatible: This provider does not support this function or translation mode

@@ -8,7 +8,7 @@ import { SetApiKeyWarning } from "@/components/llm-providers/set-api-key-warning
 import ProviderIcon from "@/components/provider-icon"
 import { useTheme } from "@/components/providers/theme-provider"
 import { toastManager } from "@/components/ui/base-ui/toast"
-import { configAtom, writeConfigAtom } from "@/utils/atoms/config"
+import { configAtom, mergeWithArrayOverwrite, writeConfigAtom } from "@/utils/atoms/config"
 import {
   buildFeatureProviderPatch,
   FEATURE_KEYS,
@@ -94,13 +94,19 @@ export function FeatureProvidersConfig() {
     return () => node.removeEventListener("wheel", wheel)
   }, [])
 
-  const assign = async (row: MatrixRow, provider: ProviderConfig) => {
-    if (row.providerId === provider.id) return
+  const assign = async (provider: ProviderConfig, rowId?: string) => {
     try {
       await setConfig((current) => {
         const latest = current.providersConfig.find((item) => item.id === provider.id)
-        if (!latest || !canAssign(row, latest, current)) return {}
-        return row.assign(current, provider.id)
+        if (!latest) return {}
+        let next = current
+        // Toolbar patches include other actions, so compose against the accumulated config.
+        for (const row of buildRows(current)) {
+          if (rowId !== undefined && row.id !== rowId) continue
+          if (row.providerId === latest.id || !canAssign(row, latest, current)) continue
+          next = mergeWithArrayOverwrite(next, row.assign(next, latest.id))
+        }
+        return next
       })
     } catch (error) {
       toastManager.add({
@@ -146,13 +152,23 @@ export function FeatureProvidersConfig() {
                 </th>
                 {providers.map((provider) => (
                   <th key={provider.id} scope="col" title={provider.name}>
-                    <span className="flex flex-col items-center gap-2 overflow-hidden py-3">
+                    <button
+                      type="button"
+                      className="provider-matrix-header flex w-full flex-col items-center gap-2 overflow-hidden px-2 py-3"
+                      aria-label={i18n.t("options.apiProviders.featureProviders.assignAll", [
+                        provider.name,
+                      ])}
+                      title={i18n.t("options.apiProviders.featureProviders.assignAll", [
+                        provider.name,
+                      ])}
+                      onClick={() => void assign(provider)}
+                    >
                       <ProviderIcon
                         logo={PROVIDER_ITEMS[provider.provider].logo(theme)}
                         className="size-6 shrink-0"
                       />
                       <span className="max-w-full truncate">{provider.name}</span>
-                    </span>
+                    </button>
                   </th>
                 ))}
                 {blanks.map((index) => (
@@ -197,7 +213,7 @@ export function FeatureProvidersConfig() {
                               ? i18n.t("options.apiProviders.featureProviders.incompatible")
                               : provider.name
                           }
-                          onClick={() => void assign(row, provider)}
+                          onClick={() => void assign(provider, row.id)}
                         >
                           <span aria-hidden="true" className="provider-matrix-marker">
                             {selected ? "●" : compatible ? "○" : "—"}

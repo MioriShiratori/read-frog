@@ -276,6 +276,7 @@ options:
       failed: Ошибка
       slow: Медленно (рекомендуется настроить режим рассуждения)
     featureProviders:
+      assignAll: Использовать $1 для всех поддерживаемых функций
       function: Function
       scrollHint: Scroll anywhere in the table to view more providers horizontally
       incompatible: This provider does not support this function or translation mode

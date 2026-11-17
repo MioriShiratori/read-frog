@@ -276,6 +276,7 @@ options:
       failed: Thất bại
       slow: Chậm (nên điều chỉnh chế độ suy nghĩ)
     featureProviders:
+      assignAll: Sử dụng $1 cho tất cả chức năng được hỗ trợ
       function: Function
       scrollHint: Scroll anywhere in the table to view more providers horizontally
       incompatible: This provider does not support this function or translation mode

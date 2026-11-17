@@ -276,6 +276,7 @@ options:
       failed: 失敗
       slow: 低速（思考モードの調整を推奨）
     featureProviders:
+      assignAll: 対応するすべての機能に $1 を使用
       function: Function
       scrollHint: Scroll anywhere in the table to view more providers horizontally
       incompatible: This provider does not support this function or translation mode

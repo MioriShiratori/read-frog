@@ -277,6 +277,7 @@ options:
       failed: Failed
       slow: Slow (try adjusting thinking mode)
     featureProviders:
+      assignAll: Use $1 for all supported functions
       function: Function
       scrollHint: Scroll anywhere in the table to view more providers horizontally
       incompatible: This provider does not support this function or translation mode

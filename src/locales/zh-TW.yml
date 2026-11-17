@@ -277,6 +277,7 @@ options:
       failed: 失敗
       slow: 緩慢（建議調整思考模式）
     featureProviders:
+      assignAll: 將所有支援的功能分配給 $1
       function: 功能
       scrollHint: 在表內滾動滑鼠滾輪可橫向查看其他提供商
       incompatible: 此提供商不支援此功能或目前翻譯模式

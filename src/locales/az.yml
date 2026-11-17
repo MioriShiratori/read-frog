@@ -277,6 +277,7 @@ options:
       failed: Alınmadı
       slow: Yavaşdır (düşünmə rejimini tənzimləməyə çalışın)
     featureProviders:
+      assignAll: Dəstəklənən bütün funksiyalar üçün $1 istifadə et
       function: Function
       scrollHint: Scroll anywhere in the table to view more providers horizontally
       incompatible: This provider does not support this function or translation mode

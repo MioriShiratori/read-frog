@@ -19,6 +19,7 @@ import { trackGlossaryUsed } from "@/utils/glossary/analytics"
 import { i18n } from "@/utils/i18n"
 import { createLogger } from "@/utils/logging/logger"
 import { getTranslatePrompt } from "@/utils/prompts/translate"
+import { providerRequiresApiKey } from "@/utils/providers/api-key"
 import { serializeProviderRef } from "@/utils/providers/provider-ref"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { TranslationCancelledError } from "@/utils/request/cancellation"
@@ -352,7 +353,7 @@ export function validateTranslationConfigAndToast(
   if (
     isAPIProviderConfig(provider.config) &&
     !provider.config.apiKey?.trim() &&
-    !["deeplx", "ollama"].includes(provider.config.provider)
+    providerRequiresApiKey(provider.config.provider)
   ) {
     toastManager.add({ type: "error", title: i18n.t("noAPIKeyConfig.warning") })
     log.info("Page translation not started: the provider has no API key")

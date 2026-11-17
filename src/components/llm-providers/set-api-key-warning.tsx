@@ -3,6 +3,7 @@ import { Link, useInRouterContext } from "react-router"
 import { isAPIProviderConfig, isPureAPIProvider } from "@/types/config/provider"
 import { i18n } from "@/utils/i18n"
 import { buildProviderConfigRoute, openOptionsPage } from "@/utils/navigation"
+import { providerRequiresApiKey } from "@/utils/providers/api-key"
 
 const LINK_CLASS = "cursor-pointer text-link hover:underline"
 
@@ -17,9 +18,8 @@ function needsApiKeyWarning(
     !!providerConfig &&
     isAPIProviderConfig(providerConfig) &&
     !isPureAPIProvider(providerConfig.provider) &&
-    providerConfig.provider !== "lmstudio" &&
-    providerConfig.provider !== "ollama" &&
-    !providerConfig.apiKey
+    providerRequiresApiKey(providerConfig.provider) &&
+    !providerConfig.apiKey?.trim()
   )
 }
 

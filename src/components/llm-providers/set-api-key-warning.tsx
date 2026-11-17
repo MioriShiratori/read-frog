@@ -17,6 +17,8 @@ function needsApiKeyWarning(
     !!providerConfig &&
     isAPIProviderConfig(providerConfig) &&
     !isPureAPIProvider(providerConfig.provider) &&
+    providerConfig.provider !== "lmstudio" &&
+    providerConfig.provider !== "ollama" &&
     !providerConfig.apiKey
   )
 }

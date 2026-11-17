@@ -36,6 +36,7 @@ import { EntityEditor } from "../../../../components/entity-editor"
 import { selectedProviderIdAtom } from "../atoms"
 import { CustomProviderEditor, ProviderEditor, useProviderForm } from "../provider-editor"
 import { duplicateProvider } from "../utils"
+import { ConnectionModeField } from "./connection-mode-field"
 
 export function ProviderConfigForm() {
   const selectedProviderId = useAtomValue(selectedProviderIdAtom)
@@ -59,7 +60,12 @@ export function ProviderConfigForm() {
     return null
   }
 
-  return <EditableProviderConfig key={editorProvider.id} providerConfig={editorProvider} />
+  return (
+    <EditableProviderConfig
+      key={`${editorProvider.id}:${editorProvider.provider}:${editorProvider.provider === "opencode" ? editorProvider.service : ""}`}
+      providerConfig={editorProvider}
+    />
+  )
 }
 
 function EditableProviderConfig({ providerConfig }: { providerConfig: APIProviderConfig }) {
@@ -70,9 +76,6 @@ function EditableProviderConfig({ providerConfig }: { providerConfig: APIProvide
   const setAllProvidersConfig = useSetAtom(configFieldsAtomMap.providersConfig)
   const setConfig = useSetAtom(writeConfigAtom)
   const config = useAtomValue(configAtom)
-  // Decides which built-in tiers count as usable below. Unknown status reads as
-  // usable, so an unreachable status endpoint never traps someone with a
-  // credential they want gone.
   const patchProvider = useSetAtom(patchProviderConfigAtom)
   const { form, autosave } = useProviderForm(providerConfig, async (_snapshot, changes) => {
     await patchProvider({ id: providerConfig.id, changes })
@@ -203,6 +206,7 @@ function EditableProviderConfig({ providerConfig }: { providerConfig: APIProvide
               <ProviderEditor.ConfigHeader />
               <ProviderEditor.NameField />
               <ProviderEditor.DescriptionField />
+              <ConnectionModeField providerConfig={providerConfig} />
               <ProviderEditor.ConnectionFields />
               <ProviderEditor.ProviderSpecificFields />
               {hasTranslationModelFields && <ProviderEditor.TranslationModelFields />}

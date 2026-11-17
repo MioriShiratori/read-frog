@@ -3,6 +3,8 @@ import type { JSONValue } from "ai"
 // Reviewed against provider catalogs and AI SDK docs on 2026-11-04.
 // Keep existing IDs: persisted provider configs validate against these enums.
 export const LLM_PROVIDER_MODELS = {
+  opencode: ["use-custom-model"],
+  lmstudio: ["use-custom-model"],
   openai: [
     "gpt-6-luna",
     "gpt-6.1-sol",
@@ -142,38 +144,11 @@ export const LLM_PROVIDER_MODELS = {
   // are left out, since neither buys anything here.
   // Hy3 and Qwen3-Next-80B-A3B-Instruct were delisted. GLM-5.2 is still in the catalog but is
   // dropped because GLM-5.3 supersedes it. v119-to-v120 moves all three off.
-  jalapenocloud: [
-    "GLM-5.3",
-    "GLM-5.3-Flash",
-    "GLM-5.1",
-    "DeepSeek-V4.1-Flash",
-    "DeepSeek-V4.1-Flash-1017",
-    "DeepSeek-V4-Flash-0731",
-    "DeepSeek-V4-Flash",
-    "DeepSeek-V4-Pro",
-    "Hy4-preview",
-    "Kimi-K3.1-Pro",
-    "Kimi-K3",
-    "Kimi-K2.5",
-    "MiniMax-M3.1-Flash",
-    "MiniMax-M3",
-    "Step-5-preview",
-    "Qwen3.5-27B",
-    "Qwen3.5-35B-A3B",
-    "Qwen3.5-122B-A10B",
-    "Qwen3.5-397B-A17B",
-  ],
+
   // IF API is a relay in front of many vendors, so its catalog runs to dozens of models. These
   // are the six it recommends for translation, each confirmed by IF API on 2026-11-11 to answer
   // through cn.ifapi.org with reasoning turned off; any other id goes in as a custom model.
-  ifapi: [
-    "gpt-6-luna",
-    "claude-haiku-5-5",
-    "gpt-6.1-terra",
-    "deepseek-v4.1-flash",
-    "glm-5.3-flash",
-    "minimax-m3.1-flash",
-  ],
+
   "openai-compatible": ["use-custom-model"],
   "open-responses": ["use-custom-model"],
   xai: [

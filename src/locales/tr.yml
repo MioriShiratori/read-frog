@@ -201,6 +201,10 @@ options:
         noModelsFound: Model bulunamadı
         label: Model
         enterCustomModel: Özel model adını girin
+      protocol: API protocol
+      openCodeService: OpenCode service
+      payAsYouGo: Pay as you go
+      modeChangeError: Could not change connection mode
       advancedOptions: Gelişmiş seçenekler
       providerSettingLabels:
         region: Bölge
@@ -227,9 +231,10 @@ options:
       invalidJson: Geçersiz JSON formatı
     providers:
       name:
-        customChatComplete: Özel Chat Complete
-        customResponses: Özel Responses
+        customProvider: Custom Provider
       description:
+        opencode: Connect to OpenCode pay-as-you-go API or Go
+        lmstudio: Connect to your local LM Studio server; API key is optional
         openai: GPT-4o gibi modeller sağlar
         azure: Azure dağıtımlarınız üzerinden OpenAI modelleri
         deepseek: Çin'de kullanım için önerilir
@@ -239,8 +244,6 @@ options:
         anthropic: Güvenlik ve akıl yürütme mükemmelliğiyle tanınan Claude modelleri
         xai: Gerçek zamanlı veri erişimli Grok modelleri sunan Elon Musk'ın AI şirketi
         atlascloud: DeepSeek, Kimi, Qwen, Doubao ve GLM gibi yeni modellere OpenAI uyumlu birleşik erişim platformu
-        jalapenocloud: En iyi ekiplerin kullandığı kurumsal düzeyde yapay zekâ, şimdi sizin için!
-        ifapi: GPT, Claude, Gemini ve daha fazlası, resmi fiyatın %10'undan başlayan fiyatlarla
         siliconflow: Çin ve uluslararası modeller için yüksek performanslı çıkarım platformu
         tensdaq: Yüksek maliyetli sabit fiyatlandırmayı ortadan kaldıran pazar odaklı fiyatlandırma ile devrimci açık artırma AI MaaS platformu
         openaiCompatible: OpenAI Chat Completions API ile uyumlu özel bir uç noktaya bağlanın
@@ -273,6 +276,11 @@ options:
       failed: Başarısız
       slow: Yavaş (düşünme modunu ayarlamanız önerilir)
     featureProviders:
+      function: Function
+      scrollHint: Scroll anywhere in the table to view more providers horizontally
+      incompatible: This provider does not support this function or translation mode
+      empty: Enable a provider to assign functions
+      saveError: Could not save provider assignment
       title: Özellik sağlayıcıları
       description: Her özellik için kullanılacak sağlayıcıyı seçin
       chooseProvider: Sağlayıcı seç

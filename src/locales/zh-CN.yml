@@ -202,6 +202,10 @@ options:
         noModelsFound: 未找到模型
         label: 模型
         enterCustomModel: 输入自定义模型名称
+      protocol: 接口类型
+      openCodeService: OpenCode 服务
+      payAsYouGo: 按量付费
+      modeChangeError: 切换接口失败
       advancedOptions: 高级选项
       providerSettingLabels:
         region: 区域
@@ -228,9 +232,10 @@ options:
       invalidJson: JSON 格式无效
     providers:
       name:
-        customChatComplete: 自定义 Chat Complete
-        customResponses: 自定义 Responses
+        customProvider: 自定义提供商
       description:
+        opencode: 使用 OpenCode 按量 API 或 Go
+        lmstudio: 连接 LM Studio 本地模型服务，API Key 可选
         openai: 提供 GPT-4o 等模型
         azure: 通过 Azure 部署使用 OpenAI 模型
         deepseek: 推荐在中国使用
@@ -240,8 +245,6 @@ options:
         anthropic: 以安全性和推理能力著称的 Claude 模型
         xai: 马斯克的 AI 公司，提供具有实时数据访问能力的 Grok 模型
         atlascloud: 统一的 OpenAI 兼容模型平台，提供 DeepSeek、Kimi、Qwen、豆包、GLM 等较新模型
-        jalapenocloud: 顶尖团队都在用的企业级 AI，现在为你而来！
-        ifapi: GPT、Claude、Gemini 等主流模型，低至官方价 1 折，国内专线直连
         siliconflow: 面向中国和国际模型的高性能推理平台
         tensdaq: 革命性竞价 AI MaaS 平台，价格由市场供需决定，告别高成本固定定价
         openaiCompatible: 连接兼容 OpenAI Chat Completions API 的自定义端点
@@ -274,6 +277,11 @@ options:
       failed: 失败
       slow: 缓慢（建议调节思考模式）
     featureProviders:
+      function: 功能
+      scrollHint: 在表内滚动鼠标滚轮可横向查看其他提供商
+      incompatible: 此提供商不支持该功能或当前翻译模式
+      empty: 请先启用提供商
+      saveError: 保存提供商分配失败
       title: 功能提供商
       description: 为每个功能选择使用的提供商
       chooseProvider: 选择提供商

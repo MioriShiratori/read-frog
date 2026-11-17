@@ -41,7 +41,10 @@ export async function aiTranslate<TContext>(
   } = providerConfig
   const reasoning = getTopLevelReasoning(providerConfig)
   const modelName = resolveModelId(providerModel)
-  const model = await getModelById(providerId)
+  const model =
+    provider === "opencode"
+      ? await getModelById(providerId, options?.signal)
+      : await getModelById(providerId)
 
   const providerOptions = getProviderOptionsWithOverride(
     modelName ?? "",

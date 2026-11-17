@@ -160,18 +160,7 @@ describe("getProviderOptions", () => {
       ])
     })
 
-    it("should prioritize the Jalapeno Cloud GLM models", () => {
-      expect(LLM_PROVIDER_MODELS.jalapenocloud.slice(0, 3)).toEqual([
-        "GLM-5.3",
-        "GLM-5.3-Flash",
-        "GLM-5.1",
-      ])
-    })
-
     it("should not list the retired, delisted or superseded models", () => {
-      for (const model of ["GLM-5.2", "Hy3", "Qwen3-Next-80B-A3B-Instruct"]) {
-        expect(LLM_PROVIDER_MODELS.jalapenocloud).not.toContain(model)
-      }
       for (const model of ["deepseek-chat", "deepseek-reasoner"]) {
         expect(LLM_PROVIDER_MODELS.deepseek).not.toContain(model)
       }

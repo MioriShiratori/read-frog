@@ -71,12 +71,13 @@ const llmProviderConfigSchemaList = [
     model: createProviderModelSchema<"atlascloud">("atlascloud"),
   }),
   baseOpenAICompatibleLLMProviderConfigSchema.extend({
-    provider: z.literal("jalapenocloud"),
-    model: createProviderModelSchema<"jalapenocloud">("jalapenocloud"),
+    provider: z.literal("opencode"),
+    service: z.enum(["pay-as-you-go", "go"]).optional(),
+    model: createProviderModelSchema("opencode"),
   }),
   baseOpenAICompatibleLLMProviderConfigSchema.extend({
-    provider: z.literal("ifapi"),
-    model: createProviderModelSchema<"ifapi">("ifapi"),
+    provider: z.literal("lmstudio"),
+    model: createProviderModelSchema("lmstudio"),
   }),
   baseOpenAICompatibleLLMProviderConfigSchema.extend({
     provider: z.literal("siliconflow"),
@@ -228,8 +229,28 @@ export const apiProviderConfigItemSchema = z.discriminatedUnion(
 )
 export const providerConfigItemSchema = z.discriminatedUnion("provider", providerConfigSchemaList)
 
+const retiredProviderSchema = baseOpenAICompatibleLLMProviderConfigSchema
+  .extend({
+    provider: z.enum(["jalapenocloud", "ifapi"]),
+    model: z.object({
+      model: z.string(),
+      isCustomModel: z.boolean(),
+      customModel: z.string().nullable(),
+    }),
+  })
+  .transform((config) => ({
+    ...config,
+    provider: "openai-compatible" as const,
+    model: {
+      model: "use-custom-model" as const,
+      isCustomModel: true as const,
+      customModel: config.model.isCustomModel ? config.model.customModel : config.model.model,
+    },
+  }))
+
+// Options can read stored config before the background migration completes.
 export const providersConfigSchema = z
-  .array(providerConfigItemSchema)
+  .array(z.union([providerConfigItemSchema, retiredProviderSchema]))
   .superRefine((providers, ctx) => {
     const idSet = new Set<string>()
     providers.forEach((provider, index) => {

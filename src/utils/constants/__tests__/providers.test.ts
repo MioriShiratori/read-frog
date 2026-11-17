@@ -30,8 +30,8 @@ describe("provider constants", () => {
   it("uses the original custom provider SVG shape for both custom protocols", () => {
     expect(PROVIDER_ITEMS["openai-compatible"].logo("light")).toContain("custom-provider.svg")
     expect(PROVIDER_ITEMS["openai-compatible"].logo("dark")).toContain("custom-provider.svg")
-    expect(PROVIDER_ITEMS["open-responses"].logo("light")).toContain("custom-responses.svg")
-    expect(PROVIDER_ITEMS["open-responses"].logo("dark")).toContain("custom-responses.svg")
+    expect(PROVIDER_ITEMS["open-responses"].logo("light")).toContain("custom-provider.svg")
+    expect(PROVIDER_ITEMS["open-responses"].logo("dark")).toContain("custom-provider.svg")
   })
 
   it("defines Azure with the LobeHub color icon and GPT shortcut defaults", () => {
@@ -90,8 +90,8 @@ describe("provider constants", () => {
   it("defines disjoint and exhaustive protocol-adapter taxonomies", () => {
     expect(OPENAI_COMPATIBLE_LLM_PROVIDER_TYPES).toEqual([
       "openai-compatible",
-      "jalapenocloud",
-      "ifapi",
+      "opencode",
+      "lmstudio",
       "atlascloud",
       "openrouter",
       "minimax",
@@ -103,11 +103,16 @@ describe("provider constants", () => {
     expect(PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES.slice(0, 5)).toEqual([
       "openai-compatible",
       "open-responses",
-      "jalapenocloud",
-      "ifapi",
+      "opencode",
+      "lmstudio",
       "atlascloud",
     ])
-    expect(CUSTOM_MODEL_ONLY_PROVIDER_TYPES).toEqual(["openai-compatible", "open-responses"])
+    expect(CUSTOM_MODEL_ONLY_PROVIDER_TYPES).toEqual([
+      "opencode",
+      "lmstudio",
+      "openai-compatible",
+      "open-responses",
+    ])
 
     const openAICompatibleTypes = new Set<string>(OPENAI_COMPATIBLE_LLM_PROVIDER_TYPES)
     const openResponsesTypes = new Set<string>(OPEN_RESPONSES_LLM_PROVIDER_TYPES)
@@ -121,9 +126,6 @@ describe("provider constants", () => {
     expect([...protocolCompatibleTypes].filter((type) => dedicatedTypes.has(type))).toEqual([])
     expect([...protocolCompatibleTypes, ...dedicatedTypes].sort()).toEqual(
       [...LLM_PROVIDER_TYPES].sort(),
-    )
-    expect(API_PROVIDER_TYPES.slice(0, 5)).toEqual(
-      PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES.slice(0, 5),
     )
     expect(apiProviderConfigItemSchema.parse(DEFAULT_PROVIDER_CONFIG.openrouter)).toEqual(
       DEFAULT_PROVIDER_CONFIG.openrouter,
@@ -182,9 +184,11 @@ describe("provider constants", () => {
     expect(providersConfigSchema.parse([existingConfig])).toEqual([existingConfig])
   })
 
-  it("groups both protocol adapters under the compatible providers key", () => {
-    expect(PROVIDER_GROUPS.compatibleProviders.types).toEqual(
-      PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES,
+  it("offers one custom entry and groups local and OpenCode presets with built-in providers", () => {
+    expect(PROVIDER_GROUPS.compatibleProviders.types).toContain("openai-compatible")
+    expect(PROVIDER_GROUPS.compatibleProviders.types).not.toContain("open-responses")
+    expect(PROVIDER_GROUPS.builtInProviders.types).toEqual(
+      expect.arrayContaining(["opencode", "lmstudio"]),
     )
     expect(PROVIDER_GROUPS).not.toHaveProperty("openaiCompatibleProviders")
   })

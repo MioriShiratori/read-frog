@@ -20,7 +20,7 @@ describe("api provider utils", () => {
     expect(updatedProviders?.[0]).toEqual(
       expect.objectContaining({
         provider: "openai-compatible",
-        name: "options.apiProviders.providers.name.customChatComplete",
+        name: "options.apiProviders.providers.name.customProvider",
         description: "options.apiProviders.providers.description.openaiCompatible",
       }),
     )
@@ -51,7 +51,7 @@ describe("api provider utils", () => {
     expect(updatedProviders?.[1]).toEqual(
       expect.objectContaining({
         provider: "open-responses",
-        name: "options.apiProviders.providers.name.customResponses",
+        name: "options.apiProviders.providers.name.customProvider",
         url: "https://api.example.com/v1/responses",
       }),
     )

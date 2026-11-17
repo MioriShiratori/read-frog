@@ -201,6 +201,10 @@ options:
         noModelsFound: Không tìm thấy mô hình
         label: Mô hình
         enterCustomModel: Nhập tên mô hình tùy chỉnh
+      protocol: API protocol
+      openCodeService: OpenCode service
+      payAsYouGo: Pay as you go
+      modeChangeError: Could not change connection mode
       advancedOptions: Tùy chọn nâng cao
       providerSettingLabels:
         region: Khu vực
@@ -227,9 +231,10 @@ options:
       invalidJson: Định dạng JSON không hợp lệ
     providers:
       name:
-        customChatComplete: Tùy chỉnh Chat Complete
-        customResponses: Tùy chỉnh Responses
+        customProvider: Custom Provider
       description:
+        opencode: Connect to OpenCode pay-as-you-go API or Go
+        lmstudio: Connect to your local LM Studio server; API key is optional
         openai: Cung cấp các mô hình như GPT-4o
         azure: Mô hình OpenAI lưu trữ trên Azure qua các bản triển khai của bạn
         deepseek: Khuyến nghị sử dụng ở Trung Quốc
@@ -239,8 +244,6 @@ options:
         anthropic: Các mô hình Claude nổi tiếng về độ an toàn và khả năng suy luận xuất sắc
         xai: Công ty AI của Elon Musk cung cấp các mô hình Grok với truy cập dữ liệu thời gian thực
         atlascloud: Nền tảng hợp nhất tương thích OpenAI cho các mô hình mới như DeepSeek, Kimi, Qwen, Doubao và GLM
-        jalapenocloud: AI cấp doanh nghiệp được các đội ngũ hàng đầu sử dụng, nay dành cho bạn!
-        ifapi: GPT, Claude, Gemini và nhiều mô hình khác, chỉ từ 10% giá chính thức
         siliconflow: Nền tảng suy luận hiệu suất cao cho các mô hình Trung Quốc và quốc tế
         tensdaq: Nền tảng MaaS đấu giá AI cách mạng với giá thị trường, loại bỏ giá cố định cao
         openaiCompatible: Kết nối với endpoint tùy chỉnh tương thích với OpenAI Chat Completions API
@@ -273,6 +276,11 @@ options:
       failed: Thất bại
       slow: Chậm (nên điều chỉnh chế độ suy nghĩ)
     featureProviders:
+      function: Function
+      scrollHint: Scroll anywhere in the table to view more providers horizontally
+      incompatible: This provider does not support this function or translation mode
+      empty: Enable a provider to assign functions
+      saveError: Could not save provider assignment
       title: Nhà cung cấp tính năng
       description: Chọn nhà cung cấp sử dụng cho mỗi tính năng
       chooseProvider: Chọn nhà cung cấp

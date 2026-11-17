@@ -137,7 +137,7 @@ describe("background-stream", () => {
       },
     )
 
-    expect(getModelByIdMock).toHaveBeenCalledWith("openai-default")
+    expect(getModelByIdMock.mock.calls[0]![0]).toBe("openai-default")
     expect(streamTextMock).toHaveBeenCalledWith(
       expect.objectContaining({
         model: "mock-model",
@@ -303,7 +303,7 @@ describe("background-stream", () => {
       },
     })
 
-    expect(getModelByIdMock).toHaveBeenCalledWith("openai-default")
+    expect(getModelByIdMock.mock.calls[0]![0]).toBe("openai-default")
     expect(streamTextMock).toHaveBeenCalledWith(
       expect.objectContaining({
         instructions: "Be concise",

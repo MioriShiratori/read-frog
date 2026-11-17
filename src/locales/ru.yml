@@ -201,6 +201,10 @@ options:
         noModelsFound: Модели не найдены
         label: Модель
         enterCustomModel: Введите название пользовательской модели
+      protocol: API protocol
+      openCodeService: OpenCode service
+      payAsYouGo: Pay as you go
+      modeChangeError: Could not change connection mode
       advancedOptions: Расширенные настройки
       providerSettingLabels:
         region: Регион
@@ -227,9 +231,10 @@ options:
       invalidJson: Неверный формат JSON
     providers:
       name:
-        customChatComplete: Пользовательский Chat Complete
-        customResponses: Пользовательский Responses
+        customProvider: Custom Provider
       description:
+        opencode: Connect to OpenCode pay-as-you-go API or Go
+        lmstudio: Connect to your local LM Studio server; API key is optional
         openai: Предоставляет модели, такие как GPT-4o
         azure: Модели OpenAI в Azure через ваши развертывания
         deepseek: Рекомендуется для использования в Китае
@@ -239,8 +244,6 @@ options:
         anthropic: Модели Claude, известные своей безопасностью и превосходными рассуждениями
         xai: ИИ-компания Илона Маска, предлагающая модели Grok с доступом к данным в реальном времени
         atlascloud: Единая OpenAI-совместимая платформа для новых моделей DeepSeek, Kimi, Qwen, Doubao, GLM и других
-        jalapenocloud: ИИ корпоративного уровня, которым пользуются ведущие команды — теперь и для вас!
-        ifapi: GPT, Claude, Gemini и другие модели от 10% официальной цены
         siliconflow: Высокопроизводительная платформа вывода для китайских и международных моделей
         tensdaq: Революционная MaaS-платформа с рыночным ценообразованием, устраняющая высокие фиксированные цены
         openaiCompatible: Подключение к пользовательской конечной точке, совместимой с OpenAI Chat Completions API
@@ -273,6 +276,11 @@ options:
       failed: Ошибка
       slow: Медленно (рекомендуется настроить режим рассуждения)
     featureProviders:
+      function: Function
+      scrollHint: Scroll anywhere in the table to view more providers horizontally
+      incompatible: This provider does not support this function or translation mode
+      empty: Enable a provider to assign functions
+      saveError: Could not save provider assignment
       title: Провайдеры функций
       description: Выберите провайдера для каждой функции
       chooseProvider: Выбрать провайдера

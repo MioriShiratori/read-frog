@@ -1,0 +1,83 @@
+.provider-matrix-container {
+  container-type: inline-size;
+  --feature-label-width: 15rem;
+  --visible-providers: 4;
+}
+.provider-matrix-viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.provider-matrix {
+  width: calc(
+    var(--feature-label-width) + (100% - var(--feature-label-width)) * var(--provider-count) /
+      var(--visible-providers)
+  );
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+}
+.provider-matrix-label-column {
+  width: var(--feature-label-width);
+}
+.provider-matrix th,
+.provider-matrix td {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.provider-matrix tr:last-child td,
+.provider-matrix tbody tr:last-child th {
+  border-bottom: 0;
+}
+.provider-matrix tr > :last-child {
+  border-right: 0;
+}
+.provider-matrix-label {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--background);
+  padding: 0.875rem 1rem;
+  text-align: left;
+}
+.provider-matrix-cell {
+  display: grid;
+  width: 100%;
+  min-height: 4.5rem;
+  height: 100%;
+  place-items: center;
+  cursor: pointer;
+  color: var(--muted-foreground);
+}
+.provider-matrix-cell:hover:not(:disabled) {
+  background: var(--accent);
+}
+.provider-matrix-cell[aria-pressed="true"] {
+  color: var(--primary);
+  background: var(--accent);
+}
+.provider-matrix-cell:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.provider-matrix-cell:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -3px;
+}
+.provider-matrix-marker {
+  font-size: 1.25rem;
+}
+@container (width < 640px) {
+  .provider-matrix-viewport {
+    --feature-label-width: 10rem;
+    --visible-providers: 2;
+  }
+}
+
+.provider-matrix td {
+  padding: 0;
+  height: 1px;
+}

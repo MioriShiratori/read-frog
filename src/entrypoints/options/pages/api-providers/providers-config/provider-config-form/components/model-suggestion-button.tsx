@@ -15,7 +15,9 @@ import {
 import { extractErrorMessage } from "@/utils/error/extract-message"
 import { i18n } from "@/utils/i18n"
 import { getProviderConnectionURL } from "@/utils/providers/connection-url"
+import { getProviderHeadersWithOverride } from "@/utils/providers/headers"
 import { getProviderModelsURL } from "@/utils/providers/models-url"
+import { getOpenCodeHeaders } from "@/utils/providers/opencode-headers"
 
 interface ModelsResponse {
   object: string
@@ -41,12 +43,20 @@ export function ModelSuggestionButton({
       errorDescription: i18n.t("options.apiProviders.form.models.fetchError"),
     },
     mutationFn: async () => {
-      if (!apiKey) {
+      if (!apiKey && providerConfig.provider !== "lmstudio") {
         throw new Error(i18n.t("options.apiProviders.form.models.apiKeyRequired"))
       }
 
       const response = await fetch(getProviderModelsURL(providerConfig), {
-        headers: { Authorization: `Bearer ${apiKey}` },
+        headers: {
+          ...(providerConfig.provider === "opencode"
+            ? getOpenCodeHeaders(
+                undefined,
+                getProviderHeadersWithOverride(providerConfig.provider, providerConfig.headers),
+              )
+            : getProviderHeadersWithOverride(providerConfig.provider, providerConfig.headers)),
+          ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
+        },
       })
       if (!response.ok) {
         throw new Error(await extractErrorMessage(response))

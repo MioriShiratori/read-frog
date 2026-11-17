@@ -267,8 +267,11 @@ async function createLocalTextPartStream(
   const { signal, onError } = options
 
   const model = providerConfig
-    ? getLanguageModelForConfig(providerConfig)
-    : await getModelById(providerId)
+    ? getLanguageModelForConfig(
+        providerConfig,
+        ...(providerConfig.provider === "opencode" ? [signal] : []),
+      )
+    : await getModelById(providerId, signal)
   const result = streamText({
     ...(streamTextParams as Parameters<typeof streamText>[0]),
     ...(providerConfig ? buildLocalGenerateTextParams(providerConfig) : {}),
@@ -310,7 +313,10 @@ export async function generateTextForProviderRef(
   // pair a model from the current row with reasoning/temperature/providerOptions
   // computed from the snapshot the caller captured — and would fail outright
   // for a row deleted from another tab while the config was already in hand.
-  const model = getLanguageModelForConfig(providerRef.config)
+  const model = getLanguageModelForConfig(
+    providerRef.config,
+    ...(providerRef.config.provider === "opencode" ? [signal] : []),
+  )
   const { text } = await generateText({
     model,
     instructions,
@@ -353,7 +359,7 @@ async function createLocalStructuredObjectPartStream<TOutput extends Record<stri
   const { providerId, outputSchema: _outputSchema, ...streamParams } = serializablePayload
   const { signal, onError } = options
 
-  const model = await getModelById(providerId)
+  const model = await getModelById(providerId, signal)
   const result = streamText({
     ...(streamParams as Parameters<typeof streamText>[0]),
     model,

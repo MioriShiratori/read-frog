@@ -201,6 +201,10 @@ options:
         noModelsFound: モデルが見つかりません
         label: モデル
         enterCustomModel: カスタムモデル名を入力
+      protocol: API protocol
+      openCodeService: OpenCode service
+      payAsYouGo: Pay as you go
+      modeChangeError: Could not change connection mode
       advancedOptions: 詳細オプション
       providerSettingLabels:
         region: リージョン
@@ -227,9 +231,10 @@ options:
       invalidJson: 無効なJSON形式
     providers:
       name:
-        customChatComplete: カスタム Chat Complete
-        customResponses: カスタム Responses
+        customProvider: Custom Provider
       description:
+        opencode: Connect to OpenCode pay-as-you-go API or Go
+        lmstudio: Connect to your local LM Studio server; API key is optional
         openai: GPT-4oなどのモデルを提供
         azure: Azure のデプロイ経由で OpenAI モデルを利用
         deepseek: 中国国内での使用を推奨
@@ -239,8 +244,6 @@ options:
         anthropic: 安全性と推論能力に優れたClaudeモデル
         xai: リアルタイムデータアクセス可能なGrokモデルを提供するイーロン・マスクのAI企業
         atlascloud: DeepSeek、Kimi、Qwen、Doubao、GLMなどの新しめのモデルにOpenAI互換でアクセスできる統合プラットフォーム
-        jalapenocloud: トップチームが使うエンタープライズ級 AI を、あなたにも！
-        ifapi: GPT・Claude・Gemini など主要モデルを公式価格の最大 90% オフで
         siliconflow: 中国および国際モデル向けの高性能推論プラットフォーム
         tensdaq: 革命的入札型AI MaaSプラットフォーム、市場の需給で価格が決まり高コスト固定料金を排除
         openaiCompatible: OpenAI Chat Completions API 互換のカスタムエンドポイントに接続
@@ -273,6 +276,11 @@ options:
       failed: 失敗
       slow: 低速（思考モードの調整を推奨）
     featureProviders:
+      function: Function
+      scrollHint: Scroll anywhere in the table to view more providers horizontally
+      incompatible: This provider does not support this function or translation mode
+      empty: Enable a provider to assign functions
+      saveError: Could not save provider assignment
       title: 機能プロバイダー
       description: 各機能に使用するプロバイダーを選択
       chooseProvider: プロバイダーを選択

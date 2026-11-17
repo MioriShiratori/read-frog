@@ -19,6 +19,8 @@ export {
 
 // translate provider names
 export const TRANSLATE_PROVIDER_TYPES = [
+  "opencode",
+  "lmstudio",
   "google-translate",
   "microsoft-translate",
   "deeplx",
@@ -30,8 +32,6 @@ export const TRANSLATE_PROVIDER_TYPES = [
   "xai",
   "openai-compatible",
   "open-responses",
-  "jalapenocloud",
-  "ifapi",
   "atlascloud",
   "openrouter",
   "minimax",
@@ -62,6 +62,8 @@ export function isTranslateProvider(provider: string): provider is TranslateProv
 }
 
 export const LLM_PROVIDER_TYPES = [
+  "opencode",
+  "lmstudio",
   "openai",
   "deepseek",
   "google",
@@ -69,8 +71,6 @@ export const LLM_PROVIDER_TYPES = [
   "xai",
   "openai-compatible",
   "open-responses",
-  "jalapenocloud",
-  "ifapi",
   "atlascloud",
   "openrouter",
   "minimax",
@@ -102,8 +102,8 @@ const OPENAI_COMPATIBLE_CUSTOM_LLM_PROVIDER_TYPE = "openai-compatible"
 const OPEN_RESPONSES_CUSTOM_LLM_PROVIDER_TYPE = "open-responses"
 
 const HOSTED_OPENAI_COMPATIBLE_LLM_PROVIDER_TYPES = [
-  "jalapenocloud",
-  "ifapi",
+  "opencode",
+  "lmstudio",
   "atlascloud",
   "openrouter",
   "minimax",
@@ -147,6 +147,8 @@ export function isProtocolCompatibleLLMProvider(
 }
 
 export const CUSTOM_MODEL_ONLY_PROVIDER_TYPES = [
+  "opencode",
+  "lmstudio",
   OPENAI_COMPATIBLE_CUSTOM_LLM_PROVIDER_TYPE,
   OPEN_RESPONSES_CUSTOM_LLM_PROVIDER_TYPE,
 ] as const satisfies Readonly<ProtocolCompatibleLLMProviderTypes[]>
@@ -185,10 +187,10 @@ export function isDedicatedLLMProvider(provider: string): provider is DedicatedL
 }
 
 export const API_PROVIDER_TYPES = [
+  "opencode",
+  "lmstudio",
   "openai-compatible",
   "open-responses",
-  "jalapenocloud",
-  "ifapi",
   "atlascloud",
   "openrouter",
   "minimax",
@@ -238,14 +240,14 @@ export function isNonAPIProvider(provider: string): provider is NonAPIProviderTy
 
 // all provider names
 export const ALL_PROVIDER_TYPES = [
+  "opencode",
+  "lmstudio",
   "google-translate",
   "microsoft-translate",
   "deeplx",
   "deepl",
   "openai-compatible",
   "open-responses",
-  "jalapenocloud",
-  "ifapi",
   "atlascloud",
   "openrouter",
   "minimax",

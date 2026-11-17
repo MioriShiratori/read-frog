@@ -202,6 +202,10 @@ options:
         noModelsFound: No se encontraron modelos
         label: Modelo
         enterCustomModel: Introduce el nombre del modelo personalizado
+      protocol: API protocol
+      openCodeService: OpenCode service
+      payAsYouGo: Pay as you go
+      modeChangeError: Could not change connection mode
       advancedOptions: Opciones avanzadas
       providerSettingLabels:
         region: Región
@@ -228,9 +232,10 @@ options:
       invalidJson: Formato JSON no válido
     providers:
       name:
-        customChatComplete: Personalizado Chat Complete
-        customResponses: Personalizado Responses
+        customProvider: Custom Provider
       description:
+        opencode: Connect to OpenCode pay-as-you-go API or Go
+        lmstudio: Connect to your local LM Studio server; API key is optional
         openai: Proporciona modelos como GPT-4o
         azure: Modelos OpenAI hospedados en Azure mediante tus implementaciones
         deepseek: Recomendado para usar en China
@@ -240,8 +245,6 @@ options:
         anthropic: Modelos Claude conocidos por su seguridad y excelente razonamiento
         xai: Empresa de AI de Elon Musk que ofrece modelos Grok con acceso a datos en tiempo real
         atlascloud: Plataforma unificada compatible con OpenAI para modelos recientes como DeepSeek, Kimi, Qwen, Doubao y GLM
-        jalapenocloud: IA de nivel empresarial que utilizan los mejores equipos, ¡ahora para ti!
-        ifapi: GPT, Claude, Gemini y más, desde el 10 % del precio oficial
         siliconflow: Plataforma de inferencia de alto rendimiento para modelos chinos e internacionales
         tensdaq: Plataforma revolucionaria de pujas AI MaaS con precios impulsados por el mercado, que elimina los altos precios fijos
         openaiCompatible: Conecta un endpoint personalizado compatible con la API Chat Completions de OpenAI
@@ -274,6 +277,11 @@ options:
       failed: Falló
       slow: Lento (se recomienda ajustar el modo de razonamiento)
     featureProviders:
+      function: Function
+      scrollHint: Scroll anywhere in the table to view more providers horizontally
+      incompatible: This provider does not support this function or translation mode
+      empty: Enable a provider to assign functions
+      saveError: Could not save provider assignment
       title: Proveedores de funciones
       description: Elige qué proveedor usar para cada función
       chooseProvider: Elegir un proveedor

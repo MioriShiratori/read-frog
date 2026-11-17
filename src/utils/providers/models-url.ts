@@ -11,6 +11,9 @@ function replaceLastPathSegment(url: URL, segment: string): void {
 export function getProviderModelsURL(providerConfig: ProtocolCompatibleLLMProviderConfig): string {
   const url = new URL(getProviderConnectionURL(providerConfig))
 
+  if (providerConfig.provider === "opencode" && url.hostname === "opencode.ai") {
+    url.pathname = url.pathname.replace(/\/openai(?=\/v1\/?$)/, "")
+  }
   if (isOpenResponsesLLMProviderConfig(providerConfig)) {
     replaceLastPathSegment(url, "models")
   } else {

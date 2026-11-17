@@ -30,7 +30,6 @@ export function createWxtEnvironment(source, monorepoRoot, topology) {
     WXT_API_URL: topology.api,
     WXT_WEBSITE_URL: topology.www,
     WXT_OFFICIAL_SITE_ORIGINS: topology.www,
-    WXT_AUTH_COOKIE_DOMAINS: topology.cookieDomain,
   }
 }
 

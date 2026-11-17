@@ -10,14 +10,12 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-libra
 import { createStore, Provider } from "jotai"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { fakeBrowser } from "wxt/testing/fake-browser"
-import { customActionRequestAtom } from "@/components/custom-action/atoms"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
 import { isLLMProviderConfig } from "@/types/config/provider"
 import { configAtom } from "@/utils/atoms/config"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
 import { GOOGLE_TRANSLATE_PROVIDER_ID } from "@/utils/constants/providers"
 import { getBuiltInDictionaryAction } from "@/utils/custom-actions"
-import { prepareTranslationText } from "@/utils/host/translate/text-preparation"
 import { buildContextSnapshot, createRangeSnapshot, normalizeSelectedText } from "../../utils"
 import { setSelectionStateAtom } from "../atoms"
 import { SelectionCustomActionProvider } from "../custom-action-button/provider"
@@ -1116,27 +1114,6 @@ describe("selection toolbar requests", () => {
   // A note keeps the selection as a custom action run keeps it. Translation
   // prepares its own copy, which drops invisible joiners such as the one that
   // holds an emoji sequence together.
-  it("hands the note suggestion the selection as a custom action run saves it", async () => {
-    translateTextCoreMock.mockResolvedValue("I am a coder.")
-    const coder = String.fromCodePoint(0x1f469, 0x200d, 0x1f4bb)
-    const selected = `I am a ${coder}.`
-    const config = cloneConfig(DEFAULT_CONFIG)
-    const store = createStore()
-    store.set(configAtom, config)
-    setSelectionState(store, { text: selected })
-    renderWithProviders(<TranslateButton />, store)
-
-    fireEvent.click(screen.getByRole("button", { name: "action.translation" }))
-
-    await waitFor(() => {
-      expect(maybeFireNoteSuggestionMock).toHaveBeenCalledTimes(1)
-    })
-    const input = maybeFireNoteSuggestionMock.mock.calls[0]![0]
-    expect(input.savedSelectionText).toBe(normalizeSelectedText(selected))
-    expect(input.savedSelectionText).toContain(coder)
-    expect(input.selectionText).toBe(prepareTranslationText(selected))
-    expect(input.selectionText).not.toContain(coder)
-  })
 
   it("opens selection translation from the context menu and tracks the context-menu surface", async () => {
     translateTextCoreMock.mockResolvedValue("Context menu result")
@@ -1767,102 +1744,6 @@ describe("selection toolbar requests", () => {
     })
   })
 
-  it("reuses a pinned custom action popover in place for a new selection", async () => {
-    const firstRun = createDeferredPromise<BackgroundStructuredObjectStreamSnapshot>()
-    const secondRun = createDeferredPromise<BackgroundStructuredObjectStreamSnapshot>()
-    streamBackgroundStructuredObjectMock
-      .mockReturnValueOnce(firstRun.promise)
-      .mockReturnValueOnce(secondRun.promise)
-
-    const paragraph = document.createElement("p")
-    paragraph.textContent = "Selected text inside a paragraph."
-    document.body.appendChild(paragraph)
-
-    const store = createStore()
-    store.set(configAtom, cloneConfig(DEFAULT_CONFIG))
-    setSelectionState(store, { text: "Selected text", range: createRangeFor(paragraph) })
-    renderWithProviders(<SelectionToolbarPinnedItems />, store)
-
-    const action = DEFAULT_DICTIONARY_ACTION
-
-    act(() => {
-      paragraph.dispatchEvent(
-        new MouseEvent("contextmenu", {
-          bubbles: true,
-          button: 2,
-          clientX: 140,
-          clientY: 180,
-        }),
-      )
-    })
-
-    await act(async () => {
-      getRegisteredMessageHandler("openSelectionCustomActionFromContextMenu")({
-        data: { actionId: action.id, selectionText: "Selected text" },
-      })
-      await Promise.resolve()
-    })
-
-    await waitFor(() => {
-      expect(streamBackgroundStructuredObjectMock).toHaveBeenCalledTimes(1)
-    })
-    expect(streamBackgroundStructuredObjectMock.mock.calls[0]?.[0]).toMatchObject({
-      providerId: "read-frog-free-ai",
-      modelTier: "normal",
-      requestId: expect.stringMatching(/^[0-9a-f-]{36}$/i),
-    })
-
-    await act(async () => {
-      firstRun.resolve(createStructuredObjectSnapshot({ summary: "First result" }))
-      await Promise.resolve()
-    })
-
-    await waitFor(() => {
-      expect(screen.getByText('{"summary":"First result"}')).toBeInTheDocument()
-    })
-
-    const content = screen.getByTestId("selection-popover-content")
-
-    fireEvent.click(screen.getByRole("button", { name: "Pin popover" }))
-
-    act(() => {
-      setSelectionState(store, {
-        text: "inside a paragraph",
-        range: createRangeFor(paragraph),
-      })
-    })
-
-    await act(async () => {
-      getRegisteredMessageHandler("openSelectionCustomActionFromContextMenu")({
-        data: { actionId: action.id, selectionText: "inside a paragraph" },
-      })
-      await Promise.resolve()
-    })
-
-    await waitFor(() => {
-      expect(streamBackgroundStructuredObjectMock).toHaveBeenCalledTimes(2)
-    })
-    expect(streamBackgroundStructuredObjectMock.mock.calls[1]?.[0].requestId).not.toBe(
-      streamBackgroundStructuredObjectMock.mock.calls[0]?.[0].requestId,
-    )
-
-    expect(screen.getByTestId("selection-popover-content")).toBe(content)
-    expect(screen.getByRole("button", { name: "Unpin popover" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    )
-    expect(screen.queryByText('{"summary":"First result"}')).not.toBeInTheDocument()
-
-    await act(async () => {
-      secondRun.resolve(createStructuredObjectSnapshot({ summary: "Second result" }))
-      await Promise.resolve()
-    })
-
-    await waitFor(() => {
-      expect(screen.getByText('{"summary":"Second result"}')).toBeInTheDocument()
-    })
-  })
-
   it("opens a custom action from the context menu with the captured selection session", async () => {
     streamBackgroundStructuredObjectMock.mockResolvedValue(
       createStructuredObjectSnapshot({ summary: "Context menu result" }),
@@ -1926,48 +1807,6 @@ describe("selection toolbar requests", () => {
         action_name: action.name,
       }),
     )
-  })
-
-  it("carries the note origin recorded with the selection into the custom action request", async () => {
-    streamBackgroundStructuredObjectMock.mockResolvedValue(
-      createStructuredObjectSnapshot({ summary: "Context menu result" }),
-    )
-    const paragraph = document.createElement("p")
-    paragraph.textContent = "Selected text inside a paragraph."
-    document.body.appendChild(paragraph)
-    const store = createStore()
-    store.set(configAtom, cloneConfig(DEFAULT_CONFIG))
-    const selection = {
-      text: "Selected text",
-      ranges: [createRangeSnapshot(createRangeFor(paragraph))],
-    }
-    const noteOrigin = {
-      kind: "ebook",
-      ebookId: "55555555-5555-4555-8555-555555555555",
-      cfi: "epubcfi(/6/2)",
-    } as const
-    store.set(setSelectionStateAtom, {
-      selection,
-      context: buildContextSnapshot(selection),
-      noteOrigin,
-    })
-    renderWithProviders(<SelectionToolbarPinnedItems />, store)
-
-    act(() => {
-      paragraph.dispatchEvent(
-        new MouseEvent("contextmenu", { bubbles: true, button: 2, clientX: 140, clientY: 180 }),
-      )
-    })
-    await act(async () => {
-      getRegisteredMessageHandler("openSelectionCustomActionFromContextMenu")({
-        data: { actionId: DEFAULT_DICTIONARY_ACTION.id, selectionText: "Selected text" },
-      })
-      await Promise.resolve()
-    })
-
-    await waitFor(() => {
-      expect(store.get(customActionRequestAtom)?.noteOrigin).toEqual(noteOrigin)
-    })
   })
 
   it("opens a custom action from its shortcut and tracks the shortcut surface", async () => {

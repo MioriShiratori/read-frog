@@ -1,8 +1,8 @@
 import type { LanguageTag } from "@read-frog/definitions"
 import type { GlossaryFeatureKey } from "./features"
 import type { MatchedTerm } from "./types"
-import type { AnalyticsSurface, FeatureProviderAnalytics } from "@/types/analytics"
-import type { HostedAiTextStreamRoute } from "@/types/background-stream"
+import type { FeatureProviderAnalytics } from "@/types/analytics"
+import type { AnalyticsSurface } from "@/types/analytics"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
@@ -42,35 +42,8 @@ const REPORT_INTERVAL_MS = 5 * 60 * 1000
 /** Per context, not per tab: a fresh content script starts with a clean slate. */
 const lastReportedAt = new Map<AnalyticsSurface, number>()
 
-/**
- * Terms matched and are on their way into a prompt.
- *
- * Called where the terms are RESOLVED rather than inside
- * `appendGlossaryToSystemPrompt`, even though that is the one place the block is
- * assembled, for two reasons. The assembly point runs twice per translation —
- * once on the page to derive the cache key, once in the background to build the
- * request — and the background half cannot report anything, since
- * `trackFeatureUsed` messages the background and `@webext-core/messaging` has no
- * loopback. It also knows neither the feature nor the provider, both of which
- * are already in hand at every resolve site.
- *
- * This counts a glossary APPLICATION, not an LLM call: a paragraph served from
- * the memory tier or the background cache still counts, because the terms are
- * part of that cache identity (`host/translate/translate-text.ts`) and the text
- * the user reads was produced with them. Measuring the request instead would
- * report a heavy glossary user as a light one.
- *
- * Reports `success` because there is no failure mode here — whether the
- * translation itself lands is the host feature's own event to report. A term
- * entering a prompt is engagement either way, which is what
- * `recordFeatureActiveDay` counts it as.
- *
- * `feature` takes the full hosted route so a call site can forward whatever it
- * holds; a route with no glossary of its own (subtitle segmentation, language
- * detection) is simply not in the map and reports nothing.
- */
 export function trackGlossaryUsed(
-  feature: HostedAiTextStreamRoute,
+  feature: GlossaryFeatureKey | "languageDetection" | "videoSubtitlesSegmentation",
   terms: readonly MatchedTerm[],
   targetLanguage: LanguageTag,
   provider?: FeatureProviderAnalytics,

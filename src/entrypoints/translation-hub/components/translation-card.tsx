@@ -1,5 +1,4 @@
 import { Icon } from "@iconify/react"
-import { LANGUAGE_ENGLISH_NAMES } from "@read-frog/definitions"
 import { useMutation } from "@tanstack/react-query"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useEffectEvent, useRef } from "react"
@@ -14,17 +13,12 @@ import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytic
 import { classifyResolvedProvider } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { PROVIDER_ITEMS } from "@/utils/constants/providers"
-import { streamBackgroundText } from "@/utils/content-script/background-stream-client"
-import { getRandomUUID } from "@/utils/crypto-polyfill"
 import { resolveGlossaryTerms } from "@/utils/glossary/active-matcher"
 import { executeTranslate } from "@/utils/host/translate/execute-translate"
 import { prepareTranslationText } from "@/utils/host/translate/text-preparation"
 import { i18n } from "@/utils/i18n"
 import { getTranslatePromptFromConfig } from "@/utils/prompts/translate"
-import {
-  BUILT_IN_AI_PROVIDER_LOGO,
-  resolveProviderRefForCapability,
-} from "@/utils/providers/provider-registry"
+import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { cn } from "@/utils/styles/utils"
 import {
   selectedProviderIdsAtom,
@@ -54,12 +48,7 @@ export function TranslationCard({
   const { play, stop, isFetching, isPlaying } = useTextToSpeech(ANALYTICS_SURFACE.TRANSLATION_HUB)
 
   const provider = resolveProviderRefForCapability("pageTranslation", providersConfig, providerId)
-  const providerLogo =
-    provider?.kind === "system"
-      ? BUILT_IN_AI_PROVIDER_LOGO
-      : provider?.kind === "local"
-        ? PROVIDER_ITEMS[provider.config.provider].logo(theme)
-        : undefined
+  const providerLogo = provider ? PROVIDER_ITEMS[provider.config.provider].logo(theme) : undefined
 
   // Track request IDs to ignore stale responses from slow providers
   const requestIdRef = useRef(0)
@@ -96,11 +85,9 @@ export function TranslationCard({
             level: language.level,
           }
           const preparedText = prepareTranslationText(req.inputText)
-          const glossaryTerms =
-            provider.kind === "system" || isLLMProviderConfig(provider.config)
-              ? (await resolveGlossaryTerms(preparedText, glossary.enabled, req.targetLanguage))
-                  .terms
-              : []
+          const glossaryTerms = isLLMProviderConfig(provider.config)
+            ? (await resolveGlossaryTerms(preparedText, glossary.enabled, req.targetLanguage)).terms
+            : []
           if (abortController.signal.aborted) return undefined
 
           const promptResolver = async (targetLang: string, input: string) =>
@@ -112,25 +99,7 @@ export function TranslationCard({
             )
 
           let result: string
-          if (provider.kind === "system") {
-            const { systemPrompt, prompt } = await promptResolver(
-              LANGUAGE_ENGLISH_NAMES[req.targetLanguage],
-              preparedText,
-            )
-            const response = await streamBackgroundText(
-              {
-                providerKind: "system",
-                providerId: provider.id,
-                modelTier: provider.modelTier,
-                requestId: getRandomUUID(),
-                hostedFeature: "pageTranslation",
-                instructions: systemPrompt,
-                prompt,
-              },
-              { signal: abortController.signal },
-            )
-            result = response.output.trim()
-          } else {
+          {
             result = await executeTranslate(
               preparedText,
               langConfig,

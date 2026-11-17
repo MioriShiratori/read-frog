@@ -339,24 +339,6 @@ describe("background analytics", () => {
     expect(loggerWarnMock).toHaveBeenCalled()
   })
 
-  it("drops an unknown note-suggestion stage without throwing", async () => {
-    storageGetItemMock.mockResolvedValueOnce(true)
-    const { captureFeatureUsedEventInBackground } = createAnalytics()
-
-    await expect(
-      captureFeatureUsedEventInBackground({
-        feature: "note_suggestion",
-        surface: "selection_toolbar",
-        outcome: "success",
-        latency_ms: 100,
-        action_id: "unexpected_stage",
-        ...DEFAULT_FEATURE_PROVIDER,
-      } as unknown as FeatureUsedEventProperties),
-    ).resolves.toBeUndefined()
-
-    expect(posthogCaptureMock).not.toHaveBeenCalled()
-  })
-
   it("keeps site_domain and char_count through the PostHog property filter", () => {
     const filtered = filterAnalyticsCaptureResult({
       event: "feature_used",
@@ -444,37 +426,6 @@ describe("background analytics", () => {
     expect(cache.setLastReportedDay).toHaveBeenCalledTimes(2)
   })
 
-  it("records every note-suggestion funnel step on the same day, bypassing the daily cache", async () => {
-    mockEnabledAnalyticsStorage()
-    const { cache } = createMemoryFeatureUsageCache()
-    const { captureFeatureUsedEventInBackground } = createAnalytics({
-      featureUsageCache: cache,
-    })
-
-    await captureFeatureUsedEventInBackground({
-      feature: "note_suggestion",
-      surface: "selection_toolbar",
-      outcome: "success",
-      latency_ms: 100,
-      ...DEFAULT_FEATURE_PROVIDER,
-      action_id: "suggestion_shown",
-    })
-    await captureFeatureUsedEventInBackground({
-      feature: "note_suggestion",
-      surface: "selection_toolbar",
-      outcome: "success",
-      latency_ms: 200,
-      ...DEFAULT_FEATURE_PROVIDER,
-      action_id: "suggestion_accepted",
-      action_name: "Dictionary",
-    })
-
-    // Both funnel steps captured; the daily cache is never consulted for them.
-    expect(posthogCaptureMock).toHaveBeenCalledTimes(2)
-    expect(cache.getLastReportedDay).not.toHaveBeenCalled()
-    expect(cache.setLastReportedDay).not.toHaveBeenCalled()
-  })
-
   // A feature-wide throttle kept only a day's first outcome, so a dictionary
   // that worked once and then failed read as working all day; one event per
   // attempt would send a hostname for every run instead.
@@ -544,50 +495,6 @@ describe("background analytics", () => {
       ...attempt,
       outcome: "failure",
     })
-  })
-
-  it("records both note-save steps and drops malformed ones", async () => {
-    mockEnabledAnalyticsStorage()
-    const { cache } = createMemoryFeatureUsageCache()
-    const { captureFeatureUsedEventInBackground } = createAnalytics({
-      featureUsageCache: cache,
-    })
-    const requested = {
-      feature: "note_save" as const,
-      surface: "selection_toolbar" as const,
-      outcome: "success" as const,
-      latency_ms: 0,
-      ...DEFAULT_FEATURE_PROVIDER,
-      action_id: "save_requested" as const,
-      save_source: "note_suggestion" as const,
-      note_count: 2,
-    }
-    const completed = {
-      ...requested,
-      outcome: "failure" as const,
-      latency_ms: 900,
-      action_id: "save_completed" as const,
-      path: "after_login" as const,
-      is_guide: true,
-      failure_reason: "note_limit" as const,
-    }
-
-    await captureFeatureUsedEventInBackground(requested)
-    await captureFeatureUsedEventInBackground(completed)
-    await captureFeatureUsedEventInBackground({ ...completed, path: "teleport" as never })
-    await captureFeatureUsedEventInBackground({ ...requested, save_source: "popup" as never })
-    await captureFeatureUsedEventInBackground({ ...requested, action_id: "save_maybe" as never })
-    await captureFeatureUsedEventInBackground({ ...requested, surface: "video_subtitles" })
-    await captureFeatureUsedEventInBackground({ ...requested, surface: "popup" as never })
-
-    expect(posthogCaptureMock).toHaveBeenCalledTimes(3)
-    expect(posthogCaptureMock).toHaveBeenNthCalledWith(1, "feature_used", requested)
-    expect(posthogCaptureMock).toHaveBeenNthCalledWith(2, "feature_used", completed)
-    expect(posthogCaptureMock).toHaveBeenNthCalledWith(3, "feature_used", {
-      ...requested,
-      surface: "video_subtitles",
-    })
-    expect(cache.getLastReportedDay).not.toHaveBeenCalled()
   })
 
   it("reports a feature again after the Shanghai calendar day changes", async () => {

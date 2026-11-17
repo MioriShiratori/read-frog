@@ -25,10 +25,7 @@ const {
   testState: {
     translationHub: null as Config["translationHub"] | null,
     pageTranslation: null as Config["pageTranslation"] | null,
-    pageTranslationProviderRef: null as
-      | { kind: "local"; config: { provider: string } }
-      | { kind: "system"; id: string; name: string; modelTier: "normal" | "advance" }
-      | null,
+    pageTranslationProviderRef: null as { kind: "local"; config: { provider: string } } | null,
   },
   translateAtom: {},
 }))
@@ -161,24 +158,6 @@ describe("translation prompt selectors", () => {
     })
   })
 
-  it("keeps prompt selection available for Built-in AI", () => {
-    testState.pageTranslationProviderRef = {
-      kind: "system",
-      id: "read-frog-free-ai",
-      name: "Built-in AI",
-      modelTier: "normal",
-    }
-    render(<TranslatePromptSelector />)
-
-    fireEvent.click(screen.getByRole("option", { name: "Custom" }))
-    expect(setTranslateMock).toHaveBeenCalledWith({
-      customPromptsConfig: {
-        ...testState.pageTranslation!.customPromptsConfig,
-        promptId: "custom",
-      },
-    })
-  })
-
   it("keeps prompt selection hidden for a local translation-only provider", () => {
     testState.pageTranslationProviderRef = {
       kind: "local",
@@ -188,27 +167,6 @@ describe("translation prompt selectors", () => {
     render(<TranslatePromptSelector />)
 
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument()
-  })
-
-  it("shows the selected built-in and uses the same order in Translation Hub", () => {
-    testState.translationHub!.promptId = "precision-rewrite"
-    testState.pageTranslationProviderRef = {
-      kind: "system",
-      id: "read-frog-free-ai",
-      name: "Built-in AI",
-      modelTier: "normal",
-    }
-    render(<TranslationHubPromptSelector />)
-
-    expect(screen.getByRole("combobox")).toHaveTextContent("Deep polish")
-    expect(screen.getAllByRole("option").map((option) => option.textContent)).toEqual([
-      "Default",
-      "Deep polish",
-      "Custom",
-    ])
-    fireEvent.click(screen.getByRole("option", { name: "Custom" }))
-    expect(setHubMock).toHaveBeenCalledWith({ promptId: "custom" })
-    expect(setTranslateMock).not.toHaveBeenCalled()
   })
 
   it("falls back to the default Hub prompt when a custom prompt was deleted", () => {

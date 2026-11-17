@@ -43,10 +43,13 @@ async function translate() {
       text: PARAGRAPH,
       langConfig: DEFAULT_CONFIG.language,
       providerRef: {
-        kind: "system",
-        providerId: "read-frog",
-        modelTier: "standard",
-        modelRevision: "1",
+        kind: "local",
+        config: {
+          id: "google-default",
+          name: "Google",
+          enabled: true,
+          provider: "google-translate",
+        },
       },
       scheduleAt: 0,
       hash: "hash",
@@ -91,8 +94,7 @@ describe("page translation verdict logs", () => {
     expect(logs).toEqual([
       logRecord("debug", "The model found no translation needed", {
         text: expect.objectContaining({ preview: PARAGRAPH }),
-        provider: "read-frog",
-        modelTier: "standard",
+        provider: "google-translate",
       }),
     ])
   })

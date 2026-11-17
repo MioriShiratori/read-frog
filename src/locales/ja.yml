@@ -1,15 +1,7 @@
 name: Read Frog
-extName: "Read Frog - AI対訳翻訳・二重字幕・単語帳"
-extDescription: "ウェブページと YouTube・Netflix・X の動画字幕を AI で対訳翻訳。知らない単語は保存して、フラッシュカードで復習できます。"
+extName: "Read Frog - AI 翻訳"
+extDescription: "ウェブページと動画字幕の二言語翻訳。独自のプロバイダーとカスタム AI アクションに対応。"
 uninstallSurveyUrl: https://tally.so/r/nPK6Ob
-account:
-  login: ログイン
-  webApp: ウェブアプリ
-  logout: ログアウト
-  logoutError: ログアウトに失敗しました。もう一度お試しください。
-  grantAccess: アクセスを許可
-  grantAccessHint: readfrog.app へのアクセスが必要です
-  grantAccessError: アクセスの許可に失敗しました。もう一度お試しください。
 dataTypes:
   string: テキスト
   number: 数値
@@ -116,7 +108,6 @@ options:
     product: 製品
   tools:
     translationHub: 翻訳ハブ
-    pdfTranslation: PDF 翻訳
   product:
     roadmap: ロードマップ
   helpAndCommunity:
@@ -158,36 +149,11 @@ options:
     description: Read Frog が呼び出せるプロバイダーを追加します。20 以上を内蔵し、Chat Completions 互換 API と Open Responses API をカスタム追加できます。
     configTitle: プロバイダー設定
     addProvider: プロバイダーを追加
-    builtInProvider: 組み込みプロバイダー
     yourProviders: マイプロバイダー
-    builtInAiUsage:
-      title: 組み込み AI クォータ
-      remaining: "残り $1%"
-      supportedFeatures: "$1 つの機能に対応"
-      resetsAt: "$1 にリセット"
-      daily: 日次クォータ
-      weekly: 週間クォータ
-      oneTime: ボーナスクォータ
-      expiresAt: "$1 に期限切れ"
-      features:
-        pageTranslation: ページ翻訳
-        customAction: カスタム AI アクション
-        noteSuggestion: ノートの提案
-        selectionTranslation: 選択範囲の翻訳
-        videoSubtitles: 動画字幕
-        inputTranslation: 入力翻訳
-        languageDetection: 言語検出
-        pdfTranslation: PDF 翻訳
-    sponsorCta: 高速で高コスパのAIを入手
-    sponsorCtaJalapenoCloud: GLM 5.3 を 50% オフで入手
-    sponsorCtaIfapi: 初回チャージ +10%・コード READFROG
     setApiKeyWarning:
       message: API キーは $1 ページで設定してください
     badges:
       featureCount: $1 件の機能
-      sponsor: スポンサー
-      sponsorJalapenoCloud: $$1 無料
-      sponsorIfapi: モデル 90% オフ
     dialog:
       title: 新しいプロバイダーを追加
       groups:
@@ -261,13 +227,8 @@ options:
       invalidJson: 無効なJSON形式
     providers:
       name:
-        builtInAi: 組み込み AI
-        builtInAiAdvance: 高度な組み込み AI
         customChatComplete: カスタム Chat Complete
         customResponses: カスタム Responses
-      attribution:
-        builtInAi: Read Frog がホストする標準モデル。Pro と Ultra のユーザーは週間クォータの範囲ですべての機能で利用でき、無料プランではカスタム AI アクションでのみ利用できます。
-        builtInAiAdvance: Read Frog がホストする高性能モデルで、Ultra メンバー専用です。ページ翻訳やカスタム AI アクションなど、すべての組み込み AI 機能で利用でき、週間クォータを共有します。標準モデルよりクォータの消費が速くなります。
       description:
         openai: GPT-4oなどのモデルを提供
         azure: Azure のデプロイ経由で OpenAI モデルを利用
@@ -320,13 +281,11 @@ options:
         selectionTranslation: 選択ツールバー翻訳
         inputTranslation: 入力翻訳
         videoSubtitles: 動画字幕
-        noteSuggestion: ノートの提案
       descriptions:
         pageTranslation: ページ全体を対訳または置き換えで翻訳します。
         selectionTranslation: "選択したテキストを翻訳します。単語注釈の意味にも使われます。"
         inputTranslation: 入力欄に書いた文章を、送信する前に翻訳します。
         videoSubtitles: 動画プレーヤーに表示される字幕を翻訳します。
-        noteSuggestion: 選択テキストを翻訳した後、Notebase に保存する価値のある単語を提案します。
     languageDetection:
       title: 言語検出
       description: 自動翻訳の言語検出と読み上げの音声選択精度に影響します。
@@ -654,13 +613,6 @@ options:
       speak:
         title: 読み上げ
         description: 選択したテキストを読み上げる読み上げボタンをツールバーに表示します
-      noteSuggestion:
-        title: ノートの提案
-        description: AI プロバイダーで選択テキストを翻訳した後、Notebase に保存する単語を提案します
-        action: アクション
-        actionDescription: 保存候補を生成するアクション
-        provider: プロバイダー
-        providerDescription: 保存候補を生成する AI プロバイダー
     display:
       title: 表示
       opacity:
@@ -693,12 +645,6 @@ options:
       edit: AI アクションを編集
       empty: カスタム AI アクションはまだありません
       noEnabledLlmProvider: カスタム AI アクションを作成する前に、少なくとも1つのLLMプロバイダーを有効化してください
-      tabs:
-        config: 設定
-        notebase: Notebase
-        hasErrors: エラーがあります
-        connected: 接続済み
-        needsAttention: 要確認
       form:
         name: 名前
         customize: カスタマイズ
@@ -813,51 +759,6 @@ options:
             tooLong: このレイアウトは $1 文字を超えているため保存できません。
             fieldNotShown: 「$1」はこのレイアウトに表示されません。
             reservedFieldName: フィールド名「$1」はレイアウトの予約名です。フィールドの名前を変更してください。
-        notebase:
-          title: Notebase 接続
-          description: このアクションの構造化された結果をリモート Notebase に保存します。
-          loginRequiredTitle: Notebase を設定するにはログインが必要です
-          loginRequiredDescription: notebase を選択したりマッピングを編集したりする前に、readfrog.app にログインしてください。
-          loginRequiredConnectedDescription: この接続は下のアカウントで作成されました。同じアカウントでログインするとフィールドマッピングが復元されます。別のアカウントでログインした場合、Notebase を作成または接続すると以前のマッピングは消去されます。
-          loginAction: ログイン
-          connectedAccountLabel: 接続済みアカウント
-          currentAccountLabel: 現在のアカウント
-          unknownConnectedAccount: 不明なアカウント
-          tableLabel: Notebase
-          tablePlaceholder: notebase を選択
-          tableClearOption: notebase を接続しない
-          clearConnectionAction: 接続をクリア
-          refreshAction: 更新
-          emptyTitle: Notebase がまだありません
-          emptyDescription: readfrog.app で notebase を作成してから、ここに戻ってフィールドをマッピングしてください。
-          openNotebaseAction: Notebase を開く
-          accessDeniedTitle: Notebase にアクセスできません
-          accessDeniedDescription: このアカウントには Notebase データを読み込む権限がありません。
-          listErrorTitle: Notebase 一覧を読み込めませんでした
-          listErrorDescription: 少し待ってから Notebase 一覧をもう一度更新してください。
-          accountMismatchTitle: Notebase 接続は別のアカウントに属しています
-          accountMismatchDescription: この接続は下の接続済みアカウントに紐づいています。接続をクリアするか、現在のアカウントで利用できる Notebase を選択してください。
-          tableUnavailableTitle: 選択した notebase は利用できなくなりました
-          tableUnavailableDescription: この Notebase は存在しないか開けません。接続をクリアするか、別の Notebase を選択してください。
-          tableUnavailableOption: 利用不可
-          schemaErrorTitle: notebase スキーマの読み込みに失敗しました
-          schemaErrorDescription: 少し待ってからもう一度更新してください。
-          schemaLoading: notebase スキーマを読み込み中...
-          mappingsLabel: フィールドマッピング
-          localFieldLabel: アクションフィールド
-          remoteFieldLabel: Notebase フィールド
-          columnUnavailableOption: 削除済み
-          invalidMappingsTitle: 一部のマッピングに対応が必要です
-          invalidMappingsDescription: 無効なマッピングは保持されます。Notebase に保存する前に修正してください。
-          noFieldSavedTitle: "この Notebase に保存されるフィールドがありません"
-          noFieldSavedDescription: "ノートを保存するには、少なくとも 1 つのフィールドに Notebase フィールドを選んでください。"
-          mappingSummary: "保存 $1 · 保存しない $2 · 未決定 $3"
-          skipFieldOption: "保存しない"
-          undecidedFieldPlaceholder: "Notebase フィールドを選ぶか、保存しない"
-          mappingMissingLocal: マッピングされたアクションフィールドは存在しなくなりました。
-          mappingMissingRemote: マッピングされた notebase フィールドは存在しなくなりました。
-          mappingMissingSchema: このマッピングを検証するには、notebase スキーマを更新してください。
-          mappingIncompatible: フィールドの型が一致しなくなりました。
         tokens:
           selection: 選択したテキスト内容
           paragraphs: 選択範囲と交差する段落内容。空行で連結され、カスタム AI アクションに送信する際は先頭 2000 文字に切り詰められます
@@ -1441,20 +1342,6 @@ options:
       pauseOnHover:
         title: ホバーで一時停止
         description: ポインターを字幕の上にしばらく置くと動画を一時停止し、離すと再生を再開します。単語をクリックして調べるときは常に一時停止します。
-    aiQuota:
-      title: AI字幕の利用枠
-      description: AIの音声認識で、どんな動画にも正確な字幕を生成します
-      launchBonusPromo: $1 までに加入すると、文字起こし 300 分を追加でプレゼント
-      loginRequired: ログインしてAI字幕の利用枠を確認
-      upgradeRequired: AI字幕には Pro または Ultra プランが必要です
-      pools:
-        subscription: 月間クォータ
-        launchBonus: リリース記念ギフト
-      resetsOn: $1 にリセット
-      expiresOn: $1 に失効
-      loadError: 利用枠を読み込めませんでした。しばらくしてから再試行してください。
-      remainingOf: 残り $1 / $2 分
-      used: 使用済み $1 分
     style:
       title: 字幕スタイル
       description: 表示モード・位置・フォント・色・背景を、プレビューを見ながら設定します
@@ -1568,7 +1455,6 @@ side:
 translateService:
   title: 翻訳サービス
   description: ウェブページの翻訳にのみ使用
-  builtInModels: Built-in Models
   llmModels: LLM Models
   normalTranslator: 通常翻訳
   selectServices: サービスを選択
@@ -1648,42 +1534,7 @@ action:
   viewContextDetails: コンテキスト
   customizeCustomAction: $1 アクションをカスタマイズ
   customActionLayoutFallback: この結果はレイアウトで表示できないため、簡易表示にしています。
-  saveToNotebase: Notebase に保存
-  saveToNotebaseSaving: 保存中...
-  saveToNotebaseSuccess: Notebase に保存しました
-  saveToNotebaseFailed: Notebase への保存に失敗しました
-  saveToNotebaseLoginRequired: Notebase に保存するには readfrog.app にログインしてください
-  saveToNotebaseAccessDenied: このアカウントでは選択した Notebase にアクセスできません
-  saveToNotebaseLimitExceeded: さらに Notebase ノートを保存するにはアップグレードが必要です
-  saveToNotebaseTableUnavailable: 選択した Notebase は利用できなくなりました
-  saveToNotebaseConnectionInvalid: この Notebase 接続は古くなっています。Custom AI Actions で更新し、マッピングを修正してください。
-  saveToNotebaseInvalidContent: "AI の回答に形式の合わない値があったため、保存しませんでした。もう一度実行してから保存してください。"
-  saveToNotebaseNoFieldSaved: "保存しませんでした：この操作には Notebase に保存するフィールドがありません。設定で少なくとも 1 つ選んでください。"
-  saveToNotebaseUndecidedTitle: "保存しました。次のフィールドは保存するかまだ決まっていません"
-  saveToNotebaseSkipUndecided: "すべて保存しない"
-  saveToNotebaseNoMappings: 保存する前に、少なくとも1つの有効なマッピングを追加してください
-  saveToNotebaseCreateTitle: Notebase を作成しますか？
-  saveToNotebaseCreateDescription: この Custom Action の出力フィールドに合わせた列を持つ Notebase を作成し、現在の結果を最初のノートとして保存します。
-  saveToNotebaseCreateAndSave: 作成して保存
-  saveToNotebaseCreateAndSaveShort: 作成して保存
-  saveToNotebaseLoginAndCreate: ログインして自動作成
-  saveToNotebaseLoginAndSave: ログインして保存
-  saveToNotebaseConnectExisting: 既存の Notebase に接続
-  saveToNotebaseGoConfigure: 設定へ
-  saveToNotebaseLoginConnectedTitle: ログインして保存しますか？
-  saveToNotebaseLoginConnectedDescription: この Custom Action は下のアカウントに接続されています。ログイン後、可能であれば既存の Notebase に保存し、利用できない場合はログイン中のアカウント用に新しい Notebase を作成します。
-  saveToNotebaseConnectionUnavailableTitle: Notebase 接続を利用できません
-  saveToNotebaseMissingNotebaseDescription: 以前の Notebase は存在しないか、このアカウントでは開けません。新しい Notebase を作成して保存するか、Custom AI Actions で既存の Notebase に接続してください。
-  saveToNotebaseAccountUnavailableDescription: ログイン中のアカウントが下の接続済みアカウントと一致しません。作成して保存すると、以前の接続設定とフィールドマッピングが置き換えられます。Custom AI Actions で既存の Notebase に接続することもできます。
-  saveToNotebasePendingLogin: ログイン後に保存を完了
-  saveToNotebasePendingLoginDescription: ログイン後、Read Frog が Notebase を作成し、この結果を自動で保存します。
-  saveToNotebasePendingConnectedLoginDescription: ログイン後、Read Frog は可能であれば接続済み Notebase に保存します。このアカウントで利用できない場合は、新しい Notebase を作成して保存します。
-  upgrade: アップグレード
-  updatePayment: 支払いを更新
   openCustomActions: Custom AI Actions を開く
-  openNotebase: Notebase を開く
-  reviewDueOne: "$1 枚のカードが復習待ち"
-  reviewDueOther: "$1 枚のカードが復習待ち"
   contextDetailsTitleLabel: タイトル
   contextDetailsParagraphsLabel: 段落内容
   translation: 翻訳
@@ -1694,13 +1545,6 @@ action:
   unpinFromToolbar: ツールバーから固定解除
   dragToReorder: ドラッグして並べ替え
   addCustomAction: カスタム AI アクションを追加
-noteSuggestion:
-  title: 保存におすすめ
-  description: Notebase に保存したい単語を選んで、いつでも復習できます。
-  save: 保存
-  saved: 保存済み
-  staleSuggestion: この提案は古くなっています
-  toggleLabel: ノートの提案を表示
 thinking:
   label: 思考中
   complete: 思考完了
@@ -1727,10 +1571,6 @@ subtitles:
       retry: 再試行
       emptyTitle: 表示できる字幕がありません
       backToCurrent: 現在位置へ戻る
-  loadingAiSubtitles: AI字幕を読み込み中…（推定3分）
-  aiSubtitlesHint: 先進的なAI音声認識により正確な字幕を生成。公式字幕がない動画でも利用できます。
-  requestAiSubtitles: AI字幕をリクエスト
-  usingAiSubtitles: AI字幕を使用中
   settings: 字幕設定
   autoStartOnPlatform: "$1 の動画を開いたら自動で開始"
   toggle:
@@ -1764,35 +1604,10 @@ subtitles:
     aiRateLimited: リクエストが多すぎます。後でもう一度お試しください
     aiAuthFailed: API認証に失敗しました。APIキーを確認してください
     aiServiceUnavailable: 翻訳サービスは一時的に利用できません
-    aiQuotaExceeded: 今月のAI字幕の利用枠を使い切りました
-    aiQuotaExceededWithReset: 今月のAI字幕の利用枠を使い切りました・$1 にリセット
-    aiLoginRequired: ログインしてAI字幕の利用枠を確認
-    aiSubscriptionRequired: AI字幕には Pro または Ultra プランが必要です
-    aiPaymentRequired: AI字幕の生成を続けるにはお支払い方法を更新してください
-    aiVideoTooLong: この動画は長すぎるためAI字幕を生成できません
-    aiLiveReplayUnsupported: ライブ配信のアーカイブはまだAI字幕に対応していません
-    aiStillProcessing: 文字起こしは進行中です。数分後にもう一度クリックしてください
-    aiRequestFailed: AI字幕のリクエストに失敗しました。しばらくしてから再試行してください
     aiNoResponse: AIサービスが応答しませんでした。原文を表示します
     translatedExportFailed: 翻訳字幕の生成に失敗しました
     translatedExportIncomplete: すべての字幕行を翻訳できませんでした
     translatedExportSameLanguage: 元の言語と翻訳先の言語が同じです
-hostedAi:
-  planBadge:
-    pro: Pro または Ultra プランへの加入が必要です · バッジをクリックしてプランを取得
-    ultra: Ultra プランへの加入が必要です · バッジをクリックしてプランを取得
-  availability:
-    authenticationRequired: ログインすると利用できます
-    ultraRequired: Ultra プランが必要です
-    proRequired: Pro または Ultra プランが必要です
-    quotaExhausted: 利用枠を使い切りました
-    serviceUnavailable: 一時的に利用できません
-    usedPercent: "利用枠: $1% 使用済み"
-    resetsAt: "$1 にリセット"
-  errors:
-    rateLimited: リクエストが多すぎます。後でもう一度お試しください。
-    guestRateLimited: ゲストからのリクエストが多すぎます。後でもう一度お試しください。
-    userRateLimited: リクエストが多すぎます。後でもう一度お試しください。
 hotkey:
   control: Ctrl
   alt: Option

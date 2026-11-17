@@ -1,15 +1,7 @@
 name: Read Frog
-extName: "Read Frog - Traducción con IA y flashcards"
-extDescription: "Traducción bilingüe con IA para webs y subtítulos de YouTube, Netflix y X. Guarda palabras nuevas y repásalas con flashcards."
+extName: "Read Frog - Traducción con IA"
+extDescription: "Traducción bilingüe de páginas web y subtítulos de vídeo, con acciones de IA y tus propios proveedores."
 uninstallSurveyUrl: https://tally.so/r/nPK6Ob
-account:
-  login: Iniciar sesión
-  webApp: Aplicación web
-  logout: Cerrar sesión
-  logoutError: No se pudo cerrar sesión. Inténtalo de nuevo.
-  grantAccess: Conceder acceso
-  grantAccessHint: Necesita acceso a readfrog.app
-  grantAccessError: No se pudo conceder el acceso. Inténtalo de nuevo.
 dataTypes:
   string: Texto
   number: Número
@@ -116,7 +108,6 @@ options:
     product: Producto
   tools:
     translationHub: Centro de traducción
-    pdfTranslation: Traducción de PDF
   product:
     roadmap: Hoja de ruta
   helpAndCommunity:
@@ -158,36 +149,11 @@ options:
     description: Añade los proveedores que Read Frog puede llamar. Más de 20 vienen integrados y puedes añadir API personalizadas compatibles con Chat Completions u Open Responses.
     configTitle: Configuración de proveedores
     addProvider: Añadir proveedor
-    builtInProvider: Proveedor integrado
     yourProviders: Tus proveedores
-    builtInAiUsage:
-      title: Cuota de IA integrada
-      remaining: "$1% restante"
-      supportedFeatures: "Compatible con $1 funciones"
-      resetsAt: "Se restablece el $1"
-      daily: Cuota diaria
-      weekly: Cuota semanal
-      oneTime: Crédito de regalo
-      expiresAt: "Caduca el $1"
-      features:
-        pageTranslation: Traducción de página
-        customAction: Acciones de IA personalizadas
-        noteSuggestion: Sugerencias de notas
-        selectionTranslation: Traducción de la selección
-        videoSubtitles: Subtítulos de video
-        inputTranslation: Traducción de entrada
-        languageDetection: Detección de idioma
-        pdfTranslation: Traducción de PDF
-    sponsorCta: Obtén IA rápida y rentable
-    sponsorCtaJalapenoCloud: Obtén un 50 % de descuento en GLM 5.3
-    sponsorCtaIfapi: "+10 % de saldo con el código READFROG"
     setApiKeyWarning:
       message: Configura tu clave de API en la página $1
     badges:
       featureCount: $1 funciones
-      sponsor: Patrocinador
-      sponsorJalapenoCloud: $$1 gratis
-      sponsorIfapi: Modelos -90 %
     dialog:
       title: Añadir nuevo proveedor
       groups:
@@ -262,13 +228,8 @@ options:
       invalidJson: Formato JSON no válido
     providers:
       name:
-        builtInAi: IA integrada
-        builtInAiAdvance: IA integrada avanzada
         customChatComplete: Personalizado Chat Complete
         customResponses: Personalizado Responses
-      attribution:
-        builtInAi: Modelo estándar alojado por Read Frog. Los usuarios Pro y Ultra pueden usarlo en todas las funciones con una cuota semanal; en el plan gratuito solo funciona en las acciones de IA personalizadas.
-        builtInAiAdvance: Modelo avanzado alojado por Read Frog, exclusivo para miembros Ultra. Funciona en todas las funciones de IA integrada — traducción de página, acciones de IA personalizadas y más — con una cuota semanal compartida. Consume la cuota más rápido que el modelo estándar.
       description:
         openai: Proporciona modelos como GPT-4o
         azure: Modelos OpenAI hospedados en Azure mediante tus implementaciones
@@ -321,13 +282,11 @@ options:
         selectionTranslation: Traducción de la barra de selección
         inputTranslation: Traducción de entrada
         videoSubtitles: Subtítulos de video
-        noteSuggestion: Sugerencias de notas
       descriptions:
         pageTranslation: Traduce la página completa en modo bilingüe o de reemplazo.
         selectionTranslation: "Traduce el texto que seleccionas; también da el significado de las anotaciones."
         inputTranslation: Traduce lo que escribes en un campo de texto antes de enviarlo.
         videoSubtitles: Traduce los subtítulos que aparecen en el reproductor de video.
-        noteSuggestion: Sugiere palabras que vale la pena guardar en tu Notebase después de traducir una selección.
     languageDetection:
       title: Detección de idioma
       description: Afecta la detección de idioma para traducción automática y la precisión de selección de voz.
@@ -655,13 +614,6 @@ options:
       speak:
         title: Leer en voz alta
         description: Muestra el botón de voz, que lee en voz alta el texto seleccionado
-      noteSuggestion:
-        title: Sugerencias de notas
-        description: Después de traducir una selección con un proveedor de IA, sugerir palabras para guardar en tu Notebase
-        action: Acción
-        actionDescription: La acción que genera la sugerencia
-        provider: Proveedor
-        providerDescription: El proveedor de IA que genera la sugerencia
     display:
       title: Visualización
       opacity:
@@ -694,12 +646,6 @@ options:
       edit: Editar acción AI
       empty: Aún no hay acciones AI personalizadas
       noEnabledLlmProvider: Activa al menos un proveedor LLM antes de crear acciones AI personalizadas
-      tabs:
-        config: Configuración
-        notebase: Notebase
-        hasErrors: Hay errores
-        connected: Conectado
-        needsAttention: Requiere atención
       form:
         name: Nombre
         customize: Personalizar
@@ -814,51 +760,6 @@ options:
             tooLong: Este diseño supera los $1 caracteres y no se puede guardar.
             fieldNotShown: «$1» no aparece en este diseño.
             reservedFieldName: El nombre de campo «$1» está reservado en los diseños. Cambia el nombre del campo.
-        notebase:
-          title: Conexión de Notebase
-          description: Guarda los resultados estructurados de esta acción en una Notebase remota.
-          loginRequiredTitle: Inicia sesión para configurar Notebase
-          loginRequiredDescription: Inicia sesión en readfrog.app antes de elegir una Notebase o editar asignaciones.
-          loginRequiredConnectedDescription: Esta conexión fue creada por la cuenta de abajo. Si inicias sesión con la misma cuenta, se restaurarán las asignaciones de campos. Si inicias sesión con otra cuenta, las asignaciones anteriores se borrarán al crear o conectar una Notebase.
-          loginAction: Iniciar sesión
-          connectedAccountLabel: Cuenta conectada
-          currentAccountLabel: Cuenta actual
-          unknownConnectedAccount: Cuenta desconocida
-          tableLabel: Notebase
-          tablePlaceholder: Selecciona una Notebase
-          tableClearOption: Desconectar Notebase
-          clearConnectionAction: Borrar conexión
-          refreshAction: Actualizar
-          emptyTitle: Aún no hay Notebases
-          emptyDescription: Crea una Notebase en readfrog.app y vuelve aquí para asignar campos.
-          openNotebaseAction: Abrir Notebase
-          accessDeniedTitle: No se puede acceder a Notebase
-          accessDeniedDescription: Esta cuenta no tiene permiso para cargar datos de Notebase.
-          listErrorTitle: No se pudieron cargar las Notebases
-          listErrorDescription: Intenta actualizar la lista de Notebase de nuevo en un momento.
-          accountMismatchTitle: La conexión de Notebase pertenece a otra cuenta
-          accountMismatchDescription: Esta conexión está vinculada a la cuenta conectada de abajo. Bórrala o elige una Notebase disponible para la cuenta actual.
-          tableUnavailableTitle: La Notebase seleccionada ya no está disponible
-          tableUnavailableDescription: Esta Notebase ya no existe o no se puede abrir. Borra la conexión o elige otra Notebase.
-          tableUnavailableOption: no disponible
-          schemaErrorTitle: No se pudo cargar el esquema de la Notebase
-          schemaErrorDescription: Intenta actualizar el esquema de nuevo en un momento.
-          schemaLoading: Cargando esquema de la Notebase...
-          mappingsLabel: Asignaciones de campos
-          localFieldLabel: Campo de acción
-          remoteFieldLabel: Campo de Notebase
-          columnUnavailableOption: eliminado
-          invalidMappingsTitle: Algunas asignaciones requieren atención
-          invalidMappingsDescription: Las asignaciones no válidas se conservan. Corrígelas antes de guardar en Notebase.
-          noFieldSavedTitle: "Ningún campo se guarda en esta Notebase"
-          noFieldSavedDescription: "Elige un campo de Notebase para al menos un campo y así poder guardar notas."
-          mappingSummary: "Se guardan $1 · Omitidos $2 · Sin decidir $3"
-          skipFieldOption: "No guardar"
-          undecidedFieldPlaceholder: "Elige un campo de Notebase o no guardar"
-          mappingMissingLocal: El campo de acción asignado ya no existe.
-          mappingMissingRemote: El campo de Notebase asignado ya no existe.
-          mappingMissingSchema: Actualiza el esquema de la Notebase para validar esta asignación.
-          mappingIncompatible: Los tipos de campo ya no coinciden.
         tokens:
           selection: Contenido del texto seleccionado
           paragraphs: Texto de párrafos intersectados unido con líneas en blanco, truncado a los primeros 2000 caracteres cuando se envía a acciones AI personalizadas
@@ -1446,20 +1347,6 @@ options:
       pauseOnHover:
         title: Pausar al pasar el cursor
         description: Pausa el vídeo mientras el puntero se detiene sobre los subtítulos y lo reanuda al apartarlo. Hacer clic en una palabra para buscarla siempre pausa.
-    aiQuota:
-      title: Cuota de subtítulos con IA
-      description: El reconocimiento de voz con IA te da subtítulos precisos para cualquier vídeo
-      launchBonusPromo: Suscríbete antes del $1 y obtén 300 minutos de transcripción adicionales
-      loginRequired: Inicia sesión para ver tu cuota de subtítulos con IA
-      upgradeRequired: Los subtítulos con IA requieren una suscripción Pro o Ultra
-      pools:
-        subscription: Cuota mensual
-        launchBonus: Regalo de lanzamiento
-      resetsOn: Se restablece el $1
-      expiresOn: Caduca el $1
-      loadError: No se pudo cargar tu cuota. Inténtalo de nuevo más tarde.
-      remainingOf: Quedan $1 / $2 min
-      used: Usados $1 min
     style:
       title: Estilo de subtítulos
       description: Modo de visualización, posición, fuentes, colores y fondo, ajustados sobre una vista previa en vivo
@@ -1573,7 +1460,6 @@ side:
 translateService:
   title: Servicio de traducción
   description: Solo para traducir la página web
-  builtInModels: Built-in Models
   llmModels: LLM Models
   normalTranslator: Traductor normal
   selectServices: Seleccionar servicios
@@ -1653,42 +1539,7 @@ action:
   viewContextDetails: Contexto
   customizeCustomAction: Personalizar la acción $1
   customActionLayoutFallback: Este resultado no se puede mostrar con su diseño, así que se muestra una vista simplificada.
-  saveToNotebase: Guardar en Notebase
-  saveToNotebaseSaving: Guardando...
-  saveToNotebaseSuccess: Guardado en Notebase
-  saveToNotebaseFailed: No se pudo guardar en Notebase
-  saveToNotebaseLoginRequired: Inicia sesión en readfrog.app para guardar en Notebase
-  saveToNotebaseAccessDenied: Esta cuenta no puede acceder a la Notebase seleccionada
-  saveToNotebaseLimitExceeded: Se requiere una mejora para guardar más notas de Notebase
-  saveToNotebaseTableUnavailable: La Notebase seleccionada ya no está disponible
-  saveToNotebaseConnectionInvalid: Esta conexión de Notebase está desactualizada. Actualízala en Acciones AI personalizadas y corrige las asignaciones.
-  saveToNotebaseInvalidContent: "La respuesta de la IA tiene un valor con un formato incorrecto, así que no se guardó. Vuelve a ejecutar la acción y luego guarda."
-  saveToNotebaseNoFieldSaved: "No se guardó: esta acción no guarda ningún campo en la Notebase. Elige al menos uno en su configuración."
-  saveToNotebaseUndecidedTitle: "Guardado. Aún no has decidido si guardar estos campos"
-  saveToNotebaseSkipUndecided: "No guardarlos"
-  saveToNotebaseNoMappings: Añade al menos una asignación válida antes de guardar
-  saveToNotebaseCreateTitle: ¿Crear una Notebase?
-  saveToNotebaseCreateDescription: Crea una Notebase con columnas que coinciden con esta acción personalizada y guarda este resultado como la primera nota.
-  saveToNotebaseCreateAndSave: Crear y guardar
-  saveToNotebaseCreateAndSaveShort: Crear y guardar
-  saveToNotebaseLoginAndCreate: Iniciar sesión y crear
-  saveToNotebaseLoginAndSave: Iniciar sesión y guardar
-  saveToNotebaseConnectExisting: Conectar Notebase existente
-  saveToNotebaseGoConfigure: Configurar
-  saveToNotebaseLoginConnectedTitle: ¿Iniciar sesión para guardar?
-  saveToNotebaseLoginConnectedDescription: Esta Custom Action está conectada a la cuenta de abajo. Después de iniciar sesión, Read Frog guardará en la Notebase existente si es posible, o creará una nueva Notebase para la cuenta actual.
-  saveToNotebaseConnectionUnavailableTitle: Conexión de Notebase no disponible
-  saveToNotebaseMissingNotebaseDescription: La Notebase anterior ya no existe o esta cuenta no puede abrirla. Crea una nueva Notebase y guarda este resultado, o conecta una Notebase existente en Custom AI Actions.
-  saveToNotebaseAccountUnavailableDescription: La cuenta actual no coincide con la cuenta conectada de abajo. Crear y guardar reemplazará la conexión anterior y los mapeos de campos. También puedes conectar una Notebase existente en Custom AI Actions.
-  saveToNotebasePendingLogin: Inicia sesión para terminar de guardar
-  saveToNotebasePendingLoginDescription: Después de iniciar sesión, Read Frog creará la Notebase y guardará este resultado automáticamente.
-  saveToNotebasePendingConnectedLoginDescription: Después de iniciar sesión, Read Frog guardará en la Notebase conectada si es posible. Si esta cuenta no puede usarla, creará una nueva Notebase y guardará este resultado.
-  upgrade: Mejorar plan
-  updatePayment: Actualizar pago
   openCustomActions: Abrir Custom AI Actions
-  openNotebase: Abrir Notebase
-  reviewDueOne: "$1 tarjeta por repasar"
-  reviewDueOther: "$1 tarjetas por repasar"
   contextDetailsTitleLabel: Título
   contextDetailsParagraphsLabel: Párrafos
   translation: Traducción
@@ -1699,13 +1550,6 @@ action:
   unpinFromToolbar: Quitar de la barra
   dragToReorder: Arrastra para reordenar
   addCustomAction: Añadir acción AI personalizada
-noteSuggestion:
-  title: Quizás quieras guardar
-  description: Elige qué palabras guardar en tu Notebase y repásalas cuando quieras.
-  save: Guardar
-  saved: Guardado
-  staleSuggestion: Esta sugerencia está desactualizada
-  toggleLabel: Mostrar sugerencias de notas
 thinking:
   label: Pensando
   complete: Razonamiento completo
@@ -1732,10 +1576,6 @@ subtitles:
       retry: Reintentar
       emptyTitle: No hay subtítulos que mostrar
       backToCurrent: Volver al actual
-  loadingAiSubtitles: Cargando subtítulos con IA… (estimado 3 min)
-  aiSubtitlesHint: Subtítulos precisos generados por reconocimiento de voz con IA avanzada, disponibles incluso sin subtítulos oficiales.
-  requestAiSubtitles: Solicitar subtítulos con IA
-  usingAiSubtitles: Usando subtítulos con IA
   settings: Ajustes de subtítulos
   autoStartOnPlatform: "Iniciar automáticamente en los videos de $1"
   toggle:
@@ -1769,35 +1609,10 @@ subtitles:
     aiRateLimited: Demasiadas solicitudes, inténtalo de nuevo más tarde
     aiAuthFailed: Error de autenticación de API; revisa tu clave API
     aiServiceUnavailable: Servicio de traducción temporalmente no disponible
-    aiQuotaExceeded: Cuota mensual de subtítulos con IA agotada
-    aiQuotaExceededWithReset: Cuota mensual de subtítulos con IA agotada · se restablece el $1
-    aiLoginRequired: Inicia sesión para ver tu cuota de subtítulos con IA
-    aiSubscriptionRequired: Los subtítulos con IA requieren una suscripción Pro o Ultra
-    aiPaymentRequired: Actualiza tu método de pago para seguir generando subtítulos con IA
-    aiVideoTooLong: Este video es demasiado largo para los subtítulos con IA
-    aiLiveReplayUnsupported: Los subtítulos con IA aún no están disponibles para repeticiones de transmisiones en vivo
-    aiStillProcessing: La transcripción sigue en curso — vuelve a hacer clic en unos minutos para retomarla
-    aiRequestFailed: Error al solicitar subtítulos con IA, inténtalo de nuevo más tarde
     aiNoResponse: El servicio AI no respondió; se usa el texto original
     translatedExportFailed: No se pudieron generar los subtítulos traducidos
     translatedExportIncomplete: No se pudieron traducir todas las líneas de subtítulos
     translatedExportSameLanguage: El idioma de origen y el de destino son iguales
-hostedAi:
-  planBadge:
-    pro: Requiere el plan Pro o Ultra · Haz clic en la insignia para obtenerlo
-    ultra: Requiere el plan Ultra · Haz clic en la insignia para obtenerlo
-  availability:
-    authenticationRequired: Inicia sesión para usar este proveedor
-    ultraRequired: Se requiere el plan Ultra
-    proRequired: Se requiere el plan Pro o Ultra
-    quotaExhausted: Cuota agotada
-    serviceUnavailable: No disponible temporalmente
-    usedPercent: "Cuota utilizada: $1%"
-    resetsAt: "Se restablece a las $1"
-  errors:
-    rateLimited: Demasiadas solicitudes, inténtalo de nuevo más tarde.
-    guestRateLimited: Demasiadas solicitudes de invitado. Inténtalo de nuevo más tarde.
-    userRateLimited: Demasiadas solicitudes. Inténtalo de nuevo más tarde.
 hotkey:
   control: Ctrl
   alt: Opción

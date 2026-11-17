@@ -1,15 +1,7 @@
 name: 陪讀蛙
-extName: "陪讀蛙 - AI 雙語翻譯、影片字幕與背單字"
-extDescription: "用 AI 雙語對照翻譯網頁，以及 YouTube、Netflix、X 的影片字幕。遇到生字一鍵儲存，用閃卡複習。"
+extName: "陪讀蛙 - AI 翻譯"
+extDescription: "網頁和影片字幕雙語翻譯，支援自訂 AI 指令和自行設定模型服務商。"
 uninstallSurveyUrl: https://tally.so/r/3E9XDL
-account:
-  login: 登入
-  webApp: 網頁應用程式
-  logout: 退出登入
-  logoutError: 退出登入失敗，請重試
-  grantAccess: 授予存取權限
-  grantAccessHint: 需要存取 readfrog.app
-  grantAccessError: 授予存取權限失敗，請重試
 dataTypes:
   string: 文字
   number: 數字
@@ -116,7 +108,6 @@ options:
     product: 產品
   tools:
     translationHub: 翻譯中心
-    pdfTranslation: PDF 翻譯
   product:
     roadmap: 產品路線圖
   helpAndCommunity:
@@ -158,36 +149,11 @@ options:
     description: 新增 Read Frog 可以呼叫的提供者。內建 20 多個，也可以新增相容 Chat Completions 的自訂 API 和 Open Responses 自訂 API。
     configTitle: 提供者設定
     addProvider: 新增提供者
-    builtInProvider: 內建提供者
     yourProviders: 我的提供者
-    builtInAiUsage:
-      title: 內建 AI 額度
-      remaining: "剩餘 $1%"
-      supportedFeatures: "支援 $1 項功能"
-      resetsAt: "$1 重置"
-      daily: 每日額度
-      weekly: 每週額度
-      oneTime: 贈送額度
-      expiresAt: "$1 到期"
-      features:
-        pageTranslation: 網頁翻譯
-        customAction: 自訂 AI 指令
-        noteSuggestion: 猜你想存
-        selectionTranslation: 選取文字翻譯
-        videoSubtitles: 影片字幕
-        inputTranslation: 輸入翻譯
-        languageDetection: 語言偵測
-        pdfTranslation: PDF 翻譯
-    sponsorCta: 取得高速高性價比 AI
-    sponsorCtaJalapenoCloud: 取得 GLM 5.3 五折優惠
-    sponsorCtaIfapi: 首儲加贈 10%，優惠碼 READFROG
     setApiKeyWarning:
       message: 請在 $1 頁面設定 API 金鑰
     badges:
       featureCount: $1 個功能
-      sponsor: 贊助
-      sponsorJalapenoCloud: $$1 免費額度
-      sponsorIfapi: 1 折模型
     dialog:
       title: 新增提供者
       groups:
@@ -262,13 +228,8 @@ options:
       invalidJson: JSON 格式無效
     providers:
       name:
-        builtInAi: 內建 AI
-        builtInAiAdvance: 高級內建 AI
         customChatComplete: 自訂 Chat Complete
         customResponses: 自訂 Responses
-      attribution:
-        builtInAi: 由 Read Frog 託管的普通模型。Pro 和 Ultra 使用者可在全部功能上使用，消耗每週額度；免費使用者僅支援在自訂 AI 指令使用。
-        builtInAiAdvance: 由 Read Frog 託管的進階模型，Ultra 會員專屬。網頁翻譯、自訂 AI 指令等全部內建 AI 功能均可使用，共享每週額度，額度消耗比標準模型更快。
       description:
         openai: 提供 GPT-4o 等模型
         azure: 透過 Azure 部署使用 OpenAI 模型
@@ -321,13 +282,11 @@ options:
         selectionTranslation: 選取文字翻譯
         inputTranslation: 輸入翻譯
         videoSubtitles: 影片字幕
-        noteSuggestion: 猜你想存
       descriptions:
         pageTranslation: 翻譯整個網頁，雙語對照或直接取代原文。
         selectionTranslation: "翻譯你選取的文字；劃詞標註的釋義也由它產生。"
         inputTranslation: 在送出前翻譯你寫在輸入框裡的內容。
         videoSubtitles: 翻譯影片播放器中隨播放出現的字幕。
-        noteSuggestion: 選取文字翻譯後，推薦值得存入筆記庫的詞條。
     languageDetection:
       title: 語言偵測
       description: 影響自動翻譯語言偵測和朗讀語音選擇的準確性。
@@ -655,13 +614,6 @@ options:
       speak:
         title: 朗讀
         description: 在工具列中顯示朗讀按鈕，用於朗讀選取的文字
-      noteSuggestion:
-        title: 猜你想存
-        description: 使用 AI 供應商進行劃詞翻譯後，推薦可存入筆記庫的詞條
-        action: 指令
-        actionDescription: 用於產生「猜你想存」的指令
-        provider: 提供者
-        providerDescription: 用於產生「猜你想存」的 AI 提供者
     display:
       title: 顯示
       opacity:
@@ -699,12 +651,6 @@ options:
       edit: 編輯 AI 指令
       empty: 目前沒有自訂 AI 指令
       noEnabledLlmProvider: 請先啟用至少一個 LLM 提供者後再建立自訂 AI 指令
-      tabs:
-        config: 設定
-        notebase: 筆記庫
-        hasErrors: 有錯誤
-        connected: 已連線
-        needsAttention: 需要處理
       form:
         name: 名稱
         customize: 自訂
@@ -819,51 +765,6 @@ options:
             tooLong: 版面超過 $1 個字元，無法儲存。
             fieldNotShown: 「$1」未在此版面中顯示。
             reservedFieldName: 欄位名稱「$1」是版面保留名稱，請重新命名該欄位。
-        notebase:
-          title: 筆記庫連線
-          description: 將這個指令的結構化結果儲存到遠端筆記庫。
-          loginRequiredTitle: 登入後才能設定筆記庫
-          loginRequiredDescription: 先到 readfrog.app 登入，再選擇筆記庫與編輯對應。
-          loginRequiredConnectedDescription: 這個連線來自下方帳號。如果登入原帳號，會恢復欄位對應；如果登入其他帳號，建立或連線筆記庫時會清除先前的欄位對應。
-          loginAction: 前往登入
-          connectedAccountLabel: 已連線帳號
-          currentAccountLabel: 目前帳號
-          unknownConnectedAccount: 未知帳號
-          tableLabel: 筆記庫
-          tablePlaceholder: 選擇一個筆記庫
-          tableClearOption: 不連線筆記庫
-          clearConnectionAction: 清空連線
-          refreshAction: 重新整理
-          emptyTitle: 還沒有筆記庫
-          emptyDescription: 先到 readfrog.app 建立一個筆記庫，再回來對應欄位。
-          openNotebaseAction: 開啟筆記庫
-          accessDeniedTitle: 無法存取筆記庫
-          accessDeniedDescription: 目前帳號沒有權限載入筆記庫資料。
-          listErrorTitle: 載入筆記庫失敗
-          listErrorDescription: 請稍後再試一次。
-          accountMismatchTitle: 筆記庫連線屬於其他帳號
-          accountMismatchDescription: 目前連線綁定到下方已連線帳號。可清除連線，或選擇目前帳號可存取的筆記庫。
-          tableUnavailableTitle: 所選筆記庫已無法使用
-          tableUnavailableDescription: 這個筆記庫不存在，或目前帳號無法開啟。可以清空連線，或重新選擇一個筆記庫。
-          tableUnavailableOption: 無法使用
-          schemaErrorTitle: 載入筆記庫 schema 失敗
-          schemaErrorDescription: 請稍後再試一次重新整理。
-          schemaLoading: 正在載入筆記庫 schema…
-          mappingsLabel: 欄位對應
-          localFieldLabel: 指令欄位
-          remoteFieldLabel: 筆記庫欄位
-          columnUnavailableOption: 已刪除
-          invalidMappingsTitle: 有些對應需要處理
-          invalidMappingsDescription: 無效對應會被保留。儲存到筆記庫前請先修復它們。
-          noFieldSavedTitle: "沒有欄位會存進這個筆記庫"
-          noFieldSavedDescription: "至少為一個欄位選擇筆記庫欄位，才能儲存筆記。"
-          mappingSummary: "存 $1 · 不存 $2 · 待定 $3"
-          skipFieldOption: "不儲存"
-          undecidedFieldPlaceholder: "選擇筆記庫欄位或不儲存"
-          mappingMissingLocal: 對應的指令欄位已不存在。
-          mappingMissingRemote: 對應的筆記庫欄位已不存在。
-          mappingMissingSchema: 重新整理筆記庫 schema 後才能驗證這個對應。
-          mappingIncompatible: 欄位類型已不相容。
         tokens:
           selection: 選取的文字內容
           paragraphs: 與選取範圍相交的段落內容，會以空行串接，傳給自訂 AI 指令時會截斷到前 2000 個字元
@@ -1451,20 +1352,6 @@ options:
       pauseOnHover:
         title: 懸停暫停
         description: 滑鼠在字幕上停留片刻時暫停影片，移開後繼續播放。點擊單字查詢時一律會暫停。
-    aiQuota:
-      title: AI 字幕額度
-      description: AI 利用語音轉文字技術取得任何影片的準確字幕
-      launchBonusPromo: $1 之前購買會員額外贈送 300 分鐘轉錄額度
-      loginRequired: 登入後查看你的 AI 字幕額度
-      upgradeRequired: AI 字幕需要 Pro 或 Ultra 訂閱
-      pools:
-        subscription: 每月額度
-        launchBonus: 上線贈送
-      resetsOn: $1 重置
-      expiresOn: $1 過期
-      loadError: 無法載入額度，請稍後重試。
-      remainingOf: 剩餘 $1 / $2 分鐘
-      used: 已用 $1 分鐘
     style:
       title: 字幕樣式
       description: 顯示模式、位置、字型、顏色和背景，都對著預覽調
@@ -1578,7 +1465,6 @@ side:
 translateService:
   title: 翻譯服務
   description: 僅用於翻譯網頁內容
-  builtInModels: 內建模型
   llmModels: 大語言模型
   normalTranslator: 一般翻譯
   selectServices: 選擇服務
@@ -1658,42 +1544,7 @@ action:
   viewContextDetails: 前後文
   customizeCustomAction: 自訂「$1」動作
   customActionLayoutFallback: 此結果無法依版面顯示，目前為簡化顯示。
-  saveToNotebase: 儲存到筆記庫
-  saveToNotebaseSaving: 儲存中…
-  saveToNotebaseSuccess: 已儲存到筆記庫
-  saveToNotebaseFailed: 儲存到筆記庫失敗
-  saveToNotebaseLoginRequired: 請先到 readfrog.app 登入後再儲存到筆記庫
-  saveToNotebaseAccessDenied: 目前帳號無法存取所選筆記庫
-  saveToNotebaseLimitExceeded: 需要升級後才能儲存更多筆記庫內容
-  saveToNotebaseTableUnavailable: 所選筆記庫已無法使用
-  saveToNotebaseConnectionInvalid: 目前的筆記庫連線已過期，請到自訂 AI 指令重新整理並修復對應
-  saveToNotebaseInvalidContent: "AI 回傳的內容格式不對，沒有儲存。請重新執行一次再儲存。"
-  saveToNotebaseNoFieldSaved: "沒有儲存：這個指令沒有要存進筆記庫的欄位，請在設定中至少選一個。"
-  saveToNotebaseUndecidedTitle: "已儲存。這些欄位還沒決定存不存"
-  saveToNotebaseSkipUndecided: "都不儲存"
-  saveToNotebaseNoMappings: 至少新增一個有效對應後才能儲存
-  saveToNotebaseCreateTitle: 建立筆記庫？
-  saveToNotebaseCreateDescription: 建立一個筆記庫，欄位會對應此自訂 AI 指令的輸出欄位，並將目前結果儲存為第一則筆記。
-  saveToNotebaseCreateAndSave: 直接建立並儲存
-  saveToNotebaseCreateAndSaveShort: 建立並儲存
-  saveToNotebaseLoginAndCreate: 登入並自動建立
-  saveToNotebaseLoginAndSave: 登入並儲存
-  saveToNotebaseConnectExisting: 連線現有筆記庫
-  saveToNotebaseGoConfigure: 前往設定
-  saveToNotebaseLoginConnectedTitle: 登入後繼續儲存？
-  saveToNotebaseLoginConnectedDescription: 這個自訂 AI 指令已連線到下方帳號。登入後，如果可以使用原筆記庫會直接儲存；如果目前帳號無法使用它，會建立新的筆記庫並儲存。
-  saveToNotebaseConnectionUnavailableTitle: 筆記庫連線目前無法使用
-  saveToNotebaseMissingNotebaseDescription: 舊筆記庫不存在，或目前帳號無法開啟。可以建立新的筆記庫並儲存目前結果，或到自訂 AI 指令連線既有筆記庫。
-  saveToNotebaseAccountUnavailableDescription: 目前登入帳號和下方已連線帳號不同。選擇建立並儲存會替換先前的連線設定和欄位對應；也可以到自訂 AI 指令連線既有筆記庫。
-  saveToNotebasePendingLogin: 登入後繼續儲存
-  saveToNotebasePendingLoginDescription: 登入完成後，陪讀蛙會自動建立筆記庫並儲存目前結果。
-  saveToNotebasePendingConnectedLoginDescription: 登入完成後，陪讀蛙會優先儲存到已連線的筆記庫；如果目前帳號無法使用它，會建立新的筆記庫並儲存目前結果。
-  upgrade: 升級
-  updatePayment: 更新付款方式
   openCustomActions: 開啟自訂 AI 指令
-  openNotebase: 開啟筆記庫
-  reviewDueOne: "$1 張卡片需複習"
-  reviewDueOther: "$1 張卡片需複習"
   contextDetailsTitleLabel: 標題
   contextDetailsParagraphsLabel: 段落內容
   translation: 翻譯
@@ -1704,13 +1555,6 @@ action:
   unpinFromToolbar: 從工具列取消釘選
   dragToReorder: 拖曳以排序
   addCustomAction: 新增自訂 AI 指令
-noteSuggestion:
-  title: 猜你想存
-  description: 選擇要存入筆記庫的詞，將來隨時複習
-  save: 儲存
-  saved: 已儲存
-  staleSuggestion: 該建議已過期
-  toggleLabel: 顯示猜你想存
 thinking:
   label: 思考中
   complete: 思考完成
@@ -1737,10 +1581,6 @@ subtitles:
       retry: 重試
       emptyTitle: 沒有可顯示的字幕
       backToCurrent: 回到目前
-  loadingAiSubtitles: 正在載入 AI 字幕（預計 3 分鐘）
-  aiSubtitlesHint: 透過先進 AI 辨識語音生成準確字幕，無官方字幕時依然可用。
-  requestAiSubtitles: 請求 AI 字幕
-  usingAiSubtitles: 正在使用 AI 字幕
   settings: 字幕設定
   autoStartOnPlatform: "打開 $1 影片時自動開啟"
   toggle:
@@ -1774,35 +1614,10 @@ subtitles:
     aiRateLimited: 請求過於頻繁，請稍後再試
     aiAuthFailed: API 認證失敗，請檢查 API 金鑰
     aiServiceUnavailable: 翻譯服務暫時無法使用
-    aiQuotaExceeded: 本月 AI 字幕額度已用完
-    aiQuotaExceededWithReset: 本月 AI 字幕額度已用完，$1 重置
-    aiLoginRequired: 登入後查看你的 AI 字幕額度
-    aiSubscriptionRequired: AI 字幕需要 Pro 或 Ultra 訂閱
-    aiPaymentRequired: 請更新付款方式後繼續產生 AI 字幕
-    aiVideoTooLong: 影片過長，暫不支援產生 AI 字幕
-    aiLiveReplayUnsupported: 暫不支援為直播回放產生 AI 字幕
-    aiStillProcessing: 轉錄仍在進行中，幾分鐘後再點一次即可繼續取得
-    aiRequestFailed: AI 字幕請求失敗，請稍後重試
     aiNoResponse: AI 服務未回應，使用原文顯示
     translatedExportFailed: 產生翻譯字幕失敗
     translatedExportIncomplete: 未能翻譯所有字幕行
     translatedExportSameLanguage: 來源語言和目標語言相同
-hostedAi:
-  planBadge:
-    pro: 需開通 Pro 或 Ultra 方案 · 點擊徽章獲取方案
-    ultra: 需開通 Ultra 方案 · 點擊徽章獲取方案
-  availability:
-    authenticationRequired: 登入後可使用
-    ultraRequired: 需要 Ultra 方案
-    proRequired: 需要 Pro 或 Ultra 方案
-    quotaExhausted: 額度已用完
-    serviceUnavailable: 暫時無法使用
-    usedPercent: "額度已使用 $1%"
-    resetsAt: "$1 重置"
-  errors:
-    rateLimited: 請求過於頻繁，請稍後再試
-    guestRateLimited: 訪客請求過於頻繁，請稍後再試
-    userRateLimited: 請求過於頻繁，請稍後再試
 hotkey:
   control: Ctrl
   alt: Option

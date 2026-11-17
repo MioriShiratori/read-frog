@@ -35,16 +35,7 @@ import { resolveActionLayout } from "@/utils/layout-host/resolve"
 // action being edited. English on purpose, like the built-in prompts: the
 // assistant talks to the user in their UI language.
 //
-// Holds no secrets: the provider and the Notebase account stay out.
-
-// What Read Frog's built-in AI accepts (the api-contract's hosted structured
-// object input). Bring-your-own providers take any size.
-const HOSTED_LIMITS = {
-  instructions: 16_000,
-  prompt: 32_000,
-  fields: 32,
-  fieldName: 80,
-}
+// Holds no secrets: provider credentials stay out.
 
 // The popup's default and minimum widths (use-selection-popover-layout.ts).
 const POPUP_WIDTH = { default: 500, min: 320 }
@@ -131,8 +122,6 @@ const UI_LABEL_KEYS = [
   `${TEMPLATES}.dictionary.name`,
   `${TEMPLATES}.sentenceAnalysis.name`,
   `${TEMPLATES}.improveWriting.name`,
-  "options.selectionToolbar.customActions.tabs.config",
-  "options.selectionToolbar.customActions.tabs.notebase",
   `${FORM}.name`,
   `${FORM}.icon`,
   `${FORM}.provider`,
@@ -189,16 +178,6 @@ function buildCurrentAction(
     })
     .join("\n")
 
-  const fieldNameById = new Map(action.outputSchema.map((field) => [field.id, field.name]))
-  const mappedFields = (action.notebaseConnection?.mappings ?? []).flatMap((mapping) => {
-    const name = fieldNameById.get(mapping.localFieldId)
-    return name === undefined ? [] : [`\`${name}\``]
-  })
-  const notebase =
-    mappedFields.length > 0
-      ? `\nThis action saves results to a Notebase, from these fields: ${mappedFields.join(", ")}. Deleting one of them, or changing its type, breaks that mapping and I'd have to map it again in the Notebase tab. Renaming is fine.`
-      : ""
-
   const others =
     otherActionNames.length > 0
       ? `My other custom actions are named ${quoteList(otherActionNames)}; a new name must differ from these.`
@@ -222,7 +201,6 @@ ${fields}
 
 **Layout**${layoutNote}:
 ${fence(layout, "html")}
-${notebase}
 ${others}
 `
 }
@@ -290,7 +268,7 @@ ${buildTokenList(targetLanguage)}
 
 ## The settings
 
-The editor has two tabs: Config (every setting below, in this order) and Notebase.
+The editor contains the settings below, in this order.
 
 ### Name
 The tooltip of the action's button in the selection toolbar. Required, and unique among my custom actions.
@@ -299,8 +277,7 @@ The tooltip of the action's button in the selection toolbar. Required, and uniqu
 An Iconify icon id, \`prefix:name\`, e.g. \`tabler:bulb\`, \`tabler:language\`, \`tabler:school\`. Any icon from https://icon-sets.iconify.design works; prefer the Tabler set (\`tabler:\`), and only suggest ids you're confident exist.
 
 ### Provider
-Which AI model runs the action: Read Frog's built-in AI, or one of the providers I've set up with my own API key. The model must support structured output. I pick it myself; if the task needs a strong model (careful reasoning, long JSON inside a string), tell me.
-With Read Frog's built-in AI: the Prompt must not be empty, the System prompt must stay under ${HOSTED_LIMITS.instructions.toLocaleString("en")} characters once the tokens are filled in and the output contract is appended, the filled-in Prompt under ${HOSTED_LIMITS.prompt.toLocaleString("en")}, and there can be at most ${HOSTED_LIMITS.fields} output fields with names of at most ${HOSTED_LIMITS.fieldName} characters.
+Which AI model runs the action: one of the providers I've set up with my own API key. The model must support structured output. I pick it myself; if the task needs a strong model (careful reasoning, long JSON inside a string), tell me.
 
 ### System prompt
 The model's instructions: its role, the goal, rules, and one or two short examples, which help a lot with consistent output. Tokens are allowed. Good practice:
@@ -317,19 +294,13 @@ The fields of the JSON object the model returns, in order. At least one. Each ha
 - **Field name**: the JSON key, and the label the default layout shows above the value, so name it in the language I read. Unique within the action. ${reservedNames} are reserved in layouts; don't use them.
 - **Field type**: ${fieldTypes}. There is no boolean, array or object type. For a list or anything structured, use a \`string\` field whose description asks for **a compact JSON array serialized as a string**, spells out each item's keys, and gives a one-line example; the layout parses it with \`parse_json\`. For yes/no or a category, use a \`string\` with fixed values listed in the description. A \`number\` field reaches the layout as a real number.
 - **Description**: exactly what goes in the field, and in which language. Tokens are allowed.
-A field that holds the selected text itself (the built-in Sentence Analysis and Improve Writing start with one, so the Notebase keeps the sentence) is filled in by Read Frog and never sent to the model: keep it as it is, and leave it out of the System prompt.
+A field that holds the selected text itself (the built-in Sentence Analysis and Improve Writing start with one, so the result keeps the sentence) is filled in by Read Frog and never sent to the model: keep it as it is, and leave it out of the System prompt.
 Fields stream in this order, so put what I want to read first at the top. Fewer fields make faster, more reliable answers; aim for no more than about eight. Any value may come back empty.
 In the editor, ${addField} adds a field, clicking a field edits it, and each field can be deleted. Renaming a field there also updates the layout's references to it.
 
 ### Layout
 How the result looks in the popup: HTML with Liquid, described in "Layout reference". ${edit} opens a code editor with a live preview on sample data (and lint messages); ${reset} replaces the layout with the default field list (or, when the fields fit, a Dictionary or Sentence analysis card). An empty layout shows the default field list: each field's name above its value. The default is often enough; write a layout when it clearly helps, e.g. a headword card, highlights on the selected text, a list or table, badges.
 
-### Notebase tab
-Optionally saves every result as a row in one of my Notebases (Read Frog's online notes and flashcards; needs a readfrog.app account). I choose the Notebase and map output fields to its columns myself; you can't set that up. If I want to save results, plan one field per column, with \`number\` fields for number columns.
-
-## Layout reference
-
-A layout is HTML with Liquid (the liquidjs flavor of Shopify's template language), plus optional \`<style>\` blocks. It renders inside an isolated shadow root and re-renders on every streamed chunk.
 
 ### Data
 - A field's value: \`{{ ["Field name"] }}\`. This bracket form works for any name, including spaces and non-Latin scripts; a plain ASCII name also works bare (\`{{ Word }}\`). A value is a string, a number for \`number\` fields, or nil while it is empty or hasn't arrived.
@@ -372,7 +343,7 @@ A layout is HTML with Liquid (the liquidjs flavor of Shopify's template language
 ### Streaming, errors and limits
 - The layout renders many times while the answer streams: fields arrive in schema order and strings grow. Guard every field with \`{% if %}\`, show a placeholder or skeleton for what hasn't arrived (\`f.pending\`, \`ctx.status\`, \`:host([data-status=streaming])\`), and never assume a later field exists yet.
 - The layout source can be at most ${MAX_CUSTOM_ACTION_LAYOUT_LENGTH.toLocaleString("en")} characters; the rendered HTML at most ${LAYOUT_MAX_RENDERED_LENGTH.toLocaleString("en")} characters and ${LAYOUT_MAX_ELEMENTS.toLocaleString("en")} elements, and a render must finish within ${LAYOUT_DEFAULT_RENDER_BUDGET.renderLimitMs}ms. A layout with a syntax error, or one that breaks a limit, falls back to the default field list, and the layout editor shows why.
-- Every field should appear in the layout unless it exists only for the Notebase; the editor lists fields a layout leaves out.
+- Every field should appear in the layout; the editor lists fields a layout leaves out.
 
 ### Example
 Output fields:

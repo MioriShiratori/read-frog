@@ -56,31 +56,6 @@ describe("analytics helpers", () => {
     })
   })
 
-  it("includes optional custom action metadata when provided", () => {
-    expect(
-      buildFeatureUsedEventProperties({
-        feature: ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
-        surface: ANALYTICS_SURFACE.CONTEXT_MENU,
-        outcome: "success",
-        startedAt: 100,
-        finishedAt: 600,
-        action_id: "dictionary",
-        action_name: "Dictionary",
-        provider: "read-frog-built-in-ai",
-        backend_kind: "llm",
-      }),
-    ).toEqual({
-      feature: ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
-      surface: ANALYTICS_SURFACE.CONTEXT_MENU,
-      outcome: "success",
-      latency_ms: 500,
-      action_id: "dictionary",
-      action_name: "Dictionary",
-      provider: "read-frog-built-in-ai",
-      backend_kind: "llm",
-    })
-  })
-
   it("reports char_count from the tracked use, not from the usage context", async () => {
     sendMessageMock.mockResolvedValue(undefined)
     const context = createFeatureUsageContext(

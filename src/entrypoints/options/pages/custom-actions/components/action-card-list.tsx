@@ -24,7 +24,7 @@ import { getSelectableProvidersForCapability } from "@/utils/providers/provider-
 import { setSelectionToolbarCustomActions } from "@/utils/selection-toolbar-items"
 import { EntityListItem } from "../../../components/entity-list-item"
 import { EntityListRail } from "../../../components/entity-list-rail"
-import { customActionEditorTabAtom, selectedCustomActionIdAtom } from "../atoms"
+import { selectedCustomActionIdAtom } from "../atoms"
 import { AddActionDialog } from "./add-action-dialog"
 import { RecentChangeBadge } from "./recent-change-badge"
 
@@ -34,7 +34,6 @@ export function CustomActionCardList() {
   )
   const requestNavigation = useSetAtom(requestEditorNavigationAtom)
   const setSelectedCustomActionId = useSetAtom(selectedCustomActionIdAtom)
-  const setEditorTab = useSetAtom(customActionEditorTabAtom)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const { targetCode } = useAtomValue(configFieldsAtomMap.language)
   const { search } = useLocation()
@@ -66,7 +65,6 @@ export function CustomActionCardList() {
           },
         ],
       }))
-      setEditorTab("config")
       await setSelectedCustomActionId(newAction.id)
       setDialogOpen(false)
     })

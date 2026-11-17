@@ -1,10 +1,6 @@
 import { langLevel } from "@read-frog/definitions"
 import { z } from "zod"
-import {
-  BUILT_IN_ACTION_IDS,
-  BUILT_IN_ACTION_KEYS,
-  isBuiltInActionId,
-} from "@/utils/constants/custom-action"
+import { BUILT_IN_ACTION_IDS, BUILT_IN_ACTION_KEYS } from "@/utils/constants/custom-action"
 import { FEATURE_KEYS, FEATURE_PROVIDER_DEFS } from "@/utils/constants/feature-providers"
 import {
   MAX_SELECTION_OVERLAY_OPACITY,
@@ -94,25 +90,6 @@ const selectionToolbarSchema = z
     // Every other item is pinned. Independent of an item's enabled switch,
     // so a pin survives the item being turned off and on.
     unpinned: z.array(z.string().min(1)).default([]),
-    noteSuggestion: z.object({
-      enabled: z.boolean(),
-      actionId: z.string().nonempty(),
-      providerId: z.string().nonempty(),
-    }),
-  })
-  .superRefine((selectionToolbar, ctx) => {
-    const actionId = selectionToolbar.noteSuggestion.actionId
-    const actionExists =
-      isBuiltInActionId(actionId) ||
-      selectionToolbar.customActions.some((action) => action.id === actionId)
-
-    if (!actionExists) {
-      ctx.addIssue({
-        code: "custom",
-        message: `Note suggestion action "${actionId}" not found.`,
-        path: ["noteSuggestion", "actionId"],
-      })
-    }
   })
   // Every parse brings `order` and `unpinned` in step with the actions there
   // are, so adding or deleting an action never has to update them itself.
@@ -193,6 +170,12 @@ const uiLanguageSchema = z
   .default("auto")
 export type UiLanguage = z.infer<typeof uiLanguageSchema>
 
+// Old content scripts can read stored settings before background migration finishes.
+// Accept retired IDs at this storage boundary only; the runtime registry never resolves them.
+function isRetiredProviderId(id: string): boolean {
+  return id === "read-frog-free-ai" || id === "read-frog-advance-ai"
+}
+
 // Complete config schema
 export const configSchema = z
   .object({
@@ -220,6 +203,7 @@ export const configSchema = z
       const providerId = def.getProviderId(data)
 
       if (
+        !isRetiredProviderId(providerId) &&
         !doesProviderSupportsCapability(featureKey, data.providersConfig, providerId, {
           requireEnable: true,
         })
@@ -246,10 +230,7 @@ export const configSchema = z
           path: ["languageDetection", "providerId"],
         })
       } else if (
-        // Capability-based, like the FEATURE_KEYS loop above, rather than a
-        // providersConfig lookup: Built-in AI is never a row in
-        // providersConfig, so requiring one there is what used to make a
-        // hosted provider fail validation and reset the whole config.
+        !isRetiredProviderId(ldProviderId) &&
         !doesProviderSupportsCapability("languageDetection", data.providersConfig, ldProviderId, {
           requireEnable: true,
         })
@@ -281,6 +262,7 @@ export const configSchema = z
 
     actionProviderEntries.forEach(({ providerId, path }) => {
       if (
+        !isRetiredProviderId(providerId) &&
         !doesProviderSupportsCapability("customAction", data.providersConfig, providerId, {
           requireEnable: true,
         })

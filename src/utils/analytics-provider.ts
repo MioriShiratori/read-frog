@@ -1,14 +1,10 @@
-import type {
-  AnalyticsBackendKind,
-  AnalyticsProvider,
-  FeatureProviderAnalytics,
-} from "@/types/analytics"
+import type { FeatureProviderAnalytics } from "@/types/analytics"
+import type { AnalyticsBackendKind, AnalyticsProvider } from "@/types/analytics"
 import type { ProviderConfig } from "@/types/config/provider"
 import type { SerializableProviderRef } from "@/utils/providers/provider-ref"
 import type { ResolvedProviderRef } from "@/utils/providers/provider-registry"
 import { ANALYTICS_PROVIDER } from "@/types/analytics"
 import { ALL_PROVIDER_TYPES, isLLMProvider, isLLMProviderConfig } from "@/types/config/provider"
-import { isBuiltInAiProviderId } from "@/utils/providers/provider-registry"
 
 const VALID_BACKEND_KINDS = new Set<AnalyticsBackendKind>(["llm", "non_llm", "unknown"])
 const VALID_CANONICAL_PROVIDERS = new Set<string>(ALL_PROVIDER_TYPES)
@@ -16,11 +12,6 @@ const VALID_CANONICAL_PROVIDERS = new Set<string>(ALL_PROVIDER_TYPES)
 export const UNKNOWN_FEATURE_PROVIDER: FeatureProviderAnalytics = {
   provider: ANALYTICS_PROVIDER.UNKNOWN,
   backend_kind: "unknown",
-}
-
-export const BUILT_IN_AI_FEATURE_PROVIDER: FeatureProviderAnalytics = {
-  provider: ANALYTICS_PROVIDER.BUILT_IN_AI,
-  backend_kind: "llm",
 }
 
 export const EDGE_TTS_FEATURE_PROVIDER: FeatureProviderAnalytics = {
@@ -43,9 +34,7 @@ export function classifyResolvedProvider(
   provider: ResolvedProviderRef | null | undefined,
 ): FeatureProviderAnalytics {
   if (!provider) return UNKNOWN_FEATURE_PROVIDER
-  if (provider.kind === "local") return classifyProviderConfig(provider.config)
-  if (isBuiltInAiProviderId(provider.id)) return BUILT_IN_AI_FEATURE_PROVIDER
-  return UNKNOWN_FEATURE_PROVIDER
+  return classifyProviderConfig(provider.config)
 }
 
 /**
@@ -58,9 +47,7 @@ export function classifySerializedProvider(
   provider: SerializableProviderRef | null | undefined,
 ): FeatureProviderAnalytics {
   if (!provider) return UNKNOWN_FEATURE_PROVIDER
-  if (provider.kind === "local") return classifyProviderConfig(provider.config)
-  if (isBuiltInAiProviderId(provider.providerId)) return BUILT_IN_AI_FEATURE_PROVIDER
-  return UNKNOWN_FEATURE_PROVIDER
+  return classifyProviderConfig(provider.config)
 }
 
 export function normalizeFeatureProviderAnalytics(
@@ -76,9 +63,6 @@ export function normalizeFeatureProviderAnalytics(
 
   if (provider === ANALYTICS_PROVIDER.UNKNOWN && backendKind === "unknown") {
     return UNKNOWN_FEATURE_PROVIDER
-  }
-  if (provider === ANALYTICS_PROVIDER.BUILT_IN_AI && backendKind === "llm") {
-    return BUILT_IN_AI_FEATURE_PROVIDER
   }
   if (provider === ANALYTICS_PROVIDER.EDGE_TTS && backendKind === "non_llm") {
     return EDGE_TTS_FEATURE_PROVIDER

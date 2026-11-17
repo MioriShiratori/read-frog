@@ -20,7 +20,6 @@ import {
   SELECTION_CONTENT_OVERLAY_LAYERS,
   SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE,
 } from "@/utils/constants/selection-overlay-layers"
-import { getEbookNoteOrigin } from "@/utils/note-origin"
 import { getSelectionToolbarItems } from "@/utils/selection-toolbar-items"
 import { cn } from "@/utils/styles/utils"
 import { urlMatchesPattern } from "@/utils/url-pattern"
@@ -614,7 +613,6 @@ export function SelectionToolbar() {
           paragraphs,
         },
         // The book, not the reader page this toolbar runs on.
-        noteOrigin: getEbookNoteOrigin(detail),
       })
       selectionDirectionRef.current = EXTERNAL_SELECTION_DIRECTION_MAP[detail.direction]
       selectionPositionRef.current = detail.anchor

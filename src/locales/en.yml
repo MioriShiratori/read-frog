@@ -1,15 +1,7 @@
 name: Read Frog
-extName: "Read Frog - AI Translation & Flashcards"
-extDescription: "Bilingual AI translation for web pages and YouTube, Netflix and X subtitles. Save new words and review them as flashcards."
+extName: "Read Frog - AI Translation"
+extDescription: "Bilingual AI translation for web pages and video subtitles, with custom AI actions and your own providers."
 uninstallSurveyUrl: https://tally.so/r/nPK6Ob
-account:
-  login: Log in
-  webApp: Web app
-  logout: Log out
-  logoutError: Failed to log out. Please try again.
-  grantAccess: Grant access
-  grantAccessHint: Needs access to readfrog.app
-  grantAccessError: Failed to grant access. Please try again.
 dataTypes:
   string: Text
   number: Number
@@ -116,7 +108,6 @@ options:
     product: Product
   tools:
     translationHub: Translation Hub
-    pdfTranslation: PDF translation
   product:
     roadmap: Roadmap
   helpAndCommunity:
@@ -158,36 +149,11 @@ options:
     description: Add the providers Read Frog can call. Over 20 are built in, with custom support for Chat Completions-compatible and Open Responses APIs.
     configTitle: Provider config
     addProvider: Add provider
-    builtInProvider: Built-in provider
     yourProviders: Your providers
-    builtInAiUsage:
-      title: Built-in AI quota
-      remaining: "$1% left"
-      supportedFeatures: "Supports $1 features"
-      resetsAt: "Resets at $1"
-      daily: Daily quota
-      weekly: Weekly quota
-      oneTime: Bonus quota
-      expiresAt: "Expires at $1"
-      features:
-        pageTranslation: Page translation
-        customAction: Custom AI Actions
-        noteSuggestion: Note suggestions
-        selectionTranslation: Selection translation
-        videoSubtitles: Video subtitles
-        inputTranslation: Input translation
-        languageDetection: Language detection
-        pdfTranslation: PDF translation
-    sponsorCta: Get fast, cost-effective AI
-    sponsorCtaJalapenoCloud: Get 50% Off GLM 5.3
-    sponsorCtaIfapi: "+10% credit, use code READFROG"
     setApiKeyWarning:
       message: Please set your API key on the $1 page
     badges:
       featureCount: $1 features
-      sponsor: Sponsor
-      sponsorJalapenoCloud: $$1 Free
-      sponsorIfapi: 90% Off Models
     dialog:
       title: Add new provider
       groups:
@@ -262,13 +228,8 @@ options:
       invalidJson: Invalid JSON format
     providers:
       name:
-        builtInAi: Built-in AI
-        builtInAiAdvance: Advanced Built-in AI
         customChatComplete: Custom Chat Complete
         customResponses: Custom Responses
-      attribution:
-        builtInAi: Read Frog's hosted standard model. Pro and Ultra members can use it on every feature, on a weekly quota; on the free plan it runs Custom AI Actions only.
-        builtInAiAdvance: Read Frog's hosted advanced model, exclusive to Ultra members. Runs page translation, Custom AI Actions, and every other Built-in AI feature on a shared weekly quota. Uses up the quota faster than the standard model.
       description:
         openai: Provides models like GPT-4o
         azure: Azure-hosted OpenAI models through your deployments
@@ -321,13 +282,11 @@ options:
         selectionTranslation: Selection toolbar translation
         inputTranslation: Input translation
         videoSubtitles: Video subtitles
-        noteSuggestion: Note suggestions
       descriptions:
         pageTranslation: Translates the whole page in bilingual or replace mode.
         selectionTranslation: "Translates the text you select; word annotations use it too."
         inputTranslation: Translates what you type into an input box before you send it.
         videoSubtitles: Translates subtitles as they appear in a video player.
-        noteSuggestion: Suggests words worth saving to your Notebase after a selection translation.
     languageDetection:
       title: Language detection
       description: Affects auto-translate language detection and Speaking voice selection accuracy.
@@ -655,13 +614,6 @@ options:
       speak:
         title: Speak
         description: Show the speak button, which reads the selected text aloud
-      noteSuggestion:
-        title: Note suggestions
-        description: After selection translation with an AI provider, suggest words to save to your Notebase
-        action: Action
-        actionDescription: The action that produces the suggestion
-        provider: Provider
-        providerDescription: The AI provider that generates the suggestion
     display:
       title: Display
       opacity:
@@ -699,12 +651,6 @@ options:
       edit: Edit AI action
       empty: No custom AI actions yet
       noEnabledLlmProvider: Enable at least one LLM provider before creating custom AI actions
-      tabs:
-        config: Config
-        notebase: Notebase
-        hasErrors: Has errors
-        connected: Connected
-        needsAttention: Needs attention
       form:
         name: Name
         customize: Customize
@@ -819,51 +765,6 @@ options:
             tooLong: This layout is longer than $1 characters and can't be saved.
             fieldNotShown: “$1” isn't shown in this layout.
             reservedFieldName: The field name “$1” is reserved in layouts. Rename the field.
-        notebase:
-          title: Notebase connection
-          description: Save this action's structured results to a remote notebase.
-          loginRequiredTitle: Log in to configure Notebase
-          loginRequiredDescription: Sign in on readfrog.app before choosing a notebase or editing mappings.
-          loginRequiredConnectedDescription: This connection was created by the account below. If you log in as the same account, field mappings will be restored. If you log in as another account, the previous mappings will be cleared when you create or connect a Notebase.
-          loginAction: Log in
-          connectedAccountLabel: Connected account
-          currentAccountLabel: Current account
-          unknownConnectedAccount: Unknown account
-          tableLabel: Notebase
-          tablePlaceholder: Select a notebase
-          tableClearOption: Disconnect notebase
-          clearConnectionAction: Clear connection
-          refreshAction: Refresh
-          emptyTitle: No notebases yet
-          emptyDescription: Create a notebase on readfrog.app, then come back here to map fields.
-          openNotebaseAction: Open Notebase
-          accessDeniedTitle: Cannot access Notebase
-          accessDeniedDescription: This account does not have permission to load Notebase data.
-          listErrorTitle: Failed to load notebases
-          listErrorDescription: Try refreshing the Notebase list again in a moment.
-          accountMismatchTitle: Notebase connection belongs to another account
-          accountMismatchDescription: This connection is tied to the connected account below. Clear it, or choose a Notebase available to the current account.
-          tableUnavailableTitle: Selected notebase is no longer available
-          tableUnavailableDescription: This Notebase no longer exists or cannot be opened. Clear the connection or choose another Notebase.
-          tableUnavailableOption: unavailable
-          schemaErrorTitle: Failed to load notebase schema
-          schemaErrorDescription: Try refreshing the schema again in a moment.
-          schemaLoading: Loading notebase schema...
-          mappingsLabel: Field mappings
-          localFieldLabel: Action field
-          remoteFieldLabel: Notebase field
-          columnUnavailableOption: removed
-          invalidMappingsTitle: Some mappings need attention
-          invalidMappingsDescription: Invalid mappings are preserved. Fix them before saving to Notebase.
-          noFieldSavedTitle: "No field is saved to this Notebase"
-          noFieldSavedDescription: "Pick a Notebase field for at least one field to save notes here."
-          mappingSummary: "Saved $1 · Skipped $2 · Undecided $3"
-          skipFieldOption: "Don't save"
-          undecidedFieldPlaceholder: "Pick a notebase field or don't save"
-          mappingMissingLocal: The mapped action field no longer exists.
-          mappingMissingRemote: The mapped notebase field no longer exists.
-          mappingMissingSchema: Refresh the notebase schema to validate this mapping.
-          mappingIncompatible: The field types no longer match.
         tokens:
           selection: Selected text content
           paragraphs: Intersecting paragraph text joined with blank lines, truncated to the first 2000 characters when sent to custom AI actions
@@ -1588,20 +1489,6 @@ options:
       pauseOnHover:
         title: Pause on hover
         description: Pauses the video while the pointer rests on the subtitles, and plays it again once the pointer leaves. Clicking a word to look it up always pauses.
-    aiQuota:
-      title: AI subtitles quota
-      description: AI speech recognition gets you accurate subtitles for any video
-      launchBonusPromo: Subscribe before $1 for an extra 300 transcription minutes
-      loginRequired: Log in to view your AI subtitles quota
-      upgradeRequired: AI subtitles require a Pro or Ultra subscription
-      pools:
-        subscription: Monthly quota
-        launchBonus: Launch gift
-      resetsOn: Resets on $1
-      expiresOn: Expires on $1
-      loadError: Unable to load your quota. Please try again later.
-      remainingOf: $1 / $2 min left
-      used: Used $1 min
     style:
       title: Subtitle style
       description: Display mode, position, fonts, colors and background, set against a live preview
@@ -1715,7 +1602,6 @@ side:
 translateService:
   title: Translation Service
   description: For translate the webpage only
-  builtInModels: Built-in Models
   llmModels: LLM Models
   normalTranslator: Normal Translators
   selectServices: Select services
@@ -1795,42 +1681,7 @@ action:
   viewContextDetails: Context
   customizeCustomAction: Customize $1 action
   customActionLayoutFallback: This result can't be shown in its layout, so a simplified view is shown.
-  saveToNotebase: Save to Notebase
-  saveToNotebaseSaving: Saving...
-  saveToNotebaseSuccess: Saved to Notebase
-  saveToNotebaseFailed: Failed to save to Notebase
-  saveToNotebaseLoginRequired: Log in on readfrog.app to save to Notebase
-  saveToNotebaseAccessDenied: This account cannot access the selected Notebase
-  saveToNotebaseLimitExceeded: Upgrade is required to save more Notebase notes
-  saveToNotebaseTableUnavailable: The selected Notebase is no longer available
-  saveToNotebaseConnectionInvalid: This Notebase connection is out of date. Refresh it in Custom AI Actions and fix the mappings.
-  saveToNotebaseInvalidContent: "The AI answer has a value in the wrong format, so it was not saved. Run the action again, then save."
-  saveToNotebaseNoFieldSaved: "Not saved: this action saves no field to the Notebase. Pick at least one in its settings."
-  saveToNotebaseUndecidedTitle: "Saved. You haven't decided whether to save these fields"
-  saveToNotebaseSkipUndecided: "Don't save them"
-  saveToNotebaseNoMappings: Add at least one valid mapping before saving
-  saveToNotebaseCreateTitle: Create a Notebase?
-  saveToNotebaseCreateDescription: Create a new Notebase with columns matching this Custom Action, then save this result as the first note.
-  saveToNotebaseCreateAndSave: Create and save
-  saveToNotebaseCreateAndSaveShort: Create and save
-  saveToNotebaseLoginAndCreate: Log in and auto-create
-  saveToNotebaseLoginAndSave: Log in and save
-  saveToNotebaseConnectExisting: Connect existing Notebase
-  saveToNotebaseGoConfigure: Configure
-  saveToNotebaseLoginConnectedTitle: Log in to save?
-  saveToNotebaseLoginConnectedDescription: This Custom Action is connected to the account below. After login, Read Frog will save to the existing Notebase when possible, or create a new Notebase for the logged-in account.
-  saveToNotebaseConnectionUnavailableTitle: Notebase connection unavailable
-  saveToNotebaseMissingNotebaseDescription: The old Notebase no longer exists or cannot be opened by this account. Create a new Notebase and save this result, or connect an existing Notebase in Custom AI Actions.
-  saveToNotebaseAccountUnavailableDescription: The logged-in account does not match the connected account below. Creating and saving will replace the previous connection and field mappings. You can also connect an existing Notebase in Custom AI Actions.
-  saveToNotebasePendingLogin: Log in to finish saving
-  saveToNotebasePendingLoginDescription: After login, Read Frog will create the Notebase and save this result automatically.
-  saveToNotebasePendingConnectedLoginDescription: After login, Read Frog will save to the connected Notebase when possible. If this account cannot use it, Read Frog will create a new Notebase and save this result.
-  upgrade: Upgrade
-  updatePayment: Update payment
   openCustomActions: Open Custom AI Actions
-  openNotebase: Open Notebase
-  reviewDueOne: "$1 card to review"
-  reviewDueOther: "$1 cards to review"
   contextDetailsTitleLabel: Title
   contextDetailsParagraphsLabel: Paragraphs
   translation: Translation
@@ -1841,13 +1692,6 @@ action:
   unpinFromToolbar: Unpin from toolbar
   dragToReorder: Drag to reorder
   addCustomAction: Add custom AI action
-noteSuggestion:
-  title: You might want to save
-  description: Choose which words to save to your Notebase and review anytime.
-  save: Save
-  saved: Saved
-  staleSuggestion: This suggestion is out of date
-  toggleLabel: Show note suggestions
 thinking:
   label: Thinking
   complete: Thinking complete
@@ -1874,10 +1718,6 @@ subtitles:
       retry: Try again
       emptyTitle: No subtitles to show
       backToCurrent: Back to current
-  loadingAiSubtitles: Loading AI subtitles… (estimated 3 min)
-  aiSubtitlesHint: Accurate subtitles generated by advanced AI speech recognition — available even when no official subtitles exist.
-  requestAiSubtitles: Request AI subtitles
-  usingAiSubtitles: Using AI subtitles
   settings: Subtitle settings
   autoStartOnPlatform: "Start automatically on $1 videos"
   toggle:
@@ -1911,35 +1751,10 @@ subtitles:
     aiRateLimited: Too many requests, please try again later
     aiAuthFailed: API authentication failed, please check your API key
     aiServiceUnavailable: Translation service temporarily unavailable
-    aiQuotaExceeded: Monthly AI subtitle quota used up
-    aiQuotaExceededWithReset: Monthly AI subtitle quota used up · resets on $1
-    aiLoginRequired: Log in to view your AI subtitles quota
-    aiSubscriptionRequired: AI subtitles require a Pro or Ultra subscription
-    aiPaymentRequired: Update your payment method to keep generating AI subtitles
-    aiVideoTooLong: This video is too long for AI subtitles
-    aiLiveReplayUnsupported: AI subtitles aren't available for live stream replays yet
-    aiStillProcessing: Transcription is still running — click again in a few minutes to pick it up
-    aiRequestFailed: AI subtitle request failed, please try again later
     aiNoResponse: AI service did not respond, using original text
     translatedExportFailed: Failed to generate translated subtitles
     translatedExportIncomplete: Failed to translate all subtitle lines
     translatedExportSameLanguage: Source and target languages are the same
-hostedAi:
-  planBadge:
-    pro: Requires the Pro or Ultra plan · Click the badge to get it
-    ultra: Requires the Ultra plan · Click the badge to get it
-  availability:
-    authenticationRequired: Log in to use this provider
-    ultraRequired: Ultra plan required
-    proRequired: Pro or Ultra plan required
-    quotaExhausted: Quota used up
-    serviceUnavailable: Temporarily unavailable
-    usedPercent: "Quota used: $1%"
-    resetsAt: "Resets at $1"
-  errors:
-    rateLimited: Too many requests, please try again later.
-    guestRateLimited: Too many guest requests. Please try again later.
-    userRateLimited: Too many requests. Please try again later.
 hotkey:
   control: Ctrl
   alt: Option

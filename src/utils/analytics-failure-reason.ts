@@ -4,20 +4,13 @@ import { PROVIDER_SETUP_ERROR_NAME } from "@/utils/providers/provider-setup-erro
 
 const FAILURE_REASONS: ReadonlySet<string> = new Set(ANALYTICS_FAILURE_REASONS)
 
-// Error codes from the background's stream errors and hosted-AI normalization,
-// and from oRPC.
 const REASON_BY_CODE = new Map<string, AnalyticsFailureReason>([
-  ["HOSTED_AI_TIER_RESTRICTED", "tier_restricted"],
-  ["HOSTED_AI_QUOTA_EXHAUSTED", "quota_exceeded"],
   ["output_validation_failed", "invalid_output"],
   ["invalid_request", "precheck"],
   ["UNAUTHORIZED", "auth_required"],
   ["TOO_MANY_REQUESTS", "rate_limited"],
-  ["NOTE_LIMIT_EXCEEDED", "note_limit"],
   ["NOT_FOUND", "not_found"],
-  ["NOTEBASE_NOT_FOUND", "not_found"],
   ["BAD_REQUEST", "validation"],
-  ["CELL_VALIDATION_FAILED", "validation"],
 ])
 
 // The browsers' fetch network failures (Chrome, Firefox, Safari). Matched by

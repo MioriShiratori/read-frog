@@ -5,8 +5,6 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { customActionRequestAtom } from "@/components/custom-action/atoms"
 import { CustomActionPanel } from "@/components/custom-action/custom-action-panel"
-import { isSaveToNotebaseDialogOpenAtom } from "@/components/custom-action/save-to-notebase-dialog-atom"
-import { SaveToNotebaseDialogHost } from "@/components/custom-action/save-to-notebase-dialog-host"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { SelectionPopover } from "@/components/ui/selection-popover"
 import { createSelectionToolbarPrecheckError } from "@/components/ui/selection-popover/inline-error"
@@ -16,7 +14,6 @@ import { classifyResolvedProvider, UNKNOWN_FEATURE_PROVIDER } from "@/utils/anal
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { findSelectionToolbarAction, getSelectionToolbarActions } from "@/utils/custom-actions"
 import { onMessage } from "@/utils/message"
-import { getWebPageNoteOrigin } from "@/utils/note-origin"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { ShadowWrapperContext } from "@/utils/react-shadow-host/create-shadow-host"
 import { normalizeSelectedText } from "../../utils"
@@ -71,7 +68,6 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const [customActionRequest, setCustomActionRequest] = useAtom(customActionRequestAtom)
   const setIsSelectionToolbarOpen = useSetAtom(isSelectionToolbarOpenAtom)
-  const isSaveToNotebaseDialogOpen = useAtomValue(isSaveToNotebaseDialogOpenAtom)
   const shadowWrapper = use(ShadowWrapperContext)
   const pendingOpenRequestRef = useRef<SelectionCustomActionPendingOpenRequest | null>(null)
   const popoverActionsRef = useRef<SelectionPopoverActions | null>(null)
@@ -105,7 +101,7 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
               cleanSelection,
               contextText: cleanSelection ? session?.contextSnapshot.text || cleanSelection : "",
               surface: pendingRequest.surface,
-              noteOrigin: session?.noteOrigin ?? null,
+
               sessionKey: sessionKeyRef.current,
               // A reuse forces a rerun even when the retriggered request
               // resolves to an identical execution key.
@@ -169,7 +165,6 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
                   text: "",
                   paragraphs: [],
                 },
-                noteOrigin: getWebPageNoteOrigin(),
               }
             : null),
       })
@@ -274,7 +269,6 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
         onAnchorChange={setAnchor}
         actionsRef={popoverActionsRef}
         onReuseRequest={handleReuseRequest}
-        disablePointerDismissal={isSaveToNotebaseDialogOpen}
       >
         <SelectionPopover.Content
           key={customActionRequest?.sessionKey ?? 0}
@@ -283,7 +277,6 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
           <CustomActionPanel />
         </SelectionPopover.Content>
       </SelectionPopover.Root>
-      <SaveToNotebaseDialogHost />
     </SelectionCustomActionContext>
   )
 }

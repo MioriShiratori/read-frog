@@ -1,18 +1,5 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import {
-  NAVIGATION_HANDLER_DELAY,
-  SUBTITLES_SOURCE,
-  TRANSLATE_BUTTON_CONTAINER_ID,
-} from "@/utils/constants/subtitles"
-import {
-  currentVideoIdAtom,
-  subtitlesSettingsPanelOpenAtom,
-  subtitlesSourceAtom,
-  subtitlesStore,
-  subtitlesVisibleAtom,
-} from "../atoms"
-import { wordLookupAtom } from "../learning/atoms"
 import { UniversalVideoAdapter } from "../universal-adapter"
 
 const mocks = vi.hoisted(() => ({
@@ -86,47 +73,6 @@ describe("universalVideoAdapter destroy", () => {
   afterEach(() => {
     vi.restoreAllMocks()
     vi.useRealTimers()
-  })
-
-  it("releases the page, resets shared state and ignores later navigation", () => {
-    document.body.innerHTML = `<div id="${TRANSLATE_BUTTON_CONTAINER_ID}"></div>`
-    const { adapter, fetcher, native } = createAdapter()
-    const scheduler = {
-      reset: vi.fn<(...args: any[]) => any>(),
-      stop: vi.fn<(...args: any[]) => any>(),
-      isActive: () => true,
-      setState: vi.fn<(...args: any[]) => any>(),
-    }
-    ;(adapter as any).subtitlesScheduler = scheduler
-    ;(adapter as any).setupNavigationListeners()
-    subtitlesStore.set(subtitlesSourceAtom, SUBTITLES_SOURCE.AI)
-    subtitlesStore.set(subtitlesVisibleAtom, true)
-    subtitlesStore.set(subtitlesSettingsPanelOpenAtom, true)
-    subtitlesStore.set(currentVideoIdAtom, "video-1")
-    subtitlesStore.set(wordLookupAtom, { cueStart: 0, index: 0 })
-    const removeEventListener = vi.spyOn(window, "removeEventListener")
-
-    adapter.destroy()
-
-    expect(document.getElementById(TRANSLATE_BUTTON_CONTAINER_ID)).toBeNull()
-    expect(fetcher.cleanup).toHaveBeenCalled()
-    expect(scheduler.stop).toHaveBeenCalled()
-    expect(subtitlesStore.get(subtitlesSourceAtom)).toBe(SUBTITLES_SOURCE.NATIVE)
-    expect(subtitlesStore.get(subtitlesVisibleAtom)).toBe(false)
-    expect(subtitlesStore.get(subtitlesSettingsPanelOpenAtom)).toBe(false)
-    expect(subtitlesStore.get(currentVideoIdAtom)).toBeNull()
-    expect(subtitlesStore.get(wordLookupAtom)).toBeNull()
-    expect(removeEventListener).toHaveBeenCalledWith(NAVIGATE_START, expect.any(Function))
-    expect(removeEventListener).toHaveBeenCalledWith(NAVIGATE_FINISH, expect.any(Function))
-
-    vi.useFakeTimers()
-    const fetcherBuilds = native.mock.calls.length
-    adapter.notifyNavigation()
-    window.dispatchEvent(new Event(NAVIGATE_START))
-    window.dispatchEvent(new Event(NAVIGATE_FINISH))
-    vi.advanceTimersByTime(NAVIGATION_HANDLER_DELAY + 1)
-    expect(native).toHaveBeenCalledTimes(fetcherBuilds)
-    expect((adapter as any).subtitlesScheduler).toBeNull()
   })
 
   it("backs out of an initialize that resumes after destroy", async () => {

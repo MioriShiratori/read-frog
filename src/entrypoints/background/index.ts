@@ -1,7 +1,7 @@
 import "@/utils/zod-config"
-import type { Config, UiLanguage } from "@/types/config/config"
+import type { UiLanguage } from "@/types/config/config"
+import type { Config } from "@/types/config/config"
 import { browser, defineBackground } from "#imports"
-import { env } from "@/env"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { selectFreshTranslateProviders } from "@/utils/config/default-translate-provider"
 import { CONFIG_STORAGE_KEY } from "@/utils/constants/config"
@@ -29,12 +29,10 @@ import { setupDiagnosticsHandlers } from "./diagnostics"
 import { setupEdgeTTSMessageHandlers } from "./edge-tts"
 import { setupFeatureUsedEventHandlers } from "./feature-used-event"
 import { setupGlossaryMessageHandlers } from "./glossary"
-import { setupHostedAiStatusHandler } from "./hosted-ai-status"
 import { setupIframeInjection } from "./iframe-injection"
 import { setupLLMGenerateTextMessageHandlers } from "./llm-generate-text"
 import { initMockData } from "./mock-data"
 import { newUserGuide } from "./new-user-guide"
-import { setupNotebasePendingSaveProcessor } from "./notebase-pending-save"
 import { setupPageTranslationHandlers } from "./page-translation"
 import { proxyFetch } from "./proxy-fetch"
 import { setupSelectionToolbarHiddenUntilReload } from "./selection-toolbar-hidden"
@@ -68,7 +66,7 @@ export default defineBackground({
       // fresh installs apart from other visits in the website's guide analytics.
       if (details.reason === "install") {
         await browser.tabs.create({
-          url: `${env.WXT_WEBSITE_URL}/guide/step-1?from=install`,
+          url: browser.runtime.getURL("/options.html#/api-providers"),
         })
       }
 
@@ -161,9 +159,7 @@ export default defineBackground({
     })()
 
     proxyFetch()
-    setupHostedAiStatusHandler()
     setupGlossaryMessageHandlers()
-    setupNotebasePendingSaveProcessor(() => backgroundReady)
     setupEdgeTTSMessageHandlers()
     setupLLMGenerateTextMessageHandlers()
     setupTTSPlaybackMessageHandlers()

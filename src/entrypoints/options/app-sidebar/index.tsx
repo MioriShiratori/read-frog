@@ -8,7 +8,6 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/base-ui/sidebar"
-import { UserAccountMenuSidebar } from "@/components/user-account-menu"
 import { i18n } from "@/utils/i18n"
 import { getCommandPaletteShortcutHint } from "@/utils/os"
 import { commandPaletteOpenAtom } from "../command-palette/atoms"
@@ -25,7 +24,6 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="transition-all group-data-[state=expanded]:px-5 group-data-[state=expanded]:pt-4">
-        <UserAccountMenuSidebar />
         <InputGroup onClick={() => setCommandPaletteOpen(true)} className="bg-background">
           <InputGroupInput
             readOnly

@@ -6,10 +6,6 @@ import { getLocalConfig } from "@/utils/config/storage"
 import { APP_NAME, EXTENSION_VERSION } from "@/utils/constants/app"
 import { CONFIG_STORAGE_KEY } from "@/utils/constants/config"
 import {
-  getGuideDictionaryNotebaseState,
-  startGuideDictionaryNotebaseTracking,
-} from "@/utils/guide/dictionary-notebase"
-import {
   getGuideTargetLanguageAnswer,
   resolveGuideTargetLanguage,
 } from "@/utils/guide/target-language"
@@ -29,10 +25,6 @@ export default defineContentScript({
       window.postMessage({ source: `${kebabCase(APP_NAME)}-ext`, ...msg }, "*")
     })
 
-    onMessage("guideDictionaryNotebaseStateChanged", (msg) => {
-      window.postMessage({ source: `${kebabCase(APP_NAME)}-ext`, ...msg }, "*")
-    })
-
     window.addEventListener("message", async (e) => {
       if (e.source !== window) return
 
@@ -49,26 +41,6 @@ export default defineContentScript({
         const isPinned = await sendMessage("getPinState", undefined)
         window.postMessage(
           { source: `${kebabCase(APP_NAME)}-ext`, type: "getPinState", data: { isPinned } },
-          "*",
-        )
-      } else if (type === "startGuideDictionaryNotebaseTracking") {
-        const state = await startGuideDictionaryNotebaseTracking(window.location.href)
-        window.postMessage(
-          {
-            source: `${kebabCase(APP_NAME)}-ext`,
-            type: "getGuideDictionaryNotebaseState",
-            data: state,
-          },
-          "*",
-        )
-      } else if (type === "getGuideDictionaryNotebaseState") {
-        const state = await getGuideDictionaryNotebaseState()
-        window.postMessage(
-          {
-            source: `${kebabCase(APP_NAME)}-ext`,
-            type: "getGuideDictionaryNotebaseState",
-            data: state,
-          },
           "*",
         )
       } else {

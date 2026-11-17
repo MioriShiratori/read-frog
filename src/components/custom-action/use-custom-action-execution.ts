@@ -3,14 +3,11 @@ import type { JSONValue } from "ai"
 import type { RefObject } from "react"
 import type { SelectionToolbarInlineError } from "@/components/ui/selection-popover/inline-error"
 import type { FeatureProviderAnalytics, SurfaceByFeature } from "@/types/analytics"
-import type {
-  BackgroundStructuredObjectStreamSnapshot,
-  ThinkingSnapshot,
-} from "@/types/background-stream"
+import type { BackgroundStructuredObjectStreamSnapshot } from "@/types/background-stream"
+import type { ThinkingSnapshot } from "@/types/background-stream"
 import type { Config } from "@/types/config/config"
 import type { AISDKReasoning } from "@/types/config/provider"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
-import type { HostedAiModelTier } from "@/utils/constants/provider-ids"
 import type { CachedWebPageContext } from "@/utils/host/translate/webpage-context"
 import type { CustomActionProviderRef } from "@/utils/providers/provider-registry"
 
@@ -37,7 +34,6 @@ import {
 } from "@/utils/constants/custom-action"
 import { streamBackgroundStructuredObject } from "@/utils/content-script/background-stream-client"
 import { getSourceDocumentTitle } from "@/utils/content/document-title"
-import { getRandomUUID } from "@/utils/crypto-polyfill"
 import { truncateContextTextForCustomAction } from "@/utils/custom-action-prompt"
 import {
   buildSelectionToolbarCustomActionSystemPrompt,
@@ -81,7 +77,7 @@ interface CustomActionExecutionRequest {
   }
   key: string
   // Each selection field's value: the run's selection, put into every answer
-  // so the result shows it and "save to notebase" keeps it.
+  // so the result shows it beside the model output.
   selectionValues: Record<string, string>
   payload: {
     outputSchema: Array<{
@@ -90,7 +86,6 @@ interface CustomActionExecutionRequest {
     }>
     prompt: string
     providerId: string
-    modelTier?: HostedAiModelTier
     providerOptions?: Record<string, Record<string, JSONValue>>
     reasoning?: AISDKReasoning
     instructions: string
@@ -173,7 +168,7 @@ export function buildCustomActionExecutionPlan(
     }
   }
 
-  if (provider.kind === "local" && !provider.config.enabled) {
+  if (!provider.config.enabled) {
     return {
       error: createSelectionToolbarPrecheckError("customAction", "providerDisabled"),
       executionContext: null,
@@ -268,20 +263,17 @@ function buildCustomActionExecutionRequest({
   )
   const prompt = replaceSelectionToolbarCustomActionPromptTokens(action.prompt, promptTokens)
   const outputSchema = modelFields.map(({ name, type }) => ({ name, type }))
-  const providerKey = provider.kind === "local" ? provider.config.provider : provider.id
-  const model = provider.kind === "local" ? provider.config.model : undefined
-  const modelName = provider.kind === "local" ? (resolveModelId(provider.config.model) ?? "") : ""
-  const reasoning = provider.kind === "local" ? getTopLevelReasoning(provider.config) : undefined
-  const providerOptions =
-    provider.kind === "local"
-      ? getProviderOptionsWithOverride(
-          modelName,
-          provider.config.provider,
-          provider.config.providerOptions,
-          reasoning,
-        )
-      : undefined
-  const temperature = provider.kind === "local" ? provider.config.temperature : undefined
+  const providerKey = provider.config.provider
+  const model = provider.config.model
+  const modelName = resolveModelId(provider.config.model) ?? ""
+  const reasoning = getTopLevelReasoning(provider.config)
+  const providerOptions = getProviderOptionsWithOverride(
+    modelName,
+    provider.config.provider,
+    provider.config.providerOptions,
+    reasoning,
+  )
+  const temperature = provider.config.temperature
 
   return {
     analytics: {
@@ -314,7 +306,6 @@ function buildCustomActionExecutionRequest({
     selectionValues: getSelectionOutputValues(action.outputSchema, promptTokens.selection),
     payload: {
       providerId: provider.id,
-      modelTier: provider.kind === "system" ? provider.modelTier : undefined,
       instructions: systemPrompt,
       prompt,
       outputSchema,
@@ -415,7 +406,6 @@ export function useCustomActionExecution({
         const finalResult = await streamBackgroundStructuredObject(
           {
             ...request.payload,
-            requestId: getRandomUUID(),
           },
           {
             signal: abortController.signal,

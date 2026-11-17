@@ -19,11 +19,7 @@ export default function TranslatePromptSelector() {
   const translateProviderRef = useAtomValue(featureProviderRefAtom("pageTranslation"))
   const [translateConfig, setTranslateConfig] = useAtom(configFieldsAtomMap.pageTranslation)
 
-  if (
-    !translateProviderRef ||
-    (translateProviderRef.kind === "local" && !isLLMProvider(translateProviderRef.config.provider))
-  )
-    return null
+  if (!translateProviderRef || !isLLMProvider(translateProviderRef.config.provider)) return null
 
   const customPromptsConfig = translateConfig.customPromptsConfig
   const { patterns, promptId } = customPromptsConfig

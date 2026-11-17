@@ -1,15 +1,7 @@
 name: Read Frog
-extName: "Read Frog - ИИ-перевод и карточки"
-extDescription: "Двуязычный ИИ-перевод веб-страниц и субтитров YouTube, Netflix и X. Сохраняйте новые слова и повторяйте их на карточках."
+extName: "Read Frog - AI-перевод"
+extDescription: "Двуязычный перевод веб-страниц и видеосубтитров, пользовательские AI-действия и собственные провайдеры."
 uninstallSurveyUrl: https://tally.so/r/nPK6Ob
-account:
-  login: Войти
-  webApp: Веб-приложение
-  logout: Выйти
-  logoutError: Не удалось выйти. Попробуйте ещё раз.
-  grantAccess: Предоставить доступ
-  grantAccessHint: Нужен доступ к readfrog.app
-  grantAccessError: Не удалось предоставить доступ. Попробуйте ещё раз.
 dataTypes:
   string: Текст
   number: Число
@@ -116,7 +108,6 @@ options:
     product: Продукт
   tools:
     translationHub: Центр переводов
-    pdfTranslation: Перевод PDF
   product:
     roadmap: Дорожная карта
   helpAndCommunity:
@@ -158,36 +149,11 @@ options:
     description: Добавьте провайдеров, которых может вызывать Read Frog. Более 20 встроено; также можно добавить пользовательские API, совместимые с Chat Completions, и API Open Responses.
     configTitle: Настройка провайдеров
     addProvider: Добавить провайдера
-    builtInProvider: Встроенный провайдер
     yourProviders: Ваши провайдеры
-    builtInAiUsage:
-      title: Квота встроенного ИИ
-      remaining: "Осталось $1%"
-      supportedFeatures: "Поддерживает функций: $1"
-      resetsAt: "Сброс: $1"
-      daily: Дневная квота
-      weekly: Недельная квота
-      oneTime: Бонусная квота
-      expiresAt: "Истекает: $1"
-      features:
-        pageTranslation: Перевод страницы
-        customAction: Пользовательские AI-действия
-        noteSuggestion: Подсказки для заметок
-        selectionTranslation: Перевод выделения
-        videoSubtitles: Субтитры видео
-        inputTranslation: Перевод ввода
-        languageDetection: Определение языка
-        pdfTranslation: Перевод PDF
-    sponsorCta: Получить быстрый и выгодный ИИ
-    sponsorCtaJalapenoCloud: Получить GLM 5.3 со скидкой 50 %
-    sponsorCtaIfapi: "+10% к балансу с кодом READFROG"
     setApiKeyWarning:
       message: Укажите API-ключ на странице $1
     badges:
       featureCount: $1 функций
-      sponsor: Спонсор
-      sponsorJalapenoCloud: $$1 бесплатно
-      sponsorIfapi: Модели -90%
     dialog:
       title: Добавить нового провайдера
       groups:
@@ -261,13 +227,8 @@ options:
       invalidJson: Неверный формат JSON
     providers:
       name:
-        builtInAi: Встроенный ИИ
-        builtInAiAdvance: Продвинутый встроенный ИИ
         customChatComplete: Пользовательский Chat Complete
         customResponses: Пользовательский Responses
-      attribution:
-        builtInAi: Стандартная модель, размещённая Read Frog. Подписчики Pro и Ultra могут использовать её во всех функциях в рамках недельной квоты; на бесплатном тарифе она доступна только в пользовательских AI-действиях.
-        builtInAiAdvance: Продвинутая модель, размещённая Read Frog, — только для подписчиков Ultra. Работает во всех функциях встроенного ИИ — переводе страниц, пользовательских AI-действиях и других — с общей недельной квотой. Расходует квоту быстрее, чем стандартная модель.
       description:
         openai: Предоставляет модели, такие как GPT-4o
         azure: Модели OpenAI в Azure через ваши развертывания
@@ -320,13 +281,11 @@ options:
         selectionTranslation: Перевод выделения
         inputTranslation: Перевод ввода
         videoSubtitles: Субтитры видео
-        noteSuggestion: Подсказки для заметок
       descriptions:
         pageTranslation: Переводит страницу целиком — в двуязычном режиме или с заменой оригинала.
         selectionTranslation: "Переводит выделенный текст; аннотации слов тоже берут значение отсюда."
         inputTranslation: Переводит то, что вы набрали в поле ввода, перед отправкой.
         videoSubtitles: Переводит субтитры, которые появляются в видеоплеере.
-        noteSuggestion: Предлагает слова, которые стоит сохранить в Notebase, после перевода выделенного текста.
     languageDetection:
       title: Определение языка
       description: Влияет на точность определения языка для автоперевода и выбора голоса озвучивания.
@@ -654,13 +613,6 @@ options:
       speak:
         title: Озвучивание
         description: Показывать кнопку озвучивания, которая читает выделенный текст вслух
-      noteSuggestion:
-        title: Подсказки для заметок
-        description: После перевода выделенного текста с помощью ИИ-провайдера предлагать слова для сохранения в Notebase
-        action: Действие
-        actionDescription: Действие, которое формирует предложение
-        provider: Провайдер
-        providerDescription: ИИ-провайдер, который формирует предложение
     display:
       title: Отображение
       opacity:
@@ -693,12 +645,6 @@ options:
       edit: Редактировать AI-действие
       empty: Пока нет пользовательских AI-действий
       noEnabledLlmProvider: Включите хотя бы одного LLM-провайдера перед созданием пользовательских AI-действий
-      tabs:
-        config: Настройка
-        notebase: Notebase
-        hasErrors: Есть ошибки
-        connected: Подключено
-        needsAttention: Требует внимания
       form:
         name: Название
         customize: Настроить
@@ -813,51 +759,6 @@ options:
             tooLong: Макет длиннее $1 символов и не может быть сохранён.
             fieldNotShown: «$1» не показывается в этом макете.
             reservedFieldName: Имя поля «$1» зарезервировано в макетах. Переименуйте поле.
-        notebase:
-          title: Подключение Notebase
-          description: Сохранить структурированные результаты этого действия в удалённую Notebase.
-          loginRequiredTitle: Войдите, чтобы настроить Notebase
-          loginRequiredDescription: Войдите на readfrog.app, прежде чем выбирать notebase или редактировать сопоставления.
-          loginRequiredConnectedDescription: Это подключение создано аккаунтом ниже. Если войти в тот же аккаунт, сопоставления полей будут восстановлены. Если войти в другой аккаунт, прежние сопоставления будут очищены при создании или подключении Notebase.
-          loginAction: Войти
-          connectedAccountLabel: Подключённый аккаунт
-          currentAccountLabel: Текущий аккаунт
-          unknownConnectedAccount: Неизвестный аккаунт
-          tableLabel: Notebase
-          tablePlaceholder: Выберите notebase
-          tableClearOption: Не подключать notebase
-          clearConnectionAction: Очистить подключение
-          refreshAction: Обновить
-          emptyTitle: Notebase пока нет
-          emptyDescription: Создайте notebase на readfrog.app, затем вернитесь сюда и сопоставьте поля.
-          openNotebaseAction: Открыть Notebase
-          accessDeniedTitle: Нет доступа к Notebase
-          accessDeniedDescription: У этого аккаунта нет разрешения на загрузку данных Notebase.
-          listErrorTitle: Не удалось загрузить список Notebase
-          listErrorDescription: Попробуйте обновить список Notebase чуть позже.
-          accountMismatchTitle: Подключение Notebase принадлежит другому аккаунту
-          accountMismatchDescription: Это подключение связано с аккаунтом ниже. Очистите его или выберите Notebase, доступную текущему аккаунту.
-          tableUnavailableTitle: Выбранная notebase больше недоступна
-          tableUnavailableDescription: Эта Notebase больше не существует или не открывается. Очистите подключение или выберите другую Notebase.
-          tableUnavailableOption: недоступно
-          schemaErrorTitle: Не удалось загрузить схему notebase
-          schemaErrorDescription: Попробуйте обновить схему ещё раз чуть позже.
-          schemaLoading: Загрузка схемы notebase...
-          mappingsLabel: Сопоставления полей
-          localFieldLabel: Поле действия
-          remoteFieldLabel: Поле Notebase
-          columnUnavailableOption: удалено
-          invalidMappingsTitle: Некоторые сопоставления требуют внимания
-          invalidMappingsDescription: Некорректные сопоставления сохранены. Исправьте их перед сохранением в Notebase.
-          noFieldSavedTitle: "В этот Notebase не сохраняется ни одно поле"
-          noFieldSavedDescription: "Чтобы сохранять заметки, выберите поле Notebase хотя бы для одного поля."
-          mappingSummary: "Сохраняются: $1 · Пропущены: $2 · Не решено: $3"
-          skipFieldOption: "Не сохранять"
-          undecidedFieldPlaceholder: "Выберите поле Notebase или не сохраняйте"
-          mappingMissingLocal: Сопоставленное поле действия больше не существует.
-          mappingMissingRemote: Сопоставленное поле notebase больше не существует.
-          mappingMissingSchema: Обновите схему notebase, чтобы проверить это сопоставление.
-          mappingIncompatible: Типы полей больше не совпадают.
         tokens:
           selection: Содержимое выделенного текста
           paragraphs: Текст абзацев, пересекающихся с выделением, объединённый пустыми строками; при отправке в пользовательские AI-действия обрезается до первых 2000 символов
@@ -1441,20 +1342,6 @@ options:
       pauseOnHover:
         title: Пауза при наведении
         description: Ставит видео на паузу, пока указатель задерживается на субтитрах, и продолжает воспроизведение, когда он уходит. Нажатие на слово для поиска всегда ставит паузу.
-    aiQuota:
-      title: Лимит ИИ-субтитров
-      description: ИИ распознаёт речь и создаёт точные субтитры для любого видео
-      launchBonusPromo: Оформите подписку до $1 и получите дополнительно 300 минут расшифровки
-      loginRequired: Войдите, чтобы посмотреть лимит ИИ-субтитров
-      upgradeRequired: Для ИИ-субтитров нужна подписка Pro или Ultra
-      pools:
-        subscription: Месячная квота
-        launchBonus: Подарок к запуску
-      resetsOn: Сброс $1
-      expiresOn: Истекает $1
-      loadError: Не удалось загрузить лимит. Повторите попытку позже.
-      remainingOf: Осталось $1 / $2 мин
-      used: Использовано $1 мин
     style:
       title: Стиль субтитров
       description: Режим отображения, положение, шрифты, цвета и фон — всё настраивается по живому предпросмотру
@@ -1568,7 +1455,6 @@ side:
 translateService:
   title: Сервис перевода
   description: Только для перевода веб-страницы
-  builtInModels: Built-in Models
   llmModels: LLM Models
   normalTranslator: Обычный переводчик
   selectServices: Выберите сервисы
@@ -1648,42 +1534,7 @@ action:
   viewContextDetails: Контекст
   customizeCustomAction: Настроить действие $1
   customActionLayoutFallback: Этот результат нельзя показать в его макете, поэтому показан упрощённый вид.
-  saveToNotebase: Сохранить в Notebase
-  saveToNotebaseSaving: Сохранение...
-  saveToNotebaseSuccess: Сохранено в Notebase
-  saveToNotebaseFailed: Не удалось сохранить в Notebase
-  saveToNotebaseLoginRequired: Войдите на readfrog.app, чтобы сохранить в Notebase
-  saveToNotebaseAccessDenied: Этот аккаунт не может открыть выбранную Notebase
-  saveToNotebaseLimitExceeded: Для сохранения большего числа заметок Notebase требуется апгрейд
-  saveToNotebaseTableUnavailable: Выбранная Notebase больше недоступна
-  saveToNotebaseConnectionInvalid: Это подключение Notebase устарело. Обновите его в Custom AI Actions и исправьте сопоставления.
-  saveToNotebaseInvalidContent: "В ответе ИИ есть значение в неверном формате, поэтому он не сохранён. Запустите действие ещё раз и сохраните."
-  saveToNotebaseNoFieldSaved: "Не сохранено: это действие не сохраняет в Notebase ни одного поля. Выберите хотя бы одно в настройках."
-  saveToNotebaseUndecidedTitle: "Сохранено. Вы ещё не решили, сохранять ли эти поля"
-  saveToNotebaseSkipUndecided: "Не сохранять их"
-  saveToNotebaseNoMappings: Добавьте хотя бы одно корректное сопоставление перед сохранением
-  saveToNotebaseCreateTitle: Создать Notebase?
-  saveToNotebaseCreateDescription: Создать Notebase с колонками из этого Custom Action и сохранить текущий результат как первую заметку.
-  saveToNotebaseCreateAndSave: Создать и сохранить
-  saveToNotebaseCreateAndSaveShort: Создать и сохранить
-  saveToNotebaseLoginAndCreate: Войти и создать автоматически
-  saveToNotebaseLoginAndSave: Войти и сохранить
-  saveToNotebaseConnectExisting: Подключить существующую Notebase
-  saveToNotebaseGoConfigure: Настроить
-  saveToNotebaseLoginConnectedTitle: Войти и сохранить?
-  saveToNotebaseLoginConnectedDescription: Этот Custom Action подключён к аккаунту ниже. После входа Read Frog сохранит в существующую Notebase, если это возможно, или создаст новую Notebase для текущего аккаунта.
-  saveToNotebaseConnectionUnavailableTitle: Подключение Notebase недоступно
-  saveToNotebaseMissingNotebaseDescription: Старая Notebase больше не существует или недоступна этому аккаунту. Создайте новую Notebase и сохраните результат либо подключите существующую Notebase в Custom AI Actions.
-  saveToNotebaseAccountUnavailableDescription: Текущий аккаунт не совпадает с подключённым аккаунтом ниже. Создание и сохранение заменит прежнее подключение и сопоставления полей. Также можно подключить существующую Notebase в Custom AI Actions.
-  saveToNotebasePendingLogin: Войдите, чтобы завершить сохранение
-  saveToNotebasePendingLoginDescription: После входа Read Frog автоматически создаст Notebase и сохранит этот результат.
-  saveToNotebasePendingConnectedLoginDescription: После входа Read Frog сохранит в подключённую Notebase, если это возможно. Если аккаунт не может её использовать, будет создана новая Notebase.
-  upgrade: Повысить тариф
-  updatePayment: Обновить оплату
   openCustomActions: Открыть Custom AI Actions
-  openNotebase: Открыть Notebase
-  reviewDueOne: "Карточек к повторению: $1"
-  reviewDueOther: "Карточек к повторению: $1"
   contextDetailsTitleLabel: Заголовок
   contextDetailsParagraphsLabel: Абзацы
   translation: Перевод
@@ -1694,13 +1545,6 @@ action:
   unpinFromToolbar: Открепить от панели
   dragToReorder: Перетащите, чтобы изменить порядок
   addCustomAction: Добавить своё AI-действие
-noteSuggestion:
-  title: Стоит сохранить
-  description: Выберите слова для сохранения в Notebase и повторяйте их в любое время.
-  save: Сохранить
-  saved: Сохранено
-  staleSuggestion: Это предложение устарело
-  toggleLabel: Показывать подсказки для заметок
 thinking:
   label: Размышление
   complete: Размышление завершено
@@ -1727,10 +1571,6 @@ subtitles:
       retry: Повторить
       emptyTitle: Нет субтитров для показа
       backToCurrent: К текущему
-  loadingAiSubtitles: Загрузка ИИ-субтитров… (ожидается 3 мин)
-  aiSubtitlesHint: Точные субтитры создаются с помощью передового ИИ-распознавания речи и доступны даже без официальных субтитров.
-  requestAiSubtitles: Запросить ИИ-субтитры
-  usingAiSubtitles: Используются ИИ-субтитры
   settings: Настройки субтитров
   autoStartOnPlatform: "Запускать автоматически на $1"
   toggle:
@@ -1764,35 +1604,10 @@ subtitles:
     aiRateLimited: Слишком много запросов, пожалуйста, повторите позже
     aiAuthFailed: Ошибка аутентификации API, проверьте ваш API ключ
     aiServiceUnavailable: Служба перевода временно недоступна
-    aiQuotaExceeded: Месячный лимит ИИ-субтитров исчерпан
-    aiQuotaExceededWithReset: Месячный лимит ИИ-субтитров исчерпан · сброс $1
-    aiLoginRequired: Войдите, чтобы посмотреть лимит ИИ-субтитров
-    aiSubscriptionRequired: Для ИИ-субтитров нужна подписка Pro или Ultra
-    aiPaymentRequired: Обновите способ оплаты, чтобы продолжить создание ИИ-субтитров
-    aiVideoTooLong: Это видео слишком длинное для ИИ-субтитров
-    aiLiveReplayUnsupported: ИИ-субтитры пока недоступны для записей прямых трансляций
-    aiStillProcessing: Транскрипция ещё идёт — нажмите ещё раз через несколько минут
-    aiRequestFailed: Не удалось запросить ИИ-субтитры, повторите попытку позже
     aiNoResponse: Служба AI не ответила, отображается оригинальный текст
     translatedExportFailed: Не удалось создать переведённые субтитры
     translatedExportIncomplete: Не удалось перевести все строки субтитров
     translatedExportSameLanguage: Исходный и целевой языки совпадают
-hostedAi:
-  planBadge:
-    pro: Требуется план Pro или Ultra · Нажмите на значок, чтобы получить его
-    ultra: Требуется план Ultra · Нажмите на значок, чтобы получить его
-  availability:
-    authenticationRequired: Войдите, чтобы использовать этого провайдера
-    ultraRequired: Требуется план Ultra
-    proRequired: Требуется план Pro или Ultra
-    quotaExhausted: Квота исчерпана
-    serviceUnavailable: Временно недоступно
-    usedPercent: "Использовано квоты: $1%"
-    resetsAt: "Сброс в $1"
-  errors:
-    rateLimited: Слишком много запросов, пожалуйста, повторите позже.
-    guestRateLimited: Слишком много гостевых запросов. Повторите позже.
-    userRateLimited: Слишком много запросов. Повторите позже.
 hotkey:
   control: Ctrl
   alt: Option

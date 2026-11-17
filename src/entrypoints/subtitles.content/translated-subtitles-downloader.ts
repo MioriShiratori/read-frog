@@ -172,8 +172,7 @@ export class TranslatedSubtitlesDownloader {
     operationId: number,
     pageTitle: string,
   ): Promise<SubtitlesFragment[]> {
-    // One resolve for the whole export: segmentation runs per 60s chunk, and a
-    // hosted ref would otherwise pay a hostedAi.status round trip per chunk.
+    // Resolve the generation provider once for the whole export.
     // The generation tasks (segmentation, summary) get the ref narrowed once
     // here — a translate-only provider exports the rule-based recut without a
     // doomed prompt attempt per chunk.

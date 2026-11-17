@@ -1,4 +1,4 @@
-import type { LanguageTag, NoteSaveSurface } from "@read-frog/definitions"
+import type { LanguageTag } from "@read-frog/definitions"
 import type { AllProviderTypes } from "@/types/config/provider"
 import type { TranslationMode } from "@/types/config/translate"
 
@@ -10,8 +10,6 @@ export const ANALYTICS_FEATURE = {
   TRANSLATION_HUB: "translation_hub",
   VIDEO_SUBTITLES: "video_subtitles",
   TEXT_TO_SPEECH: "text_to_speech",
-  NOTE_SUGGESTION: "note_suggestion",
-  NOTE_SAVE: "note_save",
   GLOSSARY: "glossary",
   WORD_ANNOTATION: "word_annotation",
 } as const
@@ -64,13 +62,7 @@ export const ANALYTICS_FAILURE_REASONS = [
 
 export type AnalyticsFailureReason = (typeof ANALYTICS_FAILURE_REASONS)[number]
 
-/** How a Notebase save reached the server. */
-export const NOTE_SAVE_PATHS = ["direct", "create_notebase", "after_login"] as const
-
-export type NoteSavePath = (typeof NOTE_SAVE_PATHS)[number]
-
 export const ANALYTICS_PROVIDER = {
-  BUILT_IN_AI: "read-frog-built-in-ai",
   EDGE_TTS: "edge-tts",
   UNKNOWN: "unknown",
 } as const
@@ -106,8 +98,6 @@ export interface SurfaceByFeature {
     | "tts_settings"
     | "translation_hub"
     | "video_subtitles"
-  note_suggestion: "selection_toolbar"
-  note_save: "selection_toolbar" | "video_subtitles"
   glossary: "page_translation" | "video_subtitles" | "selection_toolbar" | "input_translation"
   word_annotation: "selection_toolbar" | "shortcut" | "annotation_mode"
 }
@@ -130,18 +120,6 @@ export interface ObservedByFeature {
   translation_hub: { char_count: number; target_language: LanguageTag }
   video_subtitles: { target_language: LanguageTag }
   text_to_speech: unknown
-  note_suggestion:
-    | { action_id: "suggestion_shown" }
-    | { action_id: "suggestion_accepted"; action_name: string }
-  note_save:
-    | { action_id: "save_requested"; save_source: NoteSaveSurface; note_count: number }
-    | {
-        action_id: "save_completed"
-        save_source: NoteSaveSurface
-        note_count: number
-        path: NoteSavePath
-        is_guide: boolean
-      }
   glossary: { target_language: LanguageTag }
   word_annotation: { char_count: number; target_language: LanguageTag }
 }

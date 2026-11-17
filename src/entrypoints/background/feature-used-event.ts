@@ -18,9 +18,7 @@ import { captureFeatureUsedEventInBackground } from "./analytics"
  */
 export function setupFeatureUsedEventHandlers(): void {
   onMessage("trackFeatureUsedEvent", async (message) => {
-    const isSaveRequest =
-      message.data.feature === "note_save" && message.data.action_id === "save_requested"
-    if (message.data.outcome === "success" && !isSaveRequest) {
+    if (message.data.outcome === "success") {
       void recordFeatureActiveDay()
     }
 

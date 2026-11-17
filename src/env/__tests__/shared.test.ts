@@ -52,13 +52,11 @@ describe("extension env resolution", () => {
       resolveExtensionEnv({
         WXT_USE_LOCAL_PACKAGES: "true",
         WXT_API_URL: "https://preview-api.readfrog.app",
-        WXT_AUTH_COOKIE_DOMAINS: "preview.readfrog.app",
       }),
     ).toMatchObject({
       ...LOCAL_EXTENSION_ENV_DEFAULTS,
       WXT_USE_LOCAL_PACKAGES: "true",
       WXT_API_URL: "https://preview-api.readfrog.app",
-      WXT_AUTH_COOKIE_DOMAINS: "preview.readfrog.app",
     })
   })
 
@@ -82,13 +80,11 @@ describe("extension env parsing", () => {
       parseResolvedExtensionEnv({
         WXT_WEBSITE_URL: "https://www.readfrog.app",
         WXT_OFFICIAL_SITE_ORIGINS: "https://readfrog.app,https://www.readfrog.app",
-        WXT_AUTH_COOKIE_DOMAINS: "readfrog.app,localhost",
       }),
     ).toEqual({
       WXT_API_URL: PRODUCTION_EXTENSION_ENV_DEFAULTS.WXT_API_URL,
       WXT_WEBSITE_URL: "https://www.readfrog.app",
       WXT_OFFICIAL_SITE_ORIGINS: ["https://readfrog.app", "https://www.readfrog.app"],
-      WXT_AUTH_COOKIE_DOMAINS: ["readfrog.app", "localhost"],
       WXT_GOOGLE_CLIENT_ID: undefined,
       WXT_POSTHOG_HOST: undefined,
       WXT_POSTHOG_API_KEY: undefined,
@@ -117,14 +113,6 @@ describe("extension env parsing", () => {
         WXT_OFFICIAL_SITE_ORIGINS: "https://readfrog.app/docs",
       }),
     ).toThrowError("must be an origin without a trailing slash or path")
-  })
-
-  it("rejects cookie domains with leading dots", () => {
-    expect(() =>
-      parseResolvedExtensionEnv({
-        WXT_AUTH_COOKIE_DOMAINS: ".readfrog.app,localhost",
-      }),
-    ).toThrowError("must not start with '.'")
   })
 
   it("rejects comma-separated entries with spaces", () => {
@@ -159,7 +147,6 @@ describe("extension env parsing", () => {
       WXT_API_URL: PRODUCTION_EXTENSION_ENV_DEFAULTS.WXT_API_URL,
       WXT_WEBSITE_URL: PRODUCTION_EXTENSION_ENV_DEFAULTS.WXT_WEBSITE_URL,
       WXT_OFFICIAL_SITE_ORIGINS: ["https://readfrog.app", "https://www.readfrog.app"],
-      WXT_AUTH_COOKIE_DOMAINS: ["readfrog.app"],
       WXT_GOOGLE_CLIENT_ID: PRODUCTION_REQUIRED_ENV.WXT_GOOGLE_CLIENT_ID,
       WXT_POSTHOG_HOST: PRODUCTION_REQUIRED_ENV.WXT_POSTHOG_HOST,
       WXT_POSTHOG_API_KEY: PRODUCTION_REQUIRED_ENV.WXT_POSTHOG_API_KEY,
@@ -181,7 +168,6 @@ describe("extension env parsing", () => {
       WXT_API_URL: PRODUCTION_EXTENSION_ENV_DEFAULTS.WXT_API_URL,
       WXT_WEBSITE_URL: PRODUCTION_EXTENSION_ENV_DEFAULTS.WXT_WEBSITE_URL,
       WXT_OFFICIAL_SITE_ORIGINS: ["https://readfrog.app", "https://www.readfrog.app"],
-      WXT_AUTH_COOKIE_DOMAINS: ["readfrog.app"],
       WXT_GOOGLE_CLIENT_ID: undefined,
       WXT_POSTHOG_HOST: undefined,
       WXT_POSTHOG_API_KEY: undefined,

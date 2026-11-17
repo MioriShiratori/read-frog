@@ -14,7 +14,7 @@
 </p>
 
 An AI language-learning extension for browsers, and an open-source alternative to Immersive Translate.<br/>
-Translate web pages, the sentences you select, and subtitles on YouTube, X, and Netflix. Then save the words you meet and review them as flashcards on an FSRS schedule.<br/>
+Translate web pages, the sentences you select, and subtitles on YouTube, X, and Netflix. Use your own AI providers for dictionary lookups, explanations, and writing assistance.<br/>
 Master languages effortlessly and deeply with AI, right in your browser.
 
 [![English][english-shield]](./README.md) [![简体中文][chinese-shield]](./readmes/README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./readmes/README.zh-TW.md) [![日本語][japanese-shield]](./readmes/README.ja.md) [![한국어][korean-shield]](./readmes/README.ko.md) [![Español][spanish-shield]](./readmes/README.es.md) [![Русский][russian-shield]](./readmes/README.ru.md) [![Türkçe][turkish-shield]](./readmes/README.tr.md) [![Tiếng Việt][vietnamese-shield]](./readmes/README.vi.md)
@@ -50,7 +50,6 @@ Master languages effortlessly and deeply with AI, right in your browser.
   - [Community](#community)
 - [✨ Features](#-features)
   - [🪄 Custom AI Actions](#-custom-ai-actions)
-  - [🧠 Flashcards \& Spaced Repetition](#-flashcards--spaced-repetition)
   - [🔄 Bilingual / Translation Only](#-bilingual--translation-only)
   - [✨ Selection Translation](#-selection-translation)
   - [🧠 Context-Aware Translation](#-context-aware-translation)
@@ -120,6 +119,8 @@ Whether you are a user or a developer, Read Frog will be an important part of yo
 
 </div>
 
+> This fork removes Read Frog accounts, subscriptions, hosted AI, cloud notes, and audio transcription. Translation and custom actions use the providers you configure. Google Drive backup keeps its separate authorization.
+
 ## ✨ Features
 
 Transform your everyday web reading into an immersive language learning journey with Read Frog's powerful features.
@@ -128,19 +129,7 @@ Transform your everyday web reading into an immersive language learning journey 
 
 Turn selected text into reusable AI tools that match the way you read and learn. Define your own prompts and structured output fields, choose a provider, model, and icon, then run the action directly from the selection toolbar for dictionary lookups, rewriting, summaries, explanations, or any workflow you design.
 
-Start with the built-in **Dictionary** and **Improve Writing** templates, or build an action from scratch. Structured results can also be mapped and saved to Notebase for later study.
-
-<div align="right">
-
-[![Back to top][back-to-top]](#readme-top)
-
-</div>
-
-### 🧠 [Flashcards & Spaced Repetition][docs-learning]
-
-Save vocabulary, definitions, example sentences, translations, and reading notes to Notebase, then turn them into flashcards with customizable card templates. Content you discover while reading becomes study material without interrupting your flow.
-
-Review due cards online and rate each one **Again**, **Hard**, **Good**, or **Easy**. Read Frog's spaced-repetition scheduler uses your feedback to decide when each card should appear again—right before you are likely to forget it.
+Start with the built-in **Dictionary** and **Improve Writing** templates, or build an action from scratch.
 
 <div align="right">
 
@@ -194,7 +183,7 @@ This means technical terms get translated correctly within their domain, literar
 
 ### 🎬 [Subtitle Translation][video-subtitles]
 
-Translate subtitles on YouTube, X, and Netflix right in the video player. The translation appears with the original line, in sync with the video. For YouTube videos without captions, AI can transcribe the audio and show the result as the same bilingual subtitles (included in Pro and Ultra). Select any word in the subtitles to look it up and save it for review.
+Translate subtitles on YouTube, X, and Netflix right in the video player. The translation appears with the original line, in sync with the video. Select any word in the subtitles to look it up using your configured AI provider.
 
 <div align="right">
 
@@ -370,7 +359,6 @@ Every donation helps us build a better language learning experience. Thank you f
 
 [blog-context-translation]: https://www.readfrog.app/en/blog/smart-context-translation?utm_source=github&utm_medium=readme&utm_campaign=read-frog&utm_content=en
 [docs-custom-actions]: https://www.readfrog.app/en/docs/custom-actions?utm_source=github&utm_medium=readme&utm_campaign=read-frog&utm_content=en
-[docs-learning]: https://www.readfrog.app/en/docs/learning?utm_source=github&utm_medium=readme&utm_campaign=read-frog&utm_content=en
 [docs-page-translation]: https://www.readfrog.app/en/docs/page-translation?utm_source=github&utm_medium=readme&utm_campaign=read-frog&utm_content=en
 [docs-providers]: https://www.readfrog.app/en/docs/providers/overview?utm_source=github&utm_medium=readme&utm_campaign=read-frog&utm_content=en
 [docs-request-control]: https://www.readfrog.app/en/docs/request-control?utm_source=github&utm_medium=readme&utm_campaign=read-frog&utm_content=en

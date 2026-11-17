@@ -1,15 +1,7 @@
 name: Read Frog
-extName: "Read Frog - Dịch AI và thẻ ghi nhớ"
-extDescription: "Dịch song ngữ bằng AI cho trang web và phụ đề YouTube, Netflix, X. Lưu từ mới và ôn tập bằng thẻ ghi nhớ."
+extName: "Read Frog - Dịch AI"
+extDescription: "Dịch song ngữ trang web và phụ đề video, hỗ trợ tác vụ AI tùy chỉnh và nhà cung cấp của bạn."
 uninstallSurveyUrl: https://tally.so/r/nPK6Ob
-account:
-  login: Đăng nhập
-  webApp: Ứng dụng web
-  logout: Đăng xuất
-  logoutError: Đăng xuất thất bại. Vui lòng thử lại.
-  grantAccess: Cấp quyền truy cập
-  grantAccessHint: Cần quyền truy cập readfrog.app
-  grantAccessError: Không thể cấp quyền truy cập. Vui lòng thử lại.
 dataTypes:
   string: Văn bản
   number: Số
@@ -116,7 +108,6 @@ options:
     product: Sản phẩm
   tools:
     translationHub: Trung tâm Dịch thuật
-    pdfTranslation: Dịch PDF
   product:
     roadmap: Lộ trình
   helpAndCommunity:
@@ -158,36 +149,11 @@ options:
     description: Thêm các nhà cung cấp mà Read Frog có thể gọi. Hơn 20 nhà cung cấp được tích hợp sẵn; bạn cũng có thể thêm API tùy chỉnh tương thích Chat Completions và API Open Responses.
     configTitle: Cấu hình nhà cung cấp
     addProvider: Thêm nhà cung cấp
-    builtInProvider: Nhà cung cấp tích hợp
     yourProviders: Nhà cung cấp của bạn
-    builtInAiUsage:
-      title: Hạn mức AI tích hợp
-      remaining: "Còn lại $1%"
-      supportedFeatures: "Hỗ trợ $1 tính năng"
-      resetsAt: "Đặt lại lúc $1"
-      daily: Hạn mức mỗi ngày
-      weekly: Hạn mức mỗi tuần
-      oneTime: Hạn mức tặng
-      expiresAt: "Hết hạn lúc $1"
-      features:
-        pageTranslation: Dịch trang
-        customAction: Hành động AI tùy chỉnh
-        noteSuggestion: Gợi ý ghi chú
-        selectionTranslation: Dịch vùng chọn
-        videoSubtitles: Phụ đề video
-        inputTranslation: Dịch đầu vào
-        languageDetection: Phát hiện ngôn ngữ
-        pdfTranslation: Dịch PDF
-    sponsorCta: Nhận AI nhanh, tiết kiệm chi phí
-    sponsorCtaJalapenoCloud: Nhận ưu đãi giảm 50% GLM 5.3
-    sponsorCtaIfapi: Tặng thêm 10% với mã READFROG
     setApiKeyWarning:
       message: Hãy đặt API Key ở trang $1
     badges:
       featureCount: $1 tính năng
-      sponsor: Tài trợ
-      sponsorJalapenoCloud: Miễn phí $$1
-      sponsorIfapi: Mô hình -90%
     dialog:
       title: Thêm nhà cung cấp mới
       groups:
@@ -261,13 +227,8 @@ options:
       invalidJson: Định dạng JSON không hợp lệ
     providers:
       name:
-        builtInAi: AI tích hợp
-        builtInAiAdvance: AI tích hợp nâng cao
         customChatComplete: Tùy chỉnh Chat Complete
         customResponses: Tùy chỉnh Responses
-      attribution:
-        builtInAi: Mô hình tiêu chuẩn do Read Frog lưu trữ. Người dùng Pro và Ultra dùng được ở mọi tính năng trong hạn mức tuần; ở gói miễn phí chỉ dùng được trong hành động AI tùy chỉnh.
-        builtInAiAdvance: Mô hình nâng cao do Read Frog lưu trữ, dành riêng cho thành viên Ultra. Dùng được ở mọi tính năng AI tích hợp — dịch trang, hành động AI tùy chỉnh và hơn nữa — với hạn mức tuần dùng chung. Tiêu hao hạn mức nhanh hơn mô hình tiêu chuẩn.
       description:
         openai: Cung cấp các mô hình như GPT-4o
         azure: Mô hình OpenAI lưu trữ trên Azure qua các bản triển khai của bạn
@@ -320,13 +281,11 @@ options:
         selectionTranslation: Dịch thanh công cụ chọn
         inputTranslation: Dịch đầu vào
         videoSubtitles: Phụ đề video
-        noteSuggestion: Gợi ý ghi chú
       descriptions:
         pageTranslation: Dịch toàn bộ trang ở chế độ song ngữ hoặc thay thế bản gốc.
         selectionTranslation: "Dịch văn bản bạn chọn; nghĩa của chú thích từ cũng lấy từ đây."
         inputTranslation: Dịch nội dung bạn gõ trong ô nhập trước khi gửi.
         videoSubtitles: Dịch phụ đề hiện ra trong trình phát video.
-        noteSuggestion: Gợi ý các từ đáng lưu vào Notebase sau khi dịch vùng chọn.
     languageDetection:
       title: Phát hiện ngôn ngữ
       description: Ảnh hưởng đến phát hiện ngôn ngữ tự động dịch và độ chính xác chọn giọng nói.
@@ -654,13 +613,6 @@ options:
       speak:
         title: Đọc
         description: Hiển thị nút đọc, dùng để đọc to văn bản đã chọn
-      noteSuggestion:
-        title: Gợi ý ghi chú
-        description: Sau khi dịch vùng chọn bằng nhà cung cấp AI, gợi ý các từ để lưu vào Notebase
-        action: Hành động
-        actionDescription: Hành động tạo ra gợi ý
-        provider: Nhà cung cấp
-        providerDescription: Nhà cung cấp AI tạo ra gợi ý
     display:
       title: Hiển thị
       opacity:
@@ -693,12 +645,6 @@ options:
       edit: Chỉnh sửa hành động AI
       empty: Chưa có hành động AI tùy chỉnh
       noEnabledLlmProvider: Hãy bật ít nhất một nhà cung cấp LLM trước khi tạo hành động AI tùy chỉnh
-      tabs:
-        config: Cấu hình
-        notebase: Notebase
-        hasErrors: Có lỗi
-        connected: Đã kết nối
-        needsAttention: Cần chú ý
       form:
         name: Tên
         customize: Tùy chỉnh
@@ -813,51 +759,6 @@ options:
             tooLong: Bố cục này dài hơn $1 ký tự và không thể lưu.
             fieldNotShown: '"$1" không được hiển thị trong bố cục này.'
             reservedFieldName: Tên trường "$1" là tên dành riêng trong bố cục. Hãy đổi tên trường.
-        notebase:
-          title: Kết nối Notebase
-          description: Lưu kết quả có cấu trúc của hành động này vào Notebase từ xa.
-          loginRequiredTitle: Đăng nhập để cấu hình Notebase
-          loginRequiredDescription: Hãy đăng nhập trên readfrog.app trước khi chọn notebase hoặc chỉnh sửa ánh xạ.
-          loginRequiredConnectedDescription: Kết nối này được tạo bởi tài khoản bên dưới. Nếu đăng nhập bằng cùng tài khoản, ánh xạ trường sẽ được khôi phục. Nếu đăng nhập bằng tài khoản khác, các ánh xạ cũ sẽ bị xóa khi bạn tạo hoặc kết nối Notebase.
-          loginAction: Đăng nhập
-          connectedAccountLabel: Tài khoản đã kết nối
-          currentAccountLabel: Tài khoản hiện tại
-          unknownConnectedAccount: Tài khoản không xác định
-          tableLabel: Notebase
-          tablePlaceholder: Chọn một notebase
-          tableClearOption: Không kết nối notebase
-          clearConnectionAction: Xóa kết nối
-          refreshAction: Làm mới
-          emptyTitle: Chưa có Notebase nào
-          emptyDescription: Hãy tạo một notebase trên readfrog.app rồi quay lại đây để ánh xạ các trường.
-          openNotebaseAction: Mở Notebase
-          accessDeniedTitle: Không thể truy cập Notebase
-          accessDeniedDescription: Tài khoản này không có quyền tải dữ liệu Notebase.
-          listErrorTitle: Không tải được danh sách Notebase
-          listErrorDescription: Hãy thử làm mới danh sách Notebase sau ít phút nữa.
-          accountMismatchTitle: Kết nối Notebase thuộc tài khoản khác
-          accountMismatchDescription: Kết nối này gắn với tài khoản bên dưới. Hãy xóa kết nối hoặc chọn một Notebase mà tài khoản hiện tại có thể truy cập.
-          tableUnavailableTitle: Notebase đã chọn không còn khả dụng
-          tableUnavailableDescription: Notebase này không còn tồn tại hoặc không mở được. Hãy xóa kết nối hoặc chọn một Notebase khác.
-          tableUnavailableOption: không khả dụng
-          schemaErrorTitle: Không tải được schema notebase
-          schemaErrorDescription: Hãy thử làm mới lại sau ít phút nữa.
-          schemaLoading: Đang tải schema notebase...
-          mappingsLabel: Ánh xạ trường
-          localFieldLabel: Trường của hành động
-          remoteFieldLabel: Trường Notebase
-          columnUnavailableOption: đã xóa
-          invalidMappingsTitle: Một số ánh xạ cần được xử lý
-          invalidMappingsDescription: Các ánh xạ không hợp lệ vẫn được giữ lại. Hãy sửa chúng trước khi lưu vào Notebase.
-          noFieldSavedTitle: "Không có trường nào được lưu vào Notebase này"
-          noFieldSavedDescription: "Hãy chọn trường Notebase cho ít nhất một trường để lưu ghi chú."
-          mappingSummary: "Lưu $1 · Bỏ qua $2 · Chưa quyết định $3"
-          skipFieldOption: "Không lưu"
-          undecidedFieldPlaceholder: "Chọn một trường Notebase hoặc không lưu"
-          mappingMissingLocal: Trường của hành động đã ánh xạ không còn tồn tại.
-          mappingMissingRemote: Trường notebase đã ánh xạ không còn tồn tại.
-          mappingMissingSchema: Hãy làm mới schema notebase để xác thực ánh xạ này.
-          mappingIncompatible: Kiểu trường không còn khớp nữa.
         tokens:
           selection: Nội dung văn bản đã chọn
           paragraphs: Nội dung các đoạn giao với vùng chọn, được nối bằng dòng trống, sẽ bị cắt còn 2000 ký tự đầu khi gửi vào hành động AI tùy chỉnh
@@ -1441,20 +1342,6 @@ options:
       pauseOnHover:
         title: Tạm dừng khi di chuột
         description: Tạm dừng video khi con trỏ dừng trên phụ đề và phát tiếp khi con trỏ rời đi. Nhấp vào một từ để tra luôn tạm dừng video.
-    aiQuota:
-      title: Hạn mức phụ đề AI
-      description: AI dùng công nghệ nhận dạng giọng nói để tạo phụ đề chính xác cho mọi video
-      launchBonusPromo: Đăng ký trước $1 để nhận thêm 300 phút chuyển lời nói thành văn bản
-      loginRequired: Đăng nhập để xem hạn mức phụ đề AI của bạn
-      upgradeRequired: Phụ đề AI cần gói Pro hoặc Ultra
-      pools:
-        subscription: Hạn mức hằng tháng
-        launchBonus: Quà ra mắt
-      resetsOn: Đặt lại vào $1
-      expiresOn: Hết hạn vào $1
-      loadError: Không thể tải hạn mức. Vui lòng thử lại sau.
-      remainingOf: Còn $1 / $2 phút
-      used: Đã dùng $1 phút
     style:
       title: Kiểu phụ đề
       description: Chế độ hiển thị, vị trí, phông chữ, màu sắc và nền, chỉnh ngay trên bản xem trước
@@ -1568,7 +1455,6 @@ side:
 translateService:
   title: Dịch vụ dịch thuật
   description: Chỉ để dịch trang web
-  builtInModels: Built-in Models
   llmModels: LLM Models
   normalTranslator: Trình dịch thông thường
   selectServices: Chọn dịch vụ
@@ -1648,42 +1534,7 @@ action:
   viewContextDetails: Ngữ cảnh
   customizeCustomAction: Tùy chỉnh hành động $1
   customActionLayoutFallback: Không thể hiển thị kết quả này theo bố cục nên đang hiển thị dạng đơn giản.
-  saveToNotebase: Lưu vào Notebase
-  saveToNotebaseSaving: Đang lưu...
-  saveToNotebaseSuccess: Đã lưu vào Notebase
-  saveToNotebaseFailed: Không thể lưu vào Notebase
-  saveToNotebaseLoginRequired: Hãy đăng nhập trên readfrog.app để lưu vào Notebase
-  saveToNotebaseAccessDenied: Tài khoản này không thể truy cập Notebase đã chọn
-  saveToNotebaseLimitExceeded: Cần nâng cấp để lưu thêm ghi chú Notebase
-  saveToNotebaseTableUnavailable: Notebase đã chọn không còn khả dụng
-  saveToNotebaseConnectionInvalid: Kết nối Notebase này đã lỗi thời. Hãy làm mới trong Custom AI Actions và sửa các ánh xạ.
-  saveToNotebaseInvalidContent: "Câu trả lời của AI có giá trị sai định dạng nên chưa được lưu. Hãy chạy lại thao tác rồi lưu."
-  saveToNotebaseNoFieldSaved: "Chưa lưu: thao tác này không lưu trường nào vào Notebase. Hãy chọn ít nhất một trường trong phần cài đặt."
-  saveToNotebaseUndecidedTitle: "Đã lưu. Bạn chưa quyết định có lưu các trường này không"
-  saveToNotebaseSkipUndecided: "Không lưu các trường này"
-  saveToNotebaseNoMappings: Hãy thêm ít nhất một ánh xạ hợp lệ trước khi lưu
-  saveToNotebaseCreateTitle: Tạo Notebase?
-  saveToNotebaseCreateDescription: Tạo một Notebase có các cột khớp với Custom Action này, rồi lưu kết quả hiện tại làm ghi chú đầu tiên.
-  saveToNotebaseCreateAndSave: Tạo và lưu
-  saveToNotebaseCreateAndSaveShort: Tạo và lưu
-  saveToNotebaseLoginAndCreate: Đăng nhập và tự tạo
-  saveToNotebaseLoginAndSave: Đăng nhập và lưu
-  saveToNotebaseConnectExisting: Kết nối Notebase hiện có
-  saveToNotebaseGoConfigure: Cấu hình
-  saveToNotebaseLoginConnectedTitle: Đăng nhập để lưu?
-  saveToNotebaseLoginConnectedDescription: Custom Action này đang kết nối với tài khoản bên dưới. Sau khi đăng nhập, Read Frog sẽ lưu vào Notebase hiện có nếu có thể, hoặc tạo Notebase mới cho tài khoản đã đăng nhập.
-  saveToNotebaseConnectionUnavailableTitle: Kết nối Notebase không khả dụng
-  saveToNotebaseMissingNotebaseDescription: Notebase cũ không còn tồn tại hoặc tài khoản này không mở được. Hãy tạo Notebase mới và lưu kết quả này, hoặc kết nối Notebase hiện có trong Custom AI Actions.
-  saveToNotebaseAccountUnavailableDescription: Tài khoản đã đăng nhập không khớp với tài khoản đã kết nối bên dưới. Tạo và lưu sẽ thay thế kết nối trước đó cùng các ánh xạ trường. Bạn cũng có thể kết nối Notebase hiện có trong Custom AI Actions.
-  saveToNotebasePendingLogin: Đăng nhập để hoàn tất lưu
-  saveToNotebasePendingLoginDescription: Sau khi đăng nhập, Read Frog sẽ tự động tạo Notebase và lưu kết quả này.
-  saveToNotebasePendingConnectedLoginDescription: Sau khi đăng nhập, Read Frog sẽ lưu vào Notebase đã kết nối nếu có thể. Nếu tài khoản này không dùng được, Read Frog sẽ tạo Notebase mới và lưu kết quả này.
-  upgrade: Nâng cấp
-  updatePayment: Cập nhật thanh toán
   openCustomActions: Mở Custom AI Actions
-  openNotebase: Mở Notebase
-  reviewDueOne: "$1 thẻ cần ôn tập"
-  reviewDueOther: "$1 thẻ cần ôn tập"
   contextDetailsTitleLabel: Tiêu đề
   contextDetailsParagraphsLabel: Các đoạn văn
   translation: Dịch
@@ -1694,13 +1545,6 @@ action:
   unpinFromToolbar: Bỏ ghim khỏi thanh công cụ
   dragToReorder: Kéo để sắp xếp lại
   addCustomAction: Thêm hành động AI tùy chỉnh
-noteSuggestion:
-  title: Có thể bạn muốn lưu
-  description: Chọn những từ bạn muốn lưu vào Notebase để ôn tập bất cứ lúc nào.
-  save: Lưu
-  saved: Đã lưu
-  staleSuggestion: Gợi ý này đã cũ
-  toggleLabel: Hiện gợi ý ghi chú
 thinking:
   label: Đang suy luận
   complete: Suy luận hoàn tất
@@ -1727,10 +1571,6 @@ subtitles:
       retry: Thử lại
       emptyTitle: Không có phụ đề để hiển thị
       backToCurrent: Về vị trí hiện tại
-  loadingAiSubtitles: Đang tải phụ đề AI… (dự kiến 3 phút)
-  aiSubtitlesHint: Phụ đề chính xác được tạo bằng công nghệ nhận dạng giọng nói AI tiên tiến, dùng được ngay cả khi không có phụ đề chính thức.
-  requestAiSubtitles: Yêu cầu phụ đề AI
-  usingAiSubtitles: Đang dùng phụ đề AI
   settings: Cài đặt phụ đề
   autoStartOnPlatform: "Tự động bật khi mở video $1"
   toggle:
@@ -1764,35 +1604,10 @@ subtitles:
     aiRateLimited: Quá nhiều yêu cầu, vui lòng thử lại sau
     aiAuthFailed: Xác thực API thất bại, vui lòng kiểm tra API key của bạn
     aiServiceUnavailable: Dịch vụ dịch thuật tạm thời không khả dụng
-    aiQuotaExceeded: Đã dùng hết hạn mức phụ đề AI trong tháng
-    aiQuotaExceededWithReset: Đã dùng hết hạn mức phụ đề AI trong tháng · đặt lại vào $1
-    aiLoginRequired: Đăng nhập để xem hạn mức phụ đề AI của bạn
-    aiSubscriptionRequired: Phụ đề AI cần gói Pro hoặc Ultra
-    aiPaymentRequired: Cập nhật phương thức thanh toán để tiếp tục tạo phụ đề AI
-    aiVideoTooLong: Video này quá dài để tạo phụ đề AI
-    aiLiveReplayUnsupported: Phụ đề AI chưa hỗ trợ bản phát lại của buổi phát trực tiếp
-    aiStillProcessing: Quá trình phiên âm vẫn đang chạy — hãy bấm lại sau vài phút
-    aiRequestFailed: Yêu cầu phụ đề AI thất bại, vui lòng thử lại sau
     aiNoResponse: Dịch vụ AI không phản hồi, hiển thị văn bản gốc
     translatedExportFailed: Không thể tạo phụ đề đã dịch
     translatedExportIncomplete: Không thể dịch tất cả các dòng phụ đề
     translatedExportSameLanguage: Ngôn ngữ nguồn và ngôn ngữ đích giống nhau
-hostedAi:
-  planBadge:
-    pro: Yêu cầu gói Pro hoặc Ultra · Nhấp vào huy hiệu để nhận gói
-    ultra: Yêu cầu gói Ultra · Nhấp vào huy hiệu để nhận gói
-  availability:
-    authenticationRequired: Đăng nhập để sử dụng nhà cung cấp này
-    ultraRequired: Yêu cầu gói Ultra
-    proRequired: Yêu cầu gói Pro hoặc Ultra
-    quotaExhausted: Đã hết hạn mức
-    serviceUnavailable: Tạm thời không khả dụng
-    usedPercent: "Đã dùng hạn mức: $1%"
-    resetsAt: "Đặt lại lúc $1"
-  errors:
-    rateLimited: Quá nhiều yêu cầu, vui lòng thử lại sau.
-    guestRateLimited: Quá nhiều yêu cầu từ khách. Vui lòng thử lại sau.
-    userRateLimited: Quá nhiều yêu cầu. Vui lòng thử lại sau.
 hotkey:
   control: Ctrl
   alt: Option

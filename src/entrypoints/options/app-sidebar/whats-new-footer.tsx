@@ -12,7 +12,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/base-ui/popover"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/base-ui/sidebar"
-import { useResolvedAccountPlan } from "@/components/user-account-menu/shared"
 import { env } from "@/env"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import {
@@ -31,7 +30,6 @@ export function WhatsNewFooter() {
   const [open, setOpen] = useState(false)
   const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
   const blogLocale = getBlogLocaleFromUILanguage(uiLanguage)
-  const plan = useResolvedAccountPlan()
 
   const { data: lastViewedDate, isFetched: isLastViewedDateFetched } = useQuery({
     queryKey: ["last-viewed-blog-date"],
@@ -44,7 +42,7 @@ export function WhatsNewFooter() {
   })
 
   const markLatestBlogPostViewed = useEffectEvent(async () => {
-    if (!latestBlogPost) {
+    if (!latestBlogPost || latestBlogPost.type === "promotion") {
       return
     }
 
@@ -74,16 +72,10 @@ export function WhatsNewFooter() {
     ? `${latestBlogPost.url}:${latestBlogPost.date.toISOString()}`
     : null
   const lastViewedDateTimestamp = lastViewedDate?.getTime() ?? null
-  // Pro and Ultra already pay, so a sale must not pop open on them; the post
-  // stays one click away behind What's New. Hold off until the plan is known,
-  // or a paid account would see the sale flash open while billing loads.
-  const holdsPromotionBack =
-    latestBlogPost?.type === "promotion" &&
-    (plan === undefined || plan === "pro" || plan === "ultra")
   const shouldAutoOpenPopover =
     isLastViewedDateFetched &&
     isLatestBlogPostFetched &&
-    !holdsPromotionBack &&
+    latestBlogPost?.type !== "promotion" &&
     hasNewBlogPost(lastViewedDate ?? null, latestBlogPostDate)
 
   useEffect(() => {
@@ -105,7 +97,7 @@ export function WhatsNewFooter() {
     // oxlint-disable-next-line react/exhaustive-effect-dependencies -- the dependencies are re-run triggers, not values the effect body reads
   }, [isLastViewedDateFetched, lastViewedDateTimestamp, latestBlogPostKey, open])
 
-  if (!latestBlogPost) {
+  if (!latestBlogPost || latestBlogPost.type === "promotion") {
     return null
   }
 

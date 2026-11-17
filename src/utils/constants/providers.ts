@@ -1,12 +1,9 @@
+import type { LLMProviderModels, LLMProviderTypes, ProvidersConfig } from "@/types/config/provider"
 import type {
   AllProviderTypes,
   APIProviderTypes,
   CustomModelOnlyProviderTypes,
-  LLMProviderModels,
-  LLMProviderTypes,
   ProviderConfig,
-  ProvidersConfig,
-  ProviderSponsorConfig,
 } from "@/types/config/provider"
 import type { Theme } from "@/types/config/theme"
 import { APP_NAME } from "@read-frog/definitions"
@@ -195,7 +192,6 @@ export const PROVIDER_ITEMS: Record<
     logo: (theme: Theme) => string
     name: string
     website: string
-    sponsor?: ProviderSponsorConfig
     /**
      * Where someone signs up for or copies this provider's key. Only providers that set it get
      * the "Get API key" button next to the API key field — absent means no button, because most
@@ -227,35 +223,22 @@ export const PROVIDER_ITEMS: Record<
   jalapenocloud: {
     logo: () => jalapenoCloudLogo,
     name: "Jalapeno Cloud",
-    website: "https://www.jalapeno-cloud.ai/readfrog",
-    apiKeyUrl: "https://www.jalapeno-cloud.ai/readfrog",
-    sponsor: {
-      sponsoring: true,
-      referUrl: "https://www.jalapeno-cloud.ai/readfrog",
-      // Both default to the generic sponsor wording; Jalapeno names its actual offer instead.
-      badgeI18nKey: "options.apiProviders.badges.sponsorJalapenoCloud",
-      ctaI18nKey: "options.apiProviders.sponsorCtaJalapenoCloud",
-    },
+    website: "https://www.jalapeno-cloud.ai/",
+    apiKeyUrl: "https://www.jalapeno-cloud.ai/",
   },
   ifapi: {
     logo: (theme: Theme) => (theme === "light" ? ifapiLogoLight : ifapiLogoDark),
     name: "IF API",
-    website: "https://ifapi.org/?aff=readfrog&utm_source=readfrog&utm_medium=app",
+    website: "https://ifapi.org/",
     // The sign-up page sends someone already signed in straight to their console, so one link
     // serves both new and returning users.
-    apiKeyUrl: "https://ifapi.org/sign-up?aff=readfrog&utm_source=readfrog&utm_medium=app",
-    sponsor: {
-      sponsoring: true,
-      referUrl: "https://ifapi.org/sign-up?aff=readfrog&utm_source=readfrog&utm_medium=app",
-      badgeI18nKey: "options.apiProviders.badges.sponsorIfapi",
-      ctaI18nKey: "options.apiProviders.sponsorCtaIfapi",
-    },
+    apiKeyUrl: "https://ifapi.org/sign-up",
   },
   atlascloud: {
     logo: getLobeIconsCDNUrlFn("atlascloud"),
     name: "Atlas Cloud",
-    website: "https://readfrog.s.gy/altas",
-    apiKeyUrl: "https://readfrog.s.gy/altas",
+    website: "https://www.atlascloud.ai/",
+    apiKeyUrl: "https://www.atlascloud.ai/",
   },
   "openai-compatible": {
     logo: () => customProviderLogo,

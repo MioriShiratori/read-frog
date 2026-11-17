@@ -2,7 +2,6 @@ import type { LanguageTag } from "@read-frog/definitions"
 import type { FeatureUsageContext } from "@/types/analytics"
 import type { Config } from "@/types/config/config"
 import debounce from "debounce"
-import { toastManager } from "@/components/ui/base-ui/toast"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { classifyFailureReason } from "@/utils/analytics-failure-reason"
@@ -58,7 +57,6 @@ import { translateTextForPageTitle } from "@/utils/host/translate/translate-vari
 import {
   beginPageTranslationSession,
   endPageTranslationSession,
-  setPageTranslationSessionProviderRef,
 } from "@/utils/host/translate/translation-session"
 import { cleanupNodeSiteRuleCSSIfUnused } from "@/utils/host/translate/ui/node-site-rule-css"
 import { cancelSpinnerAnimation } from "@/utils/host/translate/ui/spinner"
@@ -68,7 +66,6 @@ import { createLogger } from "@/utils/logging/logger"
 import { sendMessage } from "@/utils/message"
 import {
   canResolvedProviderRefGenerateText,
-  checkProviderAvailability,
   resolvePageTranslationProvider,
   resolvePageTranslationProviderOrNull,
 } from "@/utils/providers/provider-ref"
@@ -416,24 +413,6 @@ export class PageTranslationManager implements IPageTranslationManager {
     // explicit guard for type-safety and for malformed storage snapshots.
     if (!requestedProviderConfig) return
 
-    const availability = await checkProviderAvailability(requestedProviderConfig, "pageTranslation")
-    if (this.pendingStart !== startToken) {
-      return
-    }
-    if (!availability.available) {
-      toastManager.add({ type: "error", title: availability.message })
-      if (trackedContext) {
-        void trackFeatureUsed({
-          ...trackedContext,
-          ...providerAnalytics,
-          ...pageAnalytics(),
-          outcome: "failure",
-          failure_reason: "precheck",
-        })
-      }
-      return
-    }
-
     try {
       const providerConfig = resolvePageTranslationProvider(config)
 
@@ -447,7 +426,6 @@ export class PageTranslationManager implements IPageTranslationManager {
       const sessionVersion = this.translationSessionVersion
 
       beginPageTranslationSession()
-      setPageTranslationSessionProviderRef(availability.providerRef)
 
       try {
         await sendMessage("setAndNotifyPageTranslationStateChangedByManager", {
@@ -472,12 +450,6 @@ export class PageTranslationManager implements IPageTranslationManager {
         void ensureSiteRuleCSS(document, siteRule.injectedCss)
       }
 
-      // Same predicate `getWebPagePromptContext` uses to decide whether it
-      // needs the context at all. Excluding system providers was right while
-      // hosted runs sent no context; now that they do, skipping the warm-up
-      // only moves the Defuddle full-document parse out of setup and into the
-      // first translation call, where it blocks the first visible paragraph
-      // and janks the main thread on a long page.
       await this.primeDocumentTitleContext(
         config.pageTranslation.enableAIContentAware &&
           canResolvedProviderRefGenerateText(providerConfig),

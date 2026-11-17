@@ -18,11 +18,6 @@ const badgeVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         brand: "bg-brand text-brand-foreground [a]:hover:bg-brand/80",
         accent: "bg-accent text-accent-foreground [a]:hover:bg-accent/80",
-        // Translucent glass. Paints its own background and text colour, and
-        // needs the base `border-transparent` intact — the rim gradient is the
-        // border. Pair with a `glass-badge-*` plan class (see theme.css) to
-        // supply the tint, glow and rim; on its own it renders untinted.
-        glass: "glass-badge",
       },
       size: {
         default: "h-5 px-2 py-0.5 text-xs [&>svg]:size-3!",

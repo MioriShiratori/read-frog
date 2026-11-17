@@ -46,10 +46,11 @@ function setup() {
   const sessionId = beginPageTranslationSession()
   const translate = (text: string, overrides: Record<string, unknown> = {}) =>
     translateTextCore({
+      feature: "pageTranslation",
       text,
       langConfig,
       providerConfig: googleProviderConfig,
-      hostedFeature: "pageTranslation",
+
       sessionId,
       ...overrides,
     })

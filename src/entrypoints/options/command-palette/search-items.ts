@@ -1,8 +1,5 @@
 import type { GeneratedI18nStructure } from "#i18n"
-import {
-  CUSTOM_ACTION_LAYOUT_SECTION_ID,
-  CUSTOM_ACTION_NOTEBASE_SECTION_ID,
-} from "@/utils/navigation"
+import { CUSTOM_ACTION_LAYOUT_SECTION_ID } from "@/utils/navigation"
 
 type I18nKey = keyof GeneratedI18nStructure
 
@@ -229,14 +226,6 @@ export const SEARCH_ITEMS: SearchItem[] = [
     descriptionKey: "options.selectionToolbar.customActions.form.layout.description",
     pageKey: "options.selectionToolbar.customActions.title",
   },
-  {
-    // The Notebase tab trigger itself; the scroll activates it.
-    sectionId: CUSTOM_ACTION_NOTEBASE_SECTION_ID,
-    route: "/custom-actions",
-    titleKey: "options.selectionToolbar.customActions.form.notebase.title",
-    descriptionKey: "options.selectionToolbar.customActions.form.notebase.description",
-    pageKey: "options.selectionToolbar.customActions.title",
-  },
 
   // Translation page
   {
@@ -427,13 +416,7 @@ export const SEARCH_ITEMS: SearchItem[] = [
     descriptionKey: "options.selectionToolbar.actions.translate.description",
     pageKey: "options.selectionToolbar.title",
   },
-  {
-    sectionId: "selection-toolbar-note-suggestion",
-    route: "/selection-toolbar",
-    titleKey: "options.selectionToolbar.actions.noteSuggestion.title",
-    descriptionKey: "options.selectionToolbar.actions.noteSuggestion.description",
-    pageKey: "options.selectionToolbar.title",
-  },
+
   {
     sectionId: "selection-toolbar-annotation",
     route: "/selection-toolbar",
@@ -519,13 +502,7 @@ export const SEARCH_ITEMS: SearchItem[] = [
     descriptionKey: "options.videoSubtitles.preference.pauseOnHover.description",
     pageKey: "options.videoSubtitles.title",
   },
-  {
-    sectionId: "subtitles-ai-quota",
-    route: "/video-subtitles",
-    titleKey: "options.videoSubtitles.aiQuota.title",
-    descriptionKey: "options.videoSubtitles.aiQuota.description",
-    pageKey: "options.videoSubtitles.title",
-  },
+
   {
     // Its own page, drilled into from the Video Subtitles page's Subtitle style section.
     sectionId: "subtitles-style",

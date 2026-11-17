@@ -1,16 +1,7 @@
-import type { AutosaveController } from "@/components/form/autosave-controller"
-import type { APIProviderConfig } from "@/types/config/provider"
-import type { FeatureKey } from "@/utils/constants/feature-providers"
-import type { BuiltInAiProviderId } from "@/utils/constants/provider-ids"
-import type { HostedAiUpgradePlan } from "@/utils/hosted-ai/types"
 import { Icon } from "@iconify/react"
 import { useSelector } from "@tanstack/react-store"
-import { useAtomValue, useSetAtom } from "jotai"
-import { createContext, use, useState } from "react"
-import { UpgradePlanBadge } from "@/components/badges/upgrade-plan-badge"
-import { useAutosave } from "@/components/form/use-autosave"
-import ProviderIcon from "@/components/provider-icon"
-import { useTheme } from "@/components/providers/theme-provider"
+import { useAtomValue } from "jotai"
+import { useState } from "react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,26 +21,19 @@ import {
 } from "@/components/ui/base-ui/collapsible"
 import { Switch } from "@/components/ui/base-ui/switch"
 import { isLLMProvider } from "@/types/config/provider"
-import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
+import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
 import {
-  buildFeatureProviderPatch,
   FEATURE_KEYS,
   FEATURE_PROVIDER_DEFS,
   getFeatureLabelI18nKey,
 } from "@/utils/constants/feature-providers"
-import { API_PROVIDER_ITEMS } from "@/utils/constants/providers"
-import { getSelectionToolbarActions, patchSelectionToolbarAction } from "@/utils/custom-actions"
+import { getSelectionToolbarActions } from "@/utils/custom-actions"
 import { i18n } from "@/utils/i18n"
-import {
-  BUILT_IN_AI_PROVIDER_LOGO,
-  getBuiltInAiProviderName,
-} from "@/utils/providers/provider-registry"
 import { providerSupportsTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
 import { cn } from "@/utils/styles/utils"
 import { APIKeyField } from "./provider-config-form/api-key-field"
 import { AdvancedOptionsSection } from "./provider-config-form/components/advanced-options-section"
 import { ConfigHeader as ProviderConfigHeader } from "./provider-config-form/config-header"
-import { formOpts, useAppForm } from "./provider-config-form/form"
 import { ProviderHeadersField } from "./provider-config-form/provider-headers-field"
 import { ProviderOptionsField } from "./provider-config-form/provider-options-field"
 import { ProviderSpecificSettingsField } from "./provider-config-form/provider-specific-settings-field"
@@ -57,230 +41,18 @@ import { ProviderURLField } from "./provider-config-form/provider-url-field"
 import { ReasoningField } from "./provider-config-form/reasoning-field"
 import { TemperatureField } from "./provider-config-form/temperature-field"
 import { TranslateModelSelector } from "./provider-config-form/translate-model-selector"
-
-interface ProviderIdentity {
-  id: string
-  logo: string
-  name: string
-}
-
-interface ProviderEditorContextValue {
-  state: {
-    identity: ProviderIdentity
-    assignmentTarget: {
-      providerId: string
-      providerType?: APIProviderConfig["provider"]
-    }
-  }
-  actions: {
-    assignFeature: (featureKey: FeatureKey) => Promise<void>
-    assignLanguageDetection: () => Promise<void>
-    assignCustomAction: (actionId: string) => Promise<void>
-    duplicate?: () => Promise<void>
-    delete?: () => Promise<void>
-  }
-}
-
-const ProviderEditorContext = createContext<ProviderEditorContextValue | null>(null)
-
-export function useProviderEditor() {
-  const context = use(ProviderEditorContext)
-  if (!context) {
-    throw new Error("ProviderEditor components must be rendered inside a ProviderEditor Provider")
-  }
-  return context
-}
-
-function useRequiredProviderCommand(command: "duplicate" | "delete") {
-  const action = useProviderEditor().actions[command]
-  if (!action) {
-    throw new Error(`ProviderEditor.${command} is unavailable in this composition`)
-  }
-  return action
-}
-
-function useProviderEditorValue({
-  identity,
-  providerType,
-  duplicate,
-  delete: deleteProvider,
-}: {
-  identity: ProviderIdentity
-  providerType?: APIProviderConfig["provider"]
-  duplicate?: () => Promise<void>
-  delete?: () => Promise<void>
-}): ProviderEditorContextValue {
-  const config = useAtomValue(configAtom)
-  const setConfig = useSetAtom(writeConfigAtom)
-  const providerId = identity.id
-
-  const getEnabledProvidersConfig = () => {
-    const provider = config.providersConfig.find((item) => item.id === providerId)
-    if (!provider || provider.enabled) {
-      return undefined
-    }
-
-    return config.providersConfig.map((item) =>
-      item.id === providerId ? { ...item, enabled: true } : item,
-    )
-  }
-
-  const getAssignmentProvidersPatch = () => {
-    const providersConfig = getEnabledProvidersConfig()
-    return providersConfig ? { providersConfig } : {}
-  }
-
-  return {
-    state: {
-      identity,
-      assignmentTarget: {
-        providerId,
-        ...(providerType ? { providerType } : {}),
-      },
-    },
-    actions: {
-      assignFeature: async (featureKey) => {
-        await setConfig({
-          ...buildFeatureProviderPatch({ [featureKey]: providerId }),
-          ...getAssignmentProvidersPatch(),
-        })
-      },
-      assignLanguageDetection: async () => {
-        await setConfig({
-          languageDetection: {
-            mode: "llm",
-            providerId,
-          },
-          ...getAssignmentProvidersPatch(),
-        })
-      },
-      assignCustomAction: async (actionId) => {
-        await setConfig({
-          selectionToolbar: patchSelectionToolbarAction(config.selectionToolbar, actionId, {
-            providerId,
-          }),
-          ...getAssignmentProvidersPatch(),
-        })
-      },
-      ...(duplicate ? { duplicate } : {}),
-      ...(deleteProvider ? { delete: deleteProvider } : {}),
-    },
-  }
-}
-
-function BuiltInProvider({
-  providerId,
-  children,
-}: {
-  providerId: BuiltInAiProviderId
-  children: React.ReactNode
-}) {
-  const value = useProviderEditorValue({
-    identity: {
-      id: providerId,
-      logo: BUILT_IN_AI_PROVIDER_LOGO,
-      name: getBuiltInAiProviderName(providerId),
-    },
-  })
-
-  return <ProviderEditorContext value={value}>{children}</ProviderEditorContext>
-}
-
-export function useProviderForm(
-  providerConfig: APIProviderConfig,
-  save: (providerConfig: APIProviderConfig, changes: Partial<APIProviderConfig>) => Promise<void>,
-) {
-  const form = useAppForm({
-    ...formOpts,
-    defaultValues: providerConfig,
-    onSubmitMeta: { revision: 0 },
-    onSubmit: async ({ value, meta }) => {
-      await autosave.commit(value, meta.revision)
-    },
-  })
-  const autosave: AutosaveController<APIProviderConfig> = useAutosave({
-    initialValue: providerConfig,
-    getDraft: () => form.state.values,
-    setField: (key, value) =>
-      form.setFieldValue(key, value as never, { dontUpdateMeta: true, dontRunListeners: true }),
-    reset: (value) => form.reset(value),
-    submit: (revision) => form.handleSubmit({ revision }),
-    persist: save,
-  })
-  return { form, autosave }
-}
-
-type ProviderForm = ReturnType<typeof useProviderForm>["form"]
-
-const ApiProviderFormContext = createContext<ProviderForm | null>(null)
-
-function useApiProviderForm() {
-  const form = use(ApiProviderFormContext)
-  if (!form) {
-    throw new Error("ProviderEditor form fields require a CustomProviderEditor Provider")
-  }
-  return form
-}
-
-function CustomProvider({
-  providerConfig,
-  form,
-  duplicate,
-  delete: deleteProvider,
-  children,
-}: {
-  providerConfig: APIProviderConfig
-  form: ProviderForm
-  duplicate: () => Promise<void>
-  delete: () => Promise<void>
-  children: React.ReactNode
-}) {
-  const { theme } = useTheme()
-  const provider = API_PROVIDER_ITEMS[providerConfig.provider]
-  const value = useProviderEditorValue({
-    identity: {
-      id: providerConfig.id,
-      logo: provider.logo(theme),
-      name: providerConfig.name,
-    },
-    providerType: providerConfig.provider,
-    duplicate,
-    delete: deleteProvider,
-  })
-
-  return (
-    <ProviderEditorContext value={value}>
-      <ApiProviderFormContext value={form}>{children}</ApiProviderFormContext>
-    </ProviderEditorContext>
-  )
-}
+import { CustomProvider, useApiProviderForm, useProviderEditor } from "./provider-editor-context"
+export { useProviderEditor, useProviderForm } from "./provider-editor-context"
 
 function Form({ children }: { children: React.ReactNode }) {
   const form = useApiProviderForm()
   return <form.AppForm>{children}</form.AppForm>
 }
 
-function Identity() {
-  const { identity } = useProviderEditor().state
-  return (
-    <ProviderIcon
-      logo={identity.logo}
-      name={identity.name}
-      size="base"
-      textClassName="font-medium"
-    />
-  )
-}
-
-function Attribution({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm leading-6 text-muted-foreground">{children}</p>
-}
-
 function ConfigHeader() {
   const form = useApiProviderForm()
   const providerType = useSelector(form.store, (state) => state.values.provider)
-  const apiKey = useSelector(form.store, (state) => state.values.apiKey)
-  return <ProviderConfigHeader providerType={providerType} apiKey={apiKey} />
+  return <ProviderConfigHeader providerType={providerType} />
 }
 
 function NameField() {
@@ -384,13 +156,11 @@ function AssignmentRow({
   checked,
   children,
   disabled = false,
-  upgradeTo,
   onCheckedChange,
 }: {
   checked: boolean
   children: React.ReactNode
   disabled?: boolean
-  upgradeTo?: HostedAiUpgradePlan
   onCheckedChange: (checked: boolean) => void
 }) {
   return (
@@ -400,7 +170,6 @@ function AssignmentRow({
     <label className="flex w-fit items-center gap-2">
       <Switch checked={checked} disabled={checked || disabled} onCheckedChange={onCheckedChange} />
       <span className="text-sm">{children}</span>
-      {upgradeTo && <UpgradePlanBadge plan={upgradeTo} />}
     </label>
   )
 }
@@ -413,10 +182,6 @@ function CompatibleFeatureAssignments() {
     actions,
   } = useProviderEditor()
   const config = useAtomValue(configAtom)
-
-  if (!providerType) {
-    return null
-  }
 
   return FEATURE_KEYS.filter(
     (featureKey) =>
@@ -446,10 +211,8 @@ function CompatibleFeatureAssignments() {
 
 function LanguageDetectionAssignment({
   disabled = false,
-  upgradeTo,
 }: {
   disabled?: boolean
-  upgradeTo?: HostedAiUpgradePlan
 } = {}) {
   const {
     state: {
@@ -461,7 +224,7 @@ function LanguageDetectionAssignment({
 
   // Built-in providers have no local providerType, but declare this capability
   // in the provider registry. Local non-LLM providers still cannot take it.
-  if (providerType && !isLLMProvider(providerType)) {
+  if (!isLLMProvider(providerType)) {
     return null
   }
 
@@ -472,7 +235,6 @@ function LanguageDetectionAssignment({
     <AssignmentRow
       checked={isAssigned}
       disabled={disabled}
-      upgradeTo={upgradeTo}
       onCheckedChange={(checked) => {
         if (checked) void actions.assignLanguageDetection()
       }}
@@ -482,52 +244,7 @@ function LanguageDetectionAssignment({
   )
 }
 
-/**
- * A single feature row (from FEATURE_KEYS) for the built-in provider editors.
- * Local API providers keep using CompatibleFeatureAssignments; this row exists
- * so the built-in editors can offer their hosted-capable features without
- * pretending to a providerType. `upgradeTo` is the plan this account lacks for
- * it (badged), `disabled` the viewer's actual access.
- */
-function FeatureAssignment({
-  featureKey,
-  disabled = false,
-  upgradeTo,
-}: {
-  featureKey: FeatureKey
-  disabled?: boolean
-  upgradeTo?: HostedAiUpgradePlan
-}) {
-  const {
-    state: {
-      assignmentTarget: { providerId },
-    },
-    actions,
-  } = useProviderEditor()
-  const config = useAtomValue(configAtom)
-  const isAssigned = FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config) === providerId
-
-  return (
-    <AssignmentRow
-      checked={isAssigned}
-      disabled={disabled}
-      upgradeTo={upgradeTo}
-      onCheckedChange={(checked) => {
-        if (checked) void actions.assignFeature(featureKey)
-      }}
-    >
-      {i18n.t(getFeatureLabelI18nKey(featureKey))}
-    </AssignmentRow>
-  )
-}
-
-function CustomActionAssignments({
-  disabled = false,
-  upgradeTo,
-}: {
-  disabled?: boolean
-  upgradeTo?: HostedAiUpgradePlan
-}) {
+function CustomActionAssignments({ disabled = false }: { disabled?: boolean }) {
   const {
     state: {
       assignmentTarget: { providerId, providerType },
@@ -536,7 +253,7 @@ function CustomActionAssignments({
   } = useProviderEditor()
   const config = useAtomValue(configAtom)
 
-  if (providerType && !isLLMProvider(providerType)) {
+  if (!isLLMProvider(providerType)) {
     return null
   }
 
@@ -547,7 +264,6 @@ function CustomActionAssignments({
         key={action.id}
         checked={isAssigned}
         disabled={disabled}
-        upgradeTo={upgradeTo}
         onCheckedChange={(checked) => {
           if (checked) void actions.assignCustomAction(action.id)
         }}
@@ -559,7 +275,7 @@ function CustomActionAssignments({
 }
 
 function DuplicateButton() {
-  const duplicate = useRequiredProviderCommand("duplicate")
+  const duplicate = useProviderEditor().actions.duplicate
   return (
     <Button type="button" variant="outline" size="sm" onClick={() => void duplicate()}>
       {i18n.t("options.apiProviders.form.duplicate")}
@@ -568,7 +284,7 @@ function DuplicateButton() {
 }
 
 function DeleteButton() {
-  const deleteProvider = useRequiredProviderCommand("delete")
+  const deleteProvider = useProviderEditor().actions.delete
   const [open, setOpen] = useState(false)
 
   return (
@@ -600,8 +316,6 @@ function DeleteButton() {
 
 export const ProviderEditor = {
   Form,
-  Identity,
-  Attribution,
   ConfigHeader,
   NameField,
   DescriptionField,
@@ -612,15 +326,10 @@ export const ProviderEditor = {
   Assignments,
   AssignmentRow,
   CompatibleFeatureAssignments,
-  FeatureAssignment,
   LanguageDetectionAssignment,
   CustomActionAssignments,
   DuplicateButton,
   DeleteButton,
-}
-
-export const BuiltInProviderEditor = {
-  Provider: BuiltInProvider,
 }
 
 export const CustomProviderEditor = {

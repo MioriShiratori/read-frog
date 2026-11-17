@@ -1,10 +1,6 @@
-import type { NoteOriginInput } from "@read-frog/definitions"
-import type { ComponentProps } from "react"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useMemo, useRef } from "react"
-import { useHostedAiProviderOptions } from "@/components/llm-providers/use-hosted-ai-provider-options"
 import { SelectionPopover } from "@/components/ui/selection-popover"
-import { ReviewDueTab } from "@/components/ui/selection-popover/review-due-tab"
 import { SelectionToolbarErrorAlert } from "@/components/ui/selection-popover/selection-toolbar-error-alert"
 import { SelectionToolbarFooterContent } from "@/components/ui/selection-popover/selection-toolbar-footer-content"
 import { SelectionToolbarTitleContent } from "@/components/ui/selection-popover/selection-toolbar-title-content"
@@ -21,36 +17,13 @@ import {
 import { customActionRequestAtom } from "./atoms"
 import { CustomActionContent } from "./custom-action-content"
 import { CustomActionToolButton } from "./custom-action-tool-button"
-import { SaveToNotebaseButton } from "./save-to-notebase-button"
 import {
   buildCustomActionExecutionPlan,
   useCustomActionExecution,
   useCustomActionWebPageContext,
 } from "./use-custom-action-execution"
 
-/**
- * Keeps the hosted-status hook inside SelectionPopover.Content, which stays
- * unmounted until the popover first opens — the selection app mounts on every
- * page, and merely loading a page must not fire hosted-AI session/status
- * requests.
- */
-function CustomActionFooterContent({
-  providers,
-  ...props
-}: ComponentProps<typeof SelectionToolbarFooterContent>) {
-  const customActionProviders = useHostedAiProviderOptions("customAction", providers)
-  return <SelectionToolbarFooterContent providers={customActionProviders} {...props} />
-}
-
-export function CustomActionPanel({
-  getNoteOrigin,
-}: {
-  /**
-   * Where a note saved from the card comes from, read when the save starts, in
-   * place of the request's. The card on video subtitles reads the video here.
-   */
-  getNoteOrigin?: () => NoteOriginInput | null
-} = {}) {
+export function CustomActionPanel() {
   const bodyRef = useRef<HTMLDivElement>(null)
   const [request, setRequest] = useAtom(customActionRequestAtom)
   const language = useAtomValue(configFieldsAtomMap.language)
@@ -140,7 +113,7 @@ export function CustomActionPanel({
   const isRunning = webPageContext === undefined || (executionContext ? execution.isRunning : false)
   const status = isRunning ? "streaming" : error ? "error" : "done"
   const titleText = (webPageContext?.webTitle ?? getSourceDocumentTitle()) || null
-  // Speech and Notebase saves count the card by where it sits: on video subtitles, or by a
+  // Speech counts the card by where it sits: on video subtitles, or by a
   // selection, however the selection's card was opened.
   const cardSurface =
     request.surface === ANALYTICS_SURFACE.VIDEO_SUBTITLES
@@ -172,8 +145,7 @@ export function CustomActionPanel({
         />
         <SelectionToolbarErrorAlert error={error} />
       </SelectionPopover.Body>
-      <ReviewDueTab source="extension_custom_ai_action" />
-      <CustomActionFooterContent
+      <SelectionToolbarFooterContent
         paragraphsText={request.contextText}
         providers={providers}
         titleText={titleText}
@@ -183,18 +155,10 @@ export function CustomActionPanel({
       >
         {action && (
           <>
-            <SaveToNotebaseButton
-              action={action}
-              failed={!!error}
-              isRunning={isRunning}
-              result={result}
-              surface={cardSurface}
-              getNoteOrigin={getNoteOrigin ?? (() => request.noteOrigin)}
-            />
             <CustomActionToolButton action={action} />
           </>
         )}
-      </CustomActionFooterContent>
+      </SelectionToolbarFooterContent>
     </>
   )
 }

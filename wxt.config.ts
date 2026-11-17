@@ -57,7 +57,6 @@ export default defineConfig({
       "unlimitedStorage",
       "tabs",
       "alarms",
-      "cookies",
       "contextMenus",
       "identity",
       "scripting",

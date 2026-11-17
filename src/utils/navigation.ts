@@ -87,7 +87,7 @@ export function shouldHighlightApiKey(search: string): boolean {
 }
 
 /** The tabs of the custom action editor, in display order. */
-export const CUSTOM_ACTION_EDITOR_TABS = ["config", "notebase"] as const
+export const CUSTOM_ACTION_EDITOR_TABS = ["config"] as const
 
 export type CustomActionEditorTab = (typeof CUSTOM_ACTION_EDITOR_TABS)[number]
 
@@ -102,9 +102,6 @@ export const CUSTOM_ACTION_ADD_QUERY_PARAM = "addAction"
 
 /** The `id` on the Layout heading in the Config tab, so `?section=` can reach it. */
 export const CUSTOM_ACTION_LAYOUT_SECTION_ID = "custom-actions-layout"
-
-/** The `id` on the Notebase tab trigger, so `?section=` can reach it. */
-export const CUSTOM_ACTION_NOTEBASE_SECTION_ID = "custom-actions-notebase"
 
 export interface CustomActionOptionsRouteOptions {
   /** Left out, the editor opens on its first tab. */

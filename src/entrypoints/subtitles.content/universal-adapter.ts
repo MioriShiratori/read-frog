@@ -35,7 +35,7 @@ import {
   fetchSubtitlesSummary,
 } from "@/utils/subtitles/processor/translator"
 import { downloadSubtitlesAsSrt } from "@/utils/subtitles/srt"
-import { showAiSubtitlesWallToast, showSubtitlesErrorToast } from "@/utils/subtitles/toast"
+import { showSubtitlesErrorToast } from "@/utils/subtitles/toast"
 import { requestVideoSummary, VIDEO_SUMMARY_QUERY_SCOPE } from "@/utils/subtitles/video-summary"
 import { queryClient } from "@/utils/tanstack-query"
 import {
@@ -84,12 +84,10 @@ interface SubtitlesStartOptions {
 
 type SubtitlesFetcherFactories = {
   native: () => SubtitlesFetcher
-  ai?: () => SubtitlesFetcher
 }
 
 const LOADING_MESSAGE: Record<SubtitlesSource, string | undefined> = {
   [SUBTITLES_SOURCE.NATIVE]: undefined,
-  [SUBTITLES_SOURCE.AI]: i18n.t("subtitles.loadingAiSubtitles"),
 }
 
 export interface SubtitlesProvidersAdapter {
@@ -97,7 +95,6 @@ export interface SubtitlesProvidersAdapter {
   readonly platform: SubtitlesPlatform
   readonly embedded: boolean | undefined
   readonly containerShrinkRatio: ((container: HTMLElement) => number | null) | undefined
-  readonly supportsAiSubtitles: boolean
   getControlsConfig: () => ControlsConfig | undefined
   readonly supportsSidebar: boolean
   generateVideoSummary: (config: Config, videoId?: string | null) => Promise<string | null>
@@ -109,7 +106,6 @@ export interface SubtitlesProvidersAdapter {
   getVideoPageUrl: () => string | null
   toggleSubtitlesManually: (enabled: boolean) => void
   toggleSubtitlesByShortcut: (enabled: boolean) => void
-  requestAiSubtitles: () => Promise<void>
   downloadSourceSubtitles: () => Promise<void>
   downloadTranslatedSubtitles: () => Promise<void>
 }
@@ -176,10 +172,6 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
     const currentVideoId = this.config.getVideoId?.() ?? null
     const knownVideoId = this.navigationVideoId ?? this.sessionVideoId ?? this.sourceVideoId
     return knownVideoId !== null && currentVideoId !== knownVideoId
-  }
-
-  get supportsAiSubtitles(): boolean {
-    return !!this.fetchers.ai
   }
 
   constructor({
@@ -792,14 +784,6 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
     }
   }
 
-  requestAiSubtitles = async (): Promise<void> => {
-    if (await this.config.isLiveContent?.()) {
-      showAiSubtitlesWallToast(i18n.t("subtitles.errors.aiLiveReplayUnsupported"))
-      return
-    }
-    return this.switchSubtitlesFetcher(SUBTITLES_SOURCE.AI)
-  }
-
   private async switchSubtitlesFetcher(
     next: SubtitlesSource,
     options: SubtitlesStartOptions = {},
@@ -960,10 +944,6 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
       const analyticsConfig = await getLocalConfig()
       if (this.destroyed) return false
       targetLanguage = analyticsConfig?.language.targetCode
-      // Resolve through the capability registry, not providersConfig: Built-in
-      // AI is synthesized by the registry and is never a row there, so the
-      // lookup returned undefined and every hosted subtitle run was reported as
-      // provider "unknown" — the one metric that would size hosted adoption.
       providerAnalytics = classifyResolvedProvider(
         analyticsConfig
           ? resolveProviderRefForCapability(
@@ -1083,13 +1063,7 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
         // the toast branch has to clear it — otherwise the "Loading AI
         // subtitles" pill stays on the player forever after a wall.
         this.subtitlesScheduler?.setState("idle")
-        // Only the AI request has a control on screen to point at; the source
-        // is still AI here because reverting to native happens after this.
-        if (this.source === SUBTITLES_SOURCE.AI) {
-          showAiSubtitlesWallToast(errorMessage, error.action)
-        } else {
-          showSubtitlesErrorToast(errorMessage, error.action)
-        }
+        showSubtitlesErrorToast(errorMessage, error.action)
       } else {
         this.subtitlesScheduler?.setState("error", {
           message: this.config.silentErrors ? "" : errorMessage,
@@ -1157,21 +1131,8 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
 
     const sessionFragments = [...this.sourceProcessedSubtitles]
 
-    // Source track for display fallback; scheduler only receives translated cues
-    // later. Published before the provider resolve below, which none of this
-    // depends on: for a hosted provider that resolve can reach the network, and
-    // this is the only path that puts captions on screen for the translated
-    // flow — so sequencing it second made the original captions wait on a round
-    // trip they never needed, and a hung request (backgroundFetch carries no
-    // timeout) left the player in "loading" showing nothing at all.
     this.publishSourceTrack(sessionFragments)
 
-    // Resolved once per session; the cache key needs the same identity the
-    // background will use, and a hosted ref costs one status fetch here rather
-    // than one per fragment. Narrowed once for the whole session: segmentation
-    // and the summary are generations, so a translate-only provider keeps the
-    // rule-based recut and skips the summary without a doomed prompt attempt
-    // per look-ahead window.
     const operationId = this.switchOperationId
     const providerRef = config ? await resolveSubtitlesProviderRef(config, "lineTranslation") : null
     // Superseded: the session stays unclaimed, or a newer start would resume it untranslated.
@@ -1192,9 +1153,6 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
         rawFragments: this.sessionSubtitles,
         getVideoElement: () => this.subtitlesScheduler?.getVideoElement() ?? null,
         getSourceLanguage: () => this.fetcher.getSourceLanguage(),
-        // The session ref covers segmentation too: both subtitle routes gate on
-        // the same hosted feature, and per-block re-resolution would cost a
-        // hostedAi.status round trip per look-ahead window.
         providerRef: promptableProviderRef,
         preSegmented: this.fetcher.isPreSegmented?.(),
         onChunkSegmented: (chunk, nextFragments) => {

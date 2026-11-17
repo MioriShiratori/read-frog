@@ -110,33 +110,9 @@ afterEach(() => {
 describe("content runtime toasts", () => {
   // The parts share one module instance, so the selection and side UIs see the
   // same toastManager: a provider in each would render every toast twice.
-  it("renders a corner toast once, in the selection UI, with the side UI mounted too", () => {
-    const selection = createThemedWrapper()
-    const side = createThemedWrapper()
-    renderSelectionApp(selection.wrapper)
-    render(<SideApp portalContainer={side.wrapper} />)
-
-    act(() => {
-      toastManager.add({ title: "Saved to Notebase", type: "success" })
-    })
-
-    expect(getToastTitles(selection.shadowRoot)).toEqual(["Saved to Notebase"])
-    expect(getToastTitles(side.shadowRoot)).toEqual([])
-  })
 
   // The theme tokens live on the wrapper's `.dark` class. Portalled to the
   // shadow root itself, a toast sat beside the wrapper and stayed light.
-  it("renders a corner toast under the UI's theme class", () => {
-    const selection = createThemedWrapper("dark")
-    renderSelectionApp(selection.wrapper)
-
-    act(() => {
-      toastManager.add({ title: "Saved to Notebase", type: "success" })
-    })
-
-    const toast = selection.shadowRoot.querySelector('[data-slot="toast"]')
-    expect(toast?.closest(".dark")).toBe(selection.wrapper)
-  })
 
   // On a video site the subtitles run beside the selection UI, which renders
   // the corner toasts, theirs among them. Each part loads on its own, so the

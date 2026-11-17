@@ -7,13 +7,12 @@ describe("local extension worktree connection", () => {
   const topology = {
     api: "https://api.wt-abc.readfrog.localhost:1355",
     www: "https://www.wt-abc.readfrog.localhost:1355",
-    cookieDomain: "wt-abc.readfrog.localhost",
   }
 
   it("uses the selected monorepo for both source aliases and runtime URLs", () => {
-    const root = resolveMonorepoRoot()
+    const root = resolveMonorepoRoot(".")
     assert.equal(resolveMonorepoRoot(root), root)
-    assert.throws(() => resolveMonorepoRoot(`${root}/apps/server`), /monorepo root/)
+    assert.throws(() => resolveMonorepoRoot(`${root}/scripts`), /monorepo root/)
     assert.deepEqual(
       Object.fromEntries(
         Object.entries(
@@ -27,7 +26,6 @@ describe("local extension worktree connection", () => {
         WXT_API_URL: topology.api,
         WXT_WEBSITE_URL: topology.www,
         WXT_OFFICIAL_SITE_ORIGINS: topology.www,
-        WXT_AUTH_COOKIE_DOMAINS: topology.cookieDomain,
       },
     )
   })

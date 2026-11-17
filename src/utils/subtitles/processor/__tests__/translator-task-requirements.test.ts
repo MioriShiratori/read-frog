@@ -41,7 +41,7 @@ describe("subtitles task requirements", () => {
     vi.clearAllMocks()
     // The real serialize unwraps the resolved ref; the mock must too, or a
     // LocalProviderRef would come back double-wrapped.
-    serializeProviderRefMock.mockImplementation(async (ref: { config: unknown }) => ({
+    serializeProviderRefMock.mockImplementation((ref: { config: unknown }) => ({
       kind: "local",
       config: ref.config,
     }))

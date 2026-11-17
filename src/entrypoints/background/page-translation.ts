@@ -19,7 +19,6 @@ import {
   hasInlineAtomTokens,
 } from "@/utils/host/translate/inline-atom-tokens"
 import { normalizePromptContextValue } from "@/utils/host/translate/translate-text"
-import { validateProviderHostedFeature } from "@/utils/hosted-ai/routing"
 import { createLogger } from "@/utils/logging/logger"
 import { onMessage } from "@/utils/message"
 import { getTranslatePrompt } from "@/utils/prompts/translate"
@@ -59,9 +58,6 @@ async function getValidatedCachedTranslation(
 
 /** Which service answered, for the log; never its config, which holds the key. */
 function describeProvider(providerRef: SerializableProviderRef): Record<string, string | null> {
-  if (providerRef.kind === "system") {
-    return { provider: providerRef.providerId, modelTier: providerRef.modelTier }
-  }
   const { config } = providerRef
   if (!isLLMProviderConfig(config)) return { provider: config.provider }
   const { model, isCustomModel, customModel } = config.model
@@ -152,9 +148,6 @@ export function setupPageTranslationHandlers(): void {
       result = await batchQueue.enqueue(data)
     } else {
       const localProvider = getLocalProviderConfig(providerRef)
-      if (!localProvider) {
-        throw new Error("Invalid local page translation provider")
-      }
       // Create thunk based on type and params
       const thunk = (signal?: AbortSignal) =>
         executeTranslate(text, langConfig, localProvider, getTranslatePrompt, {
@@ -202,7 +195,6 @@ export function setupPageTranslationHandlers(): void {
   })
 
   onMessage("getOrGenerateWebPageSummary", async (message) => {
-    validateProviderHostedFeature(message.data.providerRef, message.data.hostedFeature)
     const { requestQueue } = await queuesPromise
     const { webTitle, webContent, providerRef } = message.data
 

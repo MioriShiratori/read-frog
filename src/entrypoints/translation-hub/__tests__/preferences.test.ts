@@ -53,25 +53,6 @@ describe("Translation Hub preferences", () => {
     expect(persisted.value.language).toEqual(DEFAULT_CONFIG.language)
   })
 
-  it("keeps an explicitly empty selection and filters unavailable providers", async () => {
-    const first = openHub()
-    await first.set(selectedProviderIdsAtom, [])
-    expect(openHub().get(selectedProviderIdsAtom)).toEqual([])
-
-    await first.set(selectedProviderIdsAtom, ["removed-provider", "read-frog-free-ai"])
-    expect(openHub().get(selectedProviderIdsAtom)).toEqual(["read-frog-free-ai"])
-
-    const localId = DEFAULT_CONFIG.providersConfig.find(
-      (provider) => provider.enabled && provider.provider === "microsoft-translate",
-    )?.id
-    expect(localId).toBeDefined()
-    await first.set(selectedProviderIdsAtom, [localId!])
-    persisted.value.providersConfig = persisted.value.providersConfig.map((provider) =>
-      provider.id === localId ? { ...provider, enabled: false } : provider,
-    )
-    expect(openHub().get(selectedProviderIdsAtom)).toEqual([])
-  })
-
   it("writes an auto-source language swap as one preference update", async () => {
     const store = openHub()
     store.set(configAtom, {

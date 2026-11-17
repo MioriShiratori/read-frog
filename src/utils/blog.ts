@@ -174,7 +174,8 @@ export async function getLatestBlogDate(
       throw new Error(`Failed to fetch blog: ${response.status}`)
     }
 
-    return latestBlogResponseSchema.parse(JSON.parse(response.body))
+    const post = latestBlogResponseSchema.parse(JSON.parse(response.body))
+    return post?.type === "promotion" ? null : post
   } catch (error) {
     log.error("Error fetching latest blog post", { error })
     return null

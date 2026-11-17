@@ -1,7 +1,6 @@
 name: Read Frog
 extName: "Read Frog - AI 번역"
 extDescription: "웹페이지와 동영상 자막의 이중 언어 번역. 사용자 제공 API와 맞춤 AI 작업을 지원합니다."
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 dataTypes:
   string: 텍스트
   number: 숫자
@@ -45,8 +44,6 @@ popup:
     tooltip: 여러 번역 모델로 동시에 텍스트 번역
   discord:
     tooltip: Discord에 참여하여 개발자와 소통하고 새 기능을 먼저 체험하세요
-  blog:
-    notification: Read Frog의 새로운 소식
   aiSmartContext: AI 스마트 컨텍스트
   aiSmartContextDescription: 웹페이지 컨텍스트를 사용하여 번역 품질을 향상시킵니다. LLM 번역 제공자가 필요합니다.
   storeReview:
@@ -59,8 +56,6 @@ popup:
     help: 도움말
     tutorial: 사용 가이드
     emailUs: 이메일 문의
-    featureRequest: 기능 제안
-    bugReport: 버그 신고
     diagnosePage: "이 페이지 진단"
     community: 커뮤니티
     joinDiscord: Discord 참여
@@ -105,44 +100,8 @@ options:
     settings: 설정
     features: 기능
     translation: 번역
-    product: 제품
   tools:
     translationHub: 번역 허브
-  product:
-    roadmap: 로드맵
-  helpAndCommunity:
-    title: 도움말 및 커뮤니티
-    pageDescription: Read Frog 사용법을 익히고, 팀에 도움을 요청하거나, 커뮤니티에서 다른 사용자와 교류하세요.
-    help:
-      title: 도움말
-    tutorial:
-      title: 사용 가이드
-      description: 문서를 읽고 Read Frog 사용법을 알아보세요
-    email:
-      title: 이메일 문의
-      description: contact@readfrog.app 으로 팀에 직접 연락하세요
-    featureRequest:
-      title: 기능 제안
-      description: 아이디어를 제안하고 다음에 개발할 기능에 투표하세요
-    bugReport:
-      title: 버그 신고
-      description: 지원 티켓을 열고 해결될 때까지 진행 상황을 확인하세요
-    troubleshooting:
-      title: "문제 해결"
-    diagnostics:
-      title: "진단 정보 내보내기"
-      description: "최근 로그와 설정(API 키 제외)을 저장해 버그 신고에 첨부하세요"
-      exportSuccess: "진단 정보를 저장했습니다"
-      exportFailed: "진단 정보를 내보내지 못했습니다"
-    community:
-      title: 커뮤니티
-    discord:
-      title: Discord
-      description: 팀 및 다른 사용자와 실시간으로 이야기하세요
-    wechat:
-      title: WeChat 그룹
-      description: QR 코드를 스캔해 WeChat 토론 그룹에 참여하세요
-      qrCodeAlt: WeChat QR 코드
   apiProviders:
     title: API 제공업체
     pageDescription: Read Frog가 호출하는 AI 서비스를 연결하고, 각 기능에 사용할 서비스를 선택하세요.
@@ -218,6 +177,8 @@ options:
       temperatureHint: 응답의 무작위성을 제어합니다. 낮은 값(0)은 더 결정적이고, 높은 값은 더 창의적입니다. 범위는 제공자에 따라 다릅니다. 비워두면 제공자 기본값을 사용합니다.
       reasoning:
         title: Reasoning
+        description: "기본값은 none입니다. 추론을 끌 수 없는 모델은 지원되는 최소 설정을 사용합니다."
+        minimum: "이 모델은 추론을 끌 수 없습니다. 지원되는 최소 모드는 $1입니다."
       headers: 헤더
       headersHint: AI 제공자 클라이언트를 만들 때 전송할 사용자 지정 HTTP 헤더입니다. 비워두면 제공자 기본값을 사용하고, {}를 입력하면 기본값을 비활성화합니다.
       providerOptions: 제공자 옵션
@@ -585,11 +546,6 @@ options:
         description: 플로팅 버튼을 비활성화할 웹사이트를 설정합니다
         enterUrlPattern: URL 패턴 입력
         urlPattern: URL 패턴
-    clickAction:
-      title: 클릭 동작
-      description: 플로팅 버튼을 클릭할 때 실행할 동작 선택
-      panel: 사이드 패널 열기
-      translate: 페이지 번역 전환
     closeMenu:
       title: 플로팅 버튼 숨기기
     tooltips:
@@ -598,7 +554,6 @@ options:
       lockPosition: 위치 잠금
       unlockPosition: 위치 잠금 해제
       settings: 설정
-      feedback: 피드백 보내기
   selectionToolbar:
     title: 선택 툴바
     pageDescription: 텍스트를 선택했을 때 나타날 동작과 도구 모음을 표시할 사이트를 설정하세요.
@@ -1447,11 +1402,6 @@ options:
           confirm: 확인
           cancel: 취소
           description: 모든 캐시된 AI 분할 결과가 삭제됩니다. 다음에 AI 분할이 활성화된 비디오를 재생하면 자막이 다시 처리됩니다.
-  whatsNew:
-    title: 새로운 기능
-    postType:
-      promotion: 프로모션
-      update: 업데이트
   rateUs:
     title: 리뷰 남기기
   configMigration:

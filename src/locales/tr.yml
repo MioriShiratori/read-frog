@@ -1,7 +1,6 @@
 name: Read Frog
 extName: "Read Frog - Yapay Zekâ Çevirisi"
 extDescription: "Web sayfaları ve video altyazıları için çift dilli çeviri; özel yapay zekâ eylemleri ve kendi sağlayıcılarınız."
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 dataTypes:
   string: Metin
   number: Sayı
@@ -45,8 +44,6 @@ popup:
     tooltip: Birden fazla çeviri modeliyle aynı anda metin çevirin
   discord:
     tooltip: Geliştiricilerle bağlantı kurmak ve yeni özelliklere erken erişim sağlamak için Discord'a katılın
-  blog:
-    notification: Read Frog'da yenilikler
   aiSmartContext: AI Akıllı Bağlam
   aiSmartContextDescription: Çeviri kalitesini artırmak için web sayfası bağlamını kullanır. LLM çeviri sağlayıcısı gerektirir.
   storeReview:
@@ -59,8 +56,6 @@ popup:
     help: Yardım
     tutorial: Rehber
     emailUs: Bize e-posta gönderin
-    featureRequest: Özellik önerisi
-    bugReport: Hata bildir
     diagnosePage: "Bu sayfayı tanıla"
     community: Topluluk
     joinDiscord: Discord'a Katıl
@@ -105,44 +100,8 @@ options:
     settings: Ayarlar
     features: Özellikler
     translation: Çeviri
-    product: Ürün
   tools:
     translationHub: Çeviri Merkezi
-  product:
-    roadmap: Yol Haritası
-  helpAndCommunity:
-    title: Yardım ve topluluk
-    pageDescription: Read Frog'u nasıl kullanacağınızı öğrenin, ekipten yardım alın ya da toplulukta diğer kullanıcılara katılın.
-    help:
-      title: Yardım
-    tutorial:
-      title: Rehber
-      description: Belgeleri okuyun ve Read Frog'u nasıl kullanacağınızı öğrenin
-    email:
-      title: Bize e-posta gönderin
-      description: Ekibe doğrudan contact@readfrog.app adresinden ulaşın
-    featureRequest:
-      title: Özellik önerisi
-      description: Bir fikir önerin ve ekibin sırada ne geliştireceğini oylayın
-    bugReport:
-      title: Hata bildir
-      description: Destek talebi açın ve çözülene kadar takip edin
-    troubleshooting:
-      title: "Sorun giderme"
-    diagnostics:
-      title: "Tanılama verilerini dışa aktar"
-      description: "Hata bildirimine eklemek için son günlükleri ve ayarlarınızı (API anahtarları hariç) kaydedin"
-      exportSuccess: "Tanılama verileri kaydedildi"
-      exportFailed: "Tanılama verileri dışa aktarılamadı"
-    community:
-      title: Topluluk
-    discord:
-      title: Discord
-      description: Ekiple ve diğer kullanıcılarla anlık olarak sohbet edin
-    wechat:
-      title: WeChat grubu
-      description: WeChat tartışma grubuna katılmak için QR kodu tarayın
-      qrCodeAlt: WeChat QR kodu
   apiProviders:
     title: API Sağlayıcıları
     pageDescription: Read Frog'un çağırdığı yapay zekâ servislerini bağlayın ve her özelliğin hangisini kullanacağını seçin.
@@ -218,6 +177,8 @@ options:
       temperatureHint: Yanıtlardaki rastgeleliği kontrol eder. Düşük değerler (0) daha belirleyici, yüksek değerler daha yaratıcıdır. Aralık sağlayıcıya göre değişir. Sağlayıcı varsayılanını kullanmak için boş bırakın.
       reasoning:
         title: Reasoning
+        description: "Varsayılan none değeridir. Akıl yürütmeyi kapatamayan modellerde desteklenen en düşük ayar kullanılır."
+        minimum: "Bu model akıl yürütme gerektirir. Desteklenen en düşük mod: $1."
       headers: Başlıklar
       headersHint: AI sağlayıcı istemcisi oluşturulurken gönderilecek özel HTTP başlıkları. Sağlayıcı varsayılanlarını kullanmak için boş bırakın; varsayılanları devre dışı bırakmak için {} kullanın.
       providerOptions: Sağlayıcı seçenekleri
@@ -585,11 +546,6 @@ options:
         description: Yüzen butonun devre dışı bırakılması gereken web sitelerini yapılandırın
         enterUrlPattern: URL kalıbı girin
         urlPattern: URL kalıbı
-    clickAction:
-      title: Tıklama eylemi
-      description: Yüzen butona tıklandığında gerçekleştirilecek eylemi seçin
-      panel: Yan paneli aç
-      translate: Sayfa çevirisini aç/kapat
     closeMenu:
       title: Yüzen butonu gizle
     tooltips:
@@ -598,7 +554,6 @@ options:
       lockPosition: Konumu kilitle
       unlockPosition: Konum kilidini aç
       settings: Ayarlar
-      feedback: Geri bildirim gönder
   selectionToolbar:
     title: Seçim Araç Çubuğu
     pageDescription: Metin seçtiğinizde hangi eylemlerin görüneceğini ve araç çubuğunun nerede çıkacağını belirleyin.
@@ -1447,11 +1402,6 @@ options:
           confirm: Onayla
           cancel: İptal
           description: Tüm önbelleğe alınmış AI bölümlendirme sonuçları silinecektir. AI bölümlendirme etkinleştirilmiş bir video oynatıldığında altyazılar yeniden işlenecektir.
-  whatsNew:
-    title: Yenilikler
-    postType:
-      promotion: Kampanya
-      update: Güncelleme
   rateUs:
     title: Bizi Değerlendirin
   configMigration:

@@ -1,7 +1,6 @@
 name: 陪讀蛙
 extName: "陪讀蛙 - AI 翻譯"
 extDescription: "網頁和影片字幕雙語翻譯，支援自訂 AI 指令和自行設定模型服務商。"
-uninstallSurveyUrl: https://tally.so/r/3E9XDL
 dataTypes:
   string: 文字
   number: 數字
@@ -45,8 +44,6 @@ popup:
     tooltip: 一次使用多個翻譯模型翻譯文字
   discord:
     tooltip: 加入 Discord 與開發者討論，搶先體驗新功能
-  blog:
-    notification: 陪讀蛙更新動態
   aiSmartContext: AI 智慧上下文
   aiSmartContextDescription: 結合網頁前後文提升翻譯品質。需要設定 LLM 翻譯服務提供者。
   storeReview:
@@ -59,8 +56,6 @@ popup:
     help: 說明
     tutorial: 使用教學
     emailUs: 電子郵件聯絡
-    featureRequest: 功能建議
-    bugReport: 回報問題
     diagnosePage: "診斷此頁面"
     community: 社群
     joinDiscord: 加入 Discord
@@ -105,44 +100,8 @@ options:
     settings: 設定
     features: 功能
     translation: 翻譯
-    product: 產品
   tools:
     translationHub: 翻譯中心
-  product:
-    roadmap: 產品路線圖
-  helpAndCommunity:
-    title: 說明與社群
-    pageDescription: 了解怎麼使用陪讀蛙、向團隊尋求協助，或加入社群和其他使用者交流。
-    help:
-      title: 說明
-    tutorial:
-      title: 使用教學
-      description: 閱讀文件，了解怎麼使用陪讀蛙
-    email:
-      title: 電子郵件聯絡
-      description: 透過 contact@readfrog.app 直接聯絡團隊
-    featureRequest:
-      title: 功能建議
-      description: 提出想法，並為團隊接下來要做的功能投票
-    bugReport:
-      title: 回報問題
-      description: 建立支援工單，並追蹤到問題解決為止
-    troubleshooting:
-      title: "疑難排解"
-    diagnostics:
-      title: "匯出診斷資訊"
-      description: "儲存最近的日誌和設定（不含 API 金鑰），附在問題回報中"
-      exportSuccess: "診斷資訊已儲存"
-      exportFailed: "無法匯出診斷資訊"
-    community:
-      title: 社群
-    discord:
-      title: Discord
-      description: 與團隊和其他使用者即時交流
-    wechat:
-      title: 微信群
-      description: 掃描 QR code 進入微信討論群
-      qrCodeAlt: 微信 QR code
   apiProviders:
     title: API 提供者
     pageDescription: 接入 Read Frog 呼叫的 AI 服務，並為每項功能指定使用哪一個。
@@ -219,6 +178,8 @@ options:
       temperatureHint: 控制回應的隨機性。數值越低（如 0）越穩定，數值越高越有創造性。可用範圍依提供者而異。留空則使用提供者預設值。
       reasoning:
         title: 推理
+        description: "預設盡量關閉思考；模型無法關閉時使用其最低支援等級。"
+        minimum: "此模型無法關閉思考，將使用最低支援模式：$1。"
       headers: 請求標頭
       headersHint: 建立 AI 提供者連線時送出的自訂 HTTP 請求標頭。留空則使用提供者預設值；填入 {} 可停用預設值。
       providerOptions: 提供者選項
@@ -586,11 +547,6 @@ options:
         description: 設定需要停用懸浮按鈕的網站
         enterUrlPattern: 輸入網址模式
         urlPattern: URL 模式
-    clickAction:
-      title: 點選行為
-      description: 選擇點選懸浮按鈕時執行的操作
-      panel: 開啟側邊欄
-      translate: 切換頁面翻譯
     closeMenu:
       title: 隱藏懸浮按鈕
     tooltips:
@@ -599,7 +555,6 @@ options:
       lockPosition: 鎖定位置
       unlockPosition: 解鎖位置
       settings: 設定
-      feedback: 傳送意見回饋
   selectionToolbar:
     title: 選取工具列
     pageDescription: 設定選取文字時出現哪些操作，以及工具列在哪些網站顯示。
@@ -1457,11 +1412,6 @@ options:
           confirm: 確認
           cancel: 取消
           description: 這將刪除所有已快取的 AI 斷句結果。下次播放啟用 AI 斷句的影片時，將重新處理字幕。
-  whatsNew:
-    title: 最近更新
-    postType:
-      promotion: 優惠
-      update: 更新
   rateUs:
     title: 給予好評
   configMigration:

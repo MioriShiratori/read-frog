@@ -160,10 +160,6 @@ export function getLanguageModelForConfig(
     return (provider as ReturnType<typeof createAzure>).chat(modelId)
   }
 
-  if (providerConfig.provider === "ollama") {
-    return (provider as ReturnType<typeof createOllama>).languageModel(modelId, { think: false })
-  }
-
   return provider.languageModel(modelId)
 }
 

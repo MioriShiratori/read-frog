@@ -230,14 +230,14 @@ describe("feature provider matrix", () => {
   })
   it("scrolls provider columns when the wheel is over a cell or the fixed labels", async () => {
     await setup()
-    const region = screen.getByRole("region")
+    const region = screen.getByRole("region").querySelector(".provider-matrix-viewport")!
     Object.defineProperties(region, { scrollWidth: { value: 1500 }, clientWidth: { value: 900 } })
     const cell = screen.getByRole("button", { name: `${pageName}: OpenAI` })
     const event = new WheelEvent("wheel", { deltaY: 120, bubbles: true, cancelable: true })
     fireEvent(cell, event)
     expect(event.defaultPrevented).toBe(true)
     expect(region.scrollLeft).toBe(120)
-    fireEvent.wheel(screen.getByRole("rowheader", { name: new RegExp(pageName) }), {
+    fireEvent.wheel(screen.getByText(pageName), {
       deltaY: -3,
       deltaMode: 1,
     })

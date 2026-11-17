@@ -5,8 +5,7 @@ import { db } from "@/utils/db/dexie/db"
 /**
  * The local log: the newest records, in the extension's own IndexedDB. Only the
  * background writes it; every other context forwards its records there. Nothing
- * here is ever uploaded — the user exports it when asked (see
- * `utils/diagnostics/report.ts`). Uninstalling the extension deletes it.
+ * here is ever uploaded. Uninstalling the extension deletes it.
  *
  * Records are written in small batches, and after each batch the oldest records
  * past the cap are deleted, so the log never grows past a few megabytes.
@@ -55,12 +54,6 @@ export function storeLogRecords(records: readonly StoredLogRecord[]): void {
   if (records.length === 0) return
   pending.push(...records)
   flushTimer ??= setTimeout(() => void flushStoredLogRecords(), FLUSH_DELAY_MS)
-}
-
-/** Oldest first, including anything this context has not written yet. */
-export async function readStoredLogRecords(): Promise<StoredLogRecord[]> {
-  await flushStoredLogRecords()
-  return db.logRecord.orderBy(":id").toArray()
 }
 
 /** The background's own records. */

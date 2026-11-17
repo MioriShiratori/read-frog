@@ -1,7 +1,6 @@
 name: Read Frog
 extName: "Read Frog - Dịch AI"
 extDescription: "Dịch song ngữ trang web và phụ đề video, hỗ trợ tác vụ AI tùy chỉnh và nhà cung cấp của bạn."
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 dataTypes:
   string: Văn bản
   number: Số
@@ -45,8 +44,6 @@ popup:
     tooltip: Dịch văn bản với nhiều mô hình đồng thời
   discord:
     tooltip: Tham gia Discord để kết nối với các nhà phát triển và truy cập sớm các tính năng mới
-  blog:
-    notification: Có gì mới trong Read Frog
   aiSmartContext: Ngữ cảnh thông minh AI
   aiSmartContextDescription: Sử dụng ngữ cảnh trang web để cải thiện chất lượng dịch. Yêu cầu nhà cung cấp dịch LLM.
   storeReview:
@@ -59,8 +56,6 @@ popup:
     help: Trợ giúp
     tutorial: Hướng dẫn
     emailUs: Gửi email cho chúng tôi
-    featureRequest: Đề xuất tính năng
-    bugReport: Báo lỗi
     diagnosePage: "Chẩn đoán trang này"
     community: Cộng đồng
     joinDiscord: Tham gia Discord
@@ -105,44 +100,8 @@ options:
     settings: Cài đặt
     features: Tính năng
     translation: Dịch
-    product: Sản phẩm
   tools:
     translationHub: Trung tâm Dịch thuật
-  product:
-    roadmap: Lộ trình
-  helpAndCommunity:
-    title: Trợ giúp và cộng đồng
-    pageDescription: Tìm hiểu cách dùng Read Frog, nhờ nhóm hỗ trợ, hoặc tham gia cộng đồng cùng những người dùng khác.
-    help:
-      title: Trợ giúp
-    tutorial:
-      title: Hướng dẫn
-      description: Đọc tài liệu để biết cách sử dụng Read Frog
-    email:
-      title: Gửi email cho chúng tôi
-      description: Liên hệ trực tiếp với nhóm qua contact@readfrog.app
-    featureRequest:
-      title: Đề xuất tính năng
-      description: Đề xuất ý tưởng và bình chọn cho tính năng nhóm sẽ làm tiếp theo
-    bugReport:
-      title: Báo lỗi
-      description: Mở phiếu hỗ trợ và theo dõi cho đến khi được khắc phục
-    troubleshooting:
-      title: "Khắc phục sự cố"
-    diagnostics:
-      title: "Xuất dữ liệu chẩn đoán"
-      description: "Lưu nhật ký gần đây và cài đặt (không gồm khóa API) để đính kèm vào báo cáo lỗi"
-      exportSuccess: "Đã lưu dữ liệu chẩn đoán"
-      exportFailed: "Không thể xuất dữ liệu chẩn đoán"
-    community:
-      title: Cộng đồng
-    discord:
-      title: Discord
-      description: Trò chuyện trực tiếp với nhóm và những người dùng khác
-    wechat:
-      title: Nhóm WeChat
-      description: Quét mã QR để tham gia nhóm thảo luận trên WeChat
-      qrCodeAlt: Mã QR WeChat
   apiProviders:
     title: Nhà cung cấp API
     pageDescription: Kết nối các dịch vụ AI mà Read Frog sử dụng và chọn dịch vụ cho từng tính năng.
@@ -218,6 +177,8 @@ options:
       temperatureHint: Kiểm soát tính ngẫu nhiên trong phản hồi. Giá trị thấp (0) mang tính xác định hơn, giá trị cao mang tính sáng tạo hơn. Phạm vi thay đổi theo nhà cung cấp. Để trống để sử dụng giá trị mặc định của nhà cung cấp.
       reasoning:
         title: Reasoning
+        description: "Mặc định là none. Với mô hình không thể tắt suy luận, dùng mức thấp nhất được hỗ trợ."
+        minimum: "Mô hình này không thể tắt suy luận. Chế độ thấp nhất được hỗ trợ là $1."
       headers: Header
       headersHint: Header HTTP tùy chỉnh được gửi khi tạo client nhà cung cấp AI. Để trống để dùng mặc định của nhà cung cấp; dùng {} để tắt mặc định.
       providerOptions: Tùy chọn nhà cung cấp
@@ -585,11 +546,6 @@ options:
         description: Cấu hình các trang web mà nút nổi nên bị tắt
         enterUrlPattern: Nhập mẫu URL
         urlPattern: Mẫu URL
-    clickAction:
-      title: Hành động khi nhấn
-      description: Chọn hành động khi nhấn vào nút nổi
-      panel: Mở bảng điều khiển bên
-      translate: Bật/tắt dịch trang
     closeMenu:
       title: Ẩn nút nổi
     tooltips:
@@ -598,7 +554,6 @@ options:
       lockPosition: Khóa vị trí
       unlockPosition: Mở khóa vị trí
       settings: Cài đặt
-      feedback: Gửi phản hồi
   selectionToolbar:
     title: Thanh công cụ chọn
     pageDescription: Đặt các thao tác xuất hiện khi bạn chọn văn bản và nơi hiển thị thanh công cụ.
@@ -1447,11 +1402,6 @@ options:
           confirm: Xác nhận
           cancel: Hủy
           description: Tất cả kết quả AI phân đoạn đã lưu trong bộ nhớ đệm sẽ bị xóa. Lần tới khi phát video có bật AI phân đoạn, phụ đề sẽ được xử lý lại.
-  whatsNew:
-    title: Có gì mới
-    postType:
-      promotion: Khuyến mãi
-      update: Cập nhật
   rateUs:
     title: Đánh giá chúng tôi
   configMigration:

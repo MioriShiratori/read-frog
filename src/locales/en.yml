@@ -1,7 +1,6 @@
 name: Read Frog
 extName: "Read Frog - AI Translation"
 extDescription: "Bilingual AI translation for web pages and video subtitles, with custom AI actions and your own providers."
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 dataTypes:
   string: Text
   number: Number
@@ -45,8 +44,6 @@ popup:
     tooltip: Translate text with multiple models simultaneously
   discord:
     tooltip: Join Discord to connect with developers and get early access to new features
-  blog:
-    notification: What's new in Read Frog
   aiSmartContext: AI Smart Context
   aiSmartContextDescription: Uses webpage context to improve translation quality. Requires LLM translation provider.
   storeReview:
@@ -59,8 +56,6 @@ popup:
     help: Help
     tutorial: Tutorial
     emailUs: Email us
-    featureRequest: Feature request
-    bugReport: Report a bug
     diagnosePage: "Diagnose this page"
     community: Community
     joinDiscord: Join Discord
@@ -105,44 +100,8 @@ options:
     settings: Settings
     features: Features
     translation: Translation
-    product: Product
   tools:
     translationHub: Translation Hub
-  product:
-    roadmap: Roadmap
-  helpAndCommunity:
-    title: Help & Community
-    pageDescription: Learn how to use Read Frog, get help from the team, or join other users in the community.
-    help:
-      title: Help
-    tutorial:
-      title: Tutorial
-      description: Read the docs and learn how to use Read Frog
-    email:
-      title: Email us
-      description: Reach the team directly at contact@readfrog.app
-    featureRequest:
-      title: Feature request
-      description: Suggest an idea and vote on what the team builds next
-    bugReport:
-      title: Report a bug
-      description: Open a support ticket and follow it until it is fixed
-    troubleshooting:
-      title: "Troubleshooting"
-    diagnostics:
-      title: "Export diagnostics"
-      description: "Save recent logs and settings, with API keys removed, to attach to a bug report"
-      exportSuccess: "Diagnostics saved"
-      exportFailed: "Couldn't export diagnostics"
-    community:
-      title: Community
-    discord:
-      title: Discord
-      description: Chat with the team and other users in real time
-    wechat:
-      title: WeChat group
-      description: Scan the QR code to join the WeChat discussion group
-      qrCodeAlt: WeChat QR code
   apiProviders:
     title: API Providers
     pageDescription: Connect the AI services Read Frog calls, then choose which one runs each feature.
@@ -219,6 +178,8 @@ options:
       temperatureHint: Controls randomness in responses. Lower values (0) are more deterministic, higher values are more creative. Range varies by provider. Leave empty to use provider default.
       reasoning:
         title: Reasoning
+        description: "Defaults to none. Models that require reasoning use their lowest supported setting."
+        minimum: "This model requires reasoning. Its minimum supported mode is $1."
       headers: Headers
       headersHint: Custom HTTP headers sent when creating the AI provider client. Leave empty to use provider defaults; use {} to disable defaults.
       providerOptions: Provider options
@@ -569,7 +530,7 @@ options:
         description: Every trigger swaps the two languages, so triggering again brings the text back to the language you typed in.
   floatingButton:
     title: Floating Button
-    pageDescription: Set which side the floating button sits on, what a click does, and where it stays hidden.
+    pageDescription: Choose the floating button’s side, position, and hidden websites.
     demoImageAlt: Floating button demo
     enable:
       title: Enable floating button
@@ -586,11 +547,6 @@ options:
         description: Configure websites where the floating button should be disabled
         enterUrlPattern: Enter URL pattern
         urlPattern: URL pattern
-    clickAction:
-      title: Click action
-      description: Choose the action when clicking the floating button
-      panel: Open side panel
-      translate: Toggle page translation
     closeMenu:
       title: Hide floating button
     tooltips:
@@ -599,7 +555,6 @@ options:
       lockPosition: Lock position
       unlockPosition: Unlock position
       settings: Settings
-      feedback: Send feedback
   selectionToolbar:
     title: Selection Toolbar
     pageDescription: Set which actions appear when you select text, and where the toolbar shows up.
@@ -1594,11 +1549,6 @@ options:
           confirm: Confirm
           cancel: Cancel
           description: This will delete all cached AI segmentation results. The next time you play a video with AI segmentation enabled, it will re-process the subtitles.
-  whatsNew:
-    title: What's New
-    postType:
-      promotion: Promotion
-      update: Update
   rateUs:
     title: Rate Us
   configMigration:

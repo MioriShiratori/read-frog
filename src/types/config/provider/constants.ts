@@ -288,23 +288,6 @@ export const AI_SDK_REASONING_VALUES = [
 ] as const
 export type AISDKReasoning = (typeof AI_SDK_REASONING_VALUES)[number]
 
-export const TOP_LEVEL_REASONING_PROVIDER_TYPES = [
-  "openai",
-  "anthropic",
-  "google",
-  "xai",
-  "groq",
-  "deepseek",
-  "fireworks",
-  "bedrock",
-] as const satisfies Readonly<LLMProviderTypes[]>
-export type TopLevelReasoningProviderTypes = (typeof TOP_LEVEL_REASONING_PROVIDER_TYPES)[number]
-export function supportsTopLevelReasoning(
-  provider: string,
-): provider is TopLevelReasoningProviderTypes {
-  return TOP_LEVEL_REASONING_PROVIDER_TYPES.includes(provider)
-}
-
 export function isPureTranslateProvider(
   provider: TranslateProviderTypes,
 ): provider is (typeof PURE_TRANSLATE_PROVIDERS)[number] {

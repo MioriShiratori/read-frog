@@ -3,6 +3,24 @@
   --feature-label-width: 15rem;
   --visible-providers: 4;
 }
+.provider-matrix-layout {
+  display: grid;
+  grid-template-columns: var(--feature-label-width) minmax(0, 1fr);
+  font-size: 0.875rem;
+}
+.provider-matrix-labels,
+.provider-matrix-viewport,
+.provider-matrix {
+  display: grid;
+  grid-row: 1 / -1;
+  grid-template-rows: subgrid;
+  min-width: 0;
+}
+.provider-matrix-label {
+  min-width: 0;
+  padding: 0.875rem 1rem;
+  align-content: center;
+}
 .provider-matrix-viewport {
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -10,42 +28,34 @@
   border-radius: var(--rf-radius);
 }
 .provider-matrix {
-  width: calc(
-    var(--feature-label-width) + (100% - var(--feature-label-width)) * var(--provider-count) /
-      var(--visible-providers)
-  );
-  table-layout: fixed;
-  border-collapse: separate;
+  width: calc(100% * var(--provider-count) / var(--visible-providers));
+  grid-template-columns: repeat(var(--provider-count), minmax(0, 1fr));
   border-spacing: 0;
-  font-size: 0.875rem;
 }
-.provider-matrix-label-column {
-  width: var(--feature-label-width);
+.provider-matrix thead,
+.provider-matrix tbody,
+.provider-matrix tr {
+  display: contents;
 }
 .provider-matrix th,
 .provider-matrix td {
+  position: relative;
+  min-width: 0;
+  padding: 0;
   border-right: 1px solid var(--rf-border);
   border-bottom: 1px solid var(--rf-border);
 }
-.provider-matrix tr:last-child td,
-.provider-matrix tbody tr:last-child th {
+.provider-matrix tbody tr:last-child td {
   border-bottom: 0;
 }
 .provider-matrix tr > :last-child {
   border-right: 0;
 }
-.provider-matrix-label {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  background: var(--rf-background);
-  padding: 0.875rem 1rem;
-  text-align: left;
-}
 .provider-matrix-cell {
+  position: absolute;
+  inset: 0;
   display: grid;
   width: 100%;
-  min-height: 4.5rem;
   height: 100%;
   place-items: center;
   cursor: pointer;
@@ -76,13 +86,8 @@
   font-size: 1.25rem;
 }
 @container (width < 640px) {
-  .provider-matrix-viewport {
+  .provider-matrix-layout {
     --feature-label-width: 10rem;
     --visible-providers: 2;
   }
-}
-
-.provider-matrix td {
-  padding: 0;
-  height: 1px;
 }

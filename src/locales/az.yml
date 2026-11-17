@@ -1,7 +1,6 @@
 name: Read Frog
 extName: "Read Frog - Süni intellekt tərcüməsi"
 extDescription: "Veb səhifələr və video subtitrləri üçün ikidilli tərcümə, fərdi süni intellekt əmrləri və öz provayderləriniz."
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 dataTypes:
   string: Mətn
   number: Ədəd
@@ -45,8 +44,6 @@ popup:
     tooltip: Mətni eyni anda bir neçə modellə tərcümə edin
   discord:
     tooltip: Tərtibatçılarla ünsiyyət qurmaq və yeni funksiyaları erkən sınamaq üçün Discord icmasına qoşulun
-  blog:
-    notification: Read Frog yenilikləri
   aiSmartContext: Süni intellektlə ağıllı kontekst
   aiSmartContextDescription: Tərcümənin keyfiyyətini artırmaq üçün səhifənin kontekstindən istifadə edir. LLM tərcümə provayderi tələb olunur.
   storeReview:
@@ -59,8 +56,6 @@ popup:
     help: Kömək
     tutorial: Təlimat
     emailUs: Bizə e-poçt göndər
-    featureRequest: Funksiya təklif et
-    bugReport: Xəta bildir
     diagnosePage: "Bu səhifəni diaqnoz et"
     community: İcma
     joinDiscord: Discord icmasına qoşul
@@ -105,44 +100,8 @@ options:
     settings: Parametrlər
     features: Funksiyalar
     translation: Tərcümə
-    product: Məhsul
   tools:
     translationHub: Tərcümə mərkəzi
-  product:
-    roadmap: İnkişaf planı
-  helpAndCommunity:
-    title: Kömək və icma
-    pageDescription: Read Frog genişlənməsindən istifadə etməyi öyrənin, komandadan kömək alın və ya icmadakı digər istifadəçilərə qoşulun.
-    help:
-      title: Kömək
-    tutorial:
-      title: Təlimat
-      description: Sənədləri oxuyun və Read Frog genişlənməsindən istifadə etməyi öyrənin
-    email:
-      title: Bizə e-poçt göndər
-      description: Komanda ilə birbaşa contact@readfrog.app ünvanında əlaqə saxlayın
-    featureRequest:
-      title: Funksiya təklif et
-      description: Fikir təklif edin və komandanın növbəti işlərinə səs verin
-    bugReport:
-      title: Xəta bildir
-      description: Dəstək sorğusu açın və problem həll edilənədək onu izləyin
-    troubleshooting:
-      title: "Problemlərin həlli"
-    diagnostics:
-      title: "Diaqnostika məlumatlarını ixrac et"
-      description: "Xəta hesabatına əlavə etmək üçün son jurnalları və ayarlarınızı (API açarları olmadan) yadda saxlayın"
-      exportSuccess: "Diaqnostika məlumatları yadda saxlanıldı"
-      exportFailed: "Diaqnostika məlumatlarını ixrac etmək mümkün olmadı"
-    community:
-      title: İcma
-    discord:
-      title: Discord
-      description: Komanda və digər istifadəçilərlə real vaxtda söhbət edin
-    wechat:
-      title: WeChat qrupu
-      description: WeChat müzakirə qrupuna qoşulmaq üçün QR kodunu skan edin
-      qrCodeAlt: WeChat QR kodu
   apiProviders:
     title: API provayderləri
     pageDescription: Read Frog genişlənməsinin istifadə etdiyi süni intellekt xidmətlərini qoşun, sonra hər funksiyanı hansı xidmətin icra edəcəyini seçin.
@@ -219,6 +178,8 @@ options:
       temperatureHint: Cavablardakı təsadüfiliyi idarə edir. Aşağı dəyərlər (0) daha sabit, yüksək dəyərlər isə daha yaradıcı cavablar verir. Aralıq provayderdən asılıdır. Provayderin standart dəyərindən istifadə etmək üçün boş saxlayın.
       reasoning:
         title: Mühakimə
+        description: "Standart olaraq none istifadə olunur. Düşünmə tələb edən modellər dəstəklənən ən aşağı səviyyədən istifadə edir."
+        minimum: "Bu model düşünmə tələb edir. Dəstəklənən minimum rejim: $1."
       headers: Başlıqlar
       headersHint: Süni intellekt provayderi üçün müştəri proqramı yaradılarkən göndərilən fərdi HTTP başlıqları. Provayderin standart dəyərlərindən istifadə etmək üçün boş saxlayın; standart dəyərləri deaktiv etmək üçün {} yazın.
       providerOptions: Provayder parametrləri
@@ -586,11 +547,6 @@ options:
         description: Üzən düymənin deaktiv olacağı saytları təyin edin
         enterUrlPattern: URL şablonu daxil edin
         urlPattern: URL şablonu
-    clickAction:
-      title: Klik əməliyyatı
-      description: Üzən düyməyə kliklədikdə icra ediləcək əməliyyatı seçin
-      panel: Yan paneli aç
-      translate: Səhifə tərcüməsini aktiv və ya deaktiv et
     closeMenu:
       title: Üzən düyməni gizlət
     tooltips:
@@ -599,7 +555,6 @@ options:
       lockPosition: Mövqeyi kilidlə
       unlockPosition: Mövqenin kilidini aç
       settings: Parametrlər
-      feedback: Rəy göndər
   selectionToolbar:
     title: Seçim alətlər paneli
     pageDescription: Mətn seçdikdə hansı əməliyyatların göründüyünü və alətlər panelinin harada açıldığını təyin edin.
@@ -1452,11 +1407,6 @@ options:
           confirm: Təsdiqlə
           cancel: Ləğv et
           description: Keşdəki bütün süni intellekt seqmentləşdirmə nəticələri silinəcək. Növbəti dəfə süni intellekt seqmentləşdirməsi aktiv halda video açdıqda subtitrlər yenidən işlənəcək.
-  whatsNew:
-    title: Yeniliklər
-    postType:
-      promotion: Kampaniya
-      update: Yeniləmə
   rateUs:
     title: Bizi qiymətləndir
   configMigration:

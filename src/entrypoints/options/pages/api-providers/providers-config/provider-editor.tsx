@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react"
 import { useSelector } from "@tanstack/react-store"
 import { useAtomValue } from "jotai"
 import { useState } from "react"
@@ -14,23 +13,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/base-ui/alert-dialog"
 import { Button } from "@/components/ui/base-ui/button"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/base-ui/collapsible"
-import { Switch } from "@/components/ui/base-ui/switch"
-import { isLLMProvider } from "@/types/config/provider"
-import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
-import {
-  FEATURE_KEYS,
-  FEATURE_PROVIDER_DEFS,
-  getFeatureLabelI18nKey,
-} from "@/utils/constants/feature-providers"
-import { getSelectionToolbarActions } from "@/utils/custom-actions"
+import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
-import { providerSupportsTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
-import { cn } from "@/utils/styles/utils"
 import { APIKeyField } from "./provider-config-form/api-key-field"
 import { AdvancedOptionsSection } from "./provider-config-form/components/advanced-options-section"
 import { ConfigHeader as ProviderConfigHeader } from "./provider-config-form/config-header"
@@ -57,7 +41,7 @@ function ConfigHeader() {
 
 function NameField() {
   const form = useApiProviderForm()
-  const providerId = useProviderEditor().state.identity.id
+  const providerId = useProviderEditor().state.providerId
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
 
   return (
@@ -127,153 +111,6 @@ function AdvancedFields() {
   )
 }
 
-function Assignments({
-  children,
-  defaultOpen = false,
-}: {
-  children: React.ReactNode
-  defaultOpen?: boolean
-}) {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
-
-  return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <CollapsibleTrigger className="flex cursor-pointer items-center gap-2 py-2 text-sm text-muted-foreground hover:text-foreground">
-        <Icon
-          icon="tabler:chevron-right"
-          className={cn("size-4 transition-transform duration-200", isOpen && "rotate-90")}
-        />
-        <span>{i18n.t("options.apiProviders.featureProviders.title")}</span>
-      </CollapsibleTrigger>
-      <CollapsibleContent>
-        <div className="flex flex-col gap-3">{children}</div>
-      </CollapsibleContent>
-    </Collapsible>
-  )
-}
-
-function AssignmentRow({
-  checked,
-  children,
-  disabled = false,
-  onCheckedChange,
-}: {
-  checked: boolean
-  children: React.ReactNode
-  disabled?: boolean
-  onCheckedChange: (checked: boolean) => void
-}) {
-  return (
-    // A wrapping label gives the switch its accessible name and makes the text
-    // itself a click target. The badge is a sibling of the label text rather
-    // than part of it, so the row's text node stays exactly the feature name.
-    <label className="flex w-fit items-center gap-2">
-      <Switch checked={checked} disabled={checked || disabled} onCheckedChange={onCheckedChange} />
-      <span className="text-sm">{children}</span>
-    </label>
-  )
-}
-
-function CompatibleFeatureAssignments() {
-  const {
-    state: {
-      assignmentTarget: { providerId, providerType },
-    },
-    actions,
-  } = useProviderEditor()
-  const config = useAtomValue(configAtom)
-
-  return FEATURE_KEYS.filter(
-    (featureKey) =>
-      FEATURE_PROVIDER_DEFS[featureKey].isProvider(providerType) &&
-      // While translationOnly page mode is active, providers without markup
-      // support cannot take the page-translate assignment (translation-only-gate.ts).
-      !(
-        featureKey === "pageTranslation" &&
-        config.pageTranslation.mode === "translationOnly" &&
-        !providerSupportsTranslationOnlyMode(providerType)
-      ),
-  ).map((featureKey) => {
-    const isAssigned = FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config) === providerId
-    return (
-      <AssignmentRow
-        key={featureKey}
-        checked={isAssigned}
-        onCheckedChange={(checked) => {
-          if (checked) void actions.assignFeature(featureKey)
-        }}
-      >
-        {i18n.t(getFeatureLabelI18nKey(featureKey))}
-      </AssignmentRow>
-    )
-  })
-}
-
-function LanguageDetectionAssignment({
-  disabled = false,
-}: {
-  disabled?: boolean
-} = {}) {
-  const {
-    state: {
-      assignmentTarget: { providerId, providerType },
-    },
-    actions,
-  } = useProviderEditor()
-  const config = useAtomValue(configAtom)
-
-  // Built-in providers have no local providerType, but declare this capability
-  // in the provider registry. Local non-LLM providers still cannot take it.
-  if (!isLLMProvider(providerType)) {
-    return null
-  }
-
-  const isAssigned =
-    config.languageDetection.mode === "llm" && config.languageDetection.providerId === providerId
-
-  return (
-    <AssignmentRow
-      checked={isAssigned}
-      disabled={disabled}
-      onCheckedChange={(checked) => {
-        if (checked) void actions.assignLanguageDetection()
-      }}
-    >
-      {i18n.t("options.apiProviders.languageDetection.title")}
-    </AssignmentRow>
-  )
-}
-
-function CustomActionAssignments({ disabled = false }: { disabled?: boolean }) {
-  const {
-    state: {
-      assignmentTarget: { providerId, providerType },
-    },
-    actions,
-  } = useProviderEditor()
-  const config = useAtomValue(configAtom)
-
-  if (!isLLMProvider(providerType)) {
-    return null
-  }
-
-  return getSelectionToolbarActions(config.selectionToolbar).map((action) => {
-    const isAssigned = action.providerId === providerId
-    return (
-      <AssignmentRow
-        key={action.id}
-        checked={isAssigned}
-        disabled={disabled}
-        onCheckedChange={(checked) => {
-          if (checked) void actions.assignCustomAction(action.id)
-        }}
-      >
-        {action.name}
-      </AssignmentRow>
-    )
-  })
-}
-
 function DuplicateButton() {
   const duplicate = useProviderEditor().actions.duplicate
   return (
@@ -323,11 +160,6 @@ export const ProviderEditor = {
   ProviderSpecificFields,
   TranslationModelFields,
   AdvancedFields,
-  Assignments,
-  AssignmentRow,
-  CompatibleFeatureAssignments,
-  LanguageDetectionAssignment,
-  CustomActionAssignments,
   DuplicateButton,
   DeleteButton,
 }

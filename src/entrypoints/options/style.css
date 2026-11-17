@@ -1,6 +1,9 @@
+html {
+  font-size: 18px;
+}
+
 body {
-  /* Chrome set the font to 75% of the default size */
-  font-size: initial; /* reset to 16px */
+  font-size: 1rem;
 }
 
 /* Field pills in the custom action Layout editor

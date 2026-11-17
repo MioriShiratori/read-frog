@@ -3,30 +3,17 @@ import type { FloatingButtonConfig } from "@/types/config/floating-button"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { atom, createStore, Provider } from "jotai"
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest"
+import { browser } from "#imports"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { sendMessage } from "@/utils/message"
 import FloatingButton from ".."
-
-const toastAddMock = vi.fn<(...args: any[]) => any>()
-
-vi.mock("#imports", () => ({
-  browser: {
-    runtime: {
-      getURL: (path = "") => `chrome-extension://test-extension${path}`,
-      getManifest: () => ({ version: "1.43.3" }),
-    },
-  },
-  i18n: {
-    t: (key: string) => key,
-  },
-}))
+import { enablePageTranslationAtom } from "../../../atoms"
 
 vi.mock("@/utils/atoms/config", () => {
   const floatingButtonBaseAtom = atom<FloatingButtonConfig>({
     enabled: true,
     position: 0.66,
     side: "right",
-    clickAction: "panel",
     disabledFloatingButtonPatterns: [],
     locked: false,
   })
@@ -43,8 +30,6 @@ vi.mock("@/utils/atoms/config", () => {
   return {
     configFieldsAtomMap: {
       floatingButton: floatingButtonAtom,
-      sideContent: atom({ width: 360 }),
-      uiLanguage: atom("en"),
     },
   }
 })
@@ -53,7 +38,6 @@ vi.mock("../../../atoms", () => ({
   enablePageTranslationAtom: atom({ enabled: false }),
   isDraggingButtonAtom: atom(false),
   isFloatingButtonHiddenUntilReloadAtom: atom(false),
-  isSideOpenAtom: atom(false),
 }))
 
 vi.mock("../../../main", () => ({
@@ -61,22 +45,10 @@ vi.mock("../../../main", () => ({
 }))
 
 vi.mock("@/utils/message", () => ({
-  sendMessage: vi.fn<(...args: any[]) => any>(),
-}))
-
-vi.mock("@/utils/i18n/locale-map", () => ({
-  resolveUiLocale: (uiLanguage: string) => (uiLanguage === "auto" ? "en" : uiLanguage),
-}))
-
-vi.mock("@/components/ui/base-ui/toast", () => ({
-  anchoredToastManager: {
-    add: (...args: unknown[]) => toastAddMock(...args),
-  },
+  sendMessage: vi.fn<typeof sendMessage>(),
 }))
 
 beforeAll(() => {
-  vi.stubEnv("BROWSER", "chrome")
-
   class ResizeObserverMock {
     observe() {}
     unobserve() {}
@@ -90,8 +62,6 @@ afterEach(() => {
   vi.useRealTimers()
   vi.restoreAllMocks()
   vi.mocked(sendMessage).mockReset()
-  toastAddMock.mockReset()
-  window.history.replaceState({}, "", "/")
   setViewport(1024, 768)
 })
 
@@ -147,30 +117,29 @@ function mockRect(element: Element, rect: Partial<DOMRect>) {
 }
 
 const TOOLTIP_CONTROL_LABELS = [
-  "options.floatingButton.tooltips.togglePageTranslation",
+  "options.tools.translationHub",
   "options.floatingButton.tooltips.settings",
-  "options.floatingButton.tooltips.feedback",
 ] as const
 
-async function expectTooltipSide(label: string, side: "left" | "right") {
-  const trigger = screen.getByRole("button", { name: label })
-  fireEvent.focus(trigger)
-
-  await waitFor(() => {
-    const popup = document.querySelector<HTMLElement>('[data-slot="tooltip-content"][data-open]')
-    expect(popup).toHaveTextContent(label)
-    expect(popup).toHaveAttribute("data-side", side)
-    expect(popup).toHaveClass("pointer-events-none")
-    expect(popup?.parentElement).toHaveClass("pointer-events-none")
-  })
-
-  fireEvent.blur(trigger)
-  await waitFor(() => {
-    expect(document.querySelector('[data-slot="tooltip-content"][data-open]')).toBeNull()
-  })
-}
-
 describe("floatingButton controls", () => {
+  it("shows translation state on the frog and toggles it using the keyboard", () => {
+    const { store } = renderFloatingButton()
+    const main = getMainButton()
+    const image = main.querySelector("img")!
+    expect(image).toHaveClass("grayscale")
+    expect(main).toHaveAttribute("aria-pressed", "false")
+    act(() => store.set(enablePageTranslationAtom, { enabled: true }))
+    expect(image).not.toHaveClass("grayscale")
+    expect(main).toHaveAttribute("aria-pressed", "true")
+    fireEvent.keyDown(main, { key: "Enter" })
+    expect(sendMessage).toHaveBeenCalledWith(
+      "tryToSetEnablePageTranslationOnContentScript",
+      expect.objectContaining({ enabled: false }),
+    )
+    fireEvent.keyDown(main, { key: "a" })
+    fireEvent.keyDown(main, { key: "Enter", repeat: true })
+    expect(sendMessage).toHaveBeenCalledTimes(1)
+  })
   it("shows the close trigger only after entering the main floating button", () => {
     renderFloatingButton()
 
@@ -353,173 +322,53 @@ describe("floatingButton controls", () => {
     async ({ floatingSide, tooltipSide }) => {
       renderFloatingButton({ side: floatingSide })
       fireEvent.mouseEnter(getMainButton())
-      expect(TOOLTIP_CONTROL_LABELS).toHaveLength(3)
 
       for (const label of TOOLTIP_CONTROL_LABELS) {
-        await expectTooltipSide(label, tooltipSide)
+        const trigger = screen.getByRole("button", { name: label })
+        fireEvent.focus(trigger)
+
+        await waitFor(() => {
+          const popup = document.querySelector<HTMLElement>(
+            '[data-slot="tooltip-content"][data-open]',
+          )
+          expect(popup).toHaveTextContent(label)
+          expect(popup).toHaveAttribute("data-side", tooltipSide)
+          expect(popup).toHaveClass("pointer-events-none")
+          expect(popup?.parentElement).toHaveClass("pointer-events-none")
+        })
+
+        fireEvent.blur(trigger)
+        await waitFor(() => {
+          expect(document.querySelector('[data-slot="tooltip-content"][data-open]')).toBeNull()
+        })
       }
     },
   )
 
-  it("toggles the browser side panel on a normal panel click", () => {
-    vi.useFakeTimers()
-    renderFloatingButton({ clickAction: "panel" })
-
-    const mainButton = getMainButton()
-
-    fireEvent.pointerDown(mainButton, {
-      pointerId: 1,
-      pointerType: "mouse",
-      button: 0,
-      clientX: 900,
-      clientY: 500,
-    })
-    vi.advanceTimersByTime(349)
-    fireEvent.pointerUp(mainButton, {
-      pointerId: 1,
-      pointerType: "mouse",
-      button: 0,
-      clientX: 900,
-      clientY: 500,
-    })
-
-    expect(sendMessage).toHaveBeenCalledWith("toggleSidePanel", undefined)
-  })
-
-  it("places feedback after settings and opens a localized Featurebase URL with safe metadata", () => {
-    window.history.replaceState({}, "", "/private/path?token=secret#section")
+  it("opens the translation hub from the first control and keeps settings last", () => {
     renderFloatingButton()
-
-    const settingsButton = screen.getByRole("button", {
+    const hub = screen.getByRole("button", { name: "options.tools.translationHub" })
+    const settings = screen.getByRole("button", {
       name: "options.floatingButton.tooltips.settings",
     })
-    const feedbackButton = screen.getByRole("button", {
-      name: "options.floatingButton.tooltips.feedback",
-    })
-
     expect(
-      settingsButton.compareDocumentPosition(feedbackButton) & Node.DOCUMENT_POSITION_FOLLOWING,
+      hub.compareDocumentPosition(getMainButton()) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
-
-    fireEvent.click(feedbackButton)
-
-    const openPageCall = vi
-      .mocked(sendMessage)
-      .mock.calls.find(([message]) => message === "openPage")
-    const openPagePayload = openPageCall?.[1] as { active: boolean; url: string } | undefined
-    expect(openPagePayload).toBeDefined()
-    const openedUrl = new URL(openPagePayload!.url)
-
-    expect(openedUrl.origin).toBe("https://feedback.readfrog.app")
-    expect(openedUrl.pathname).toBe("/en")
-    expect(JSON.parse(openedUrl.searchParams.get("metaData")!)).toEqual({
-      browser: "chrome",
-      extension_version: "1.0.0",
-      // The intent is query/hash stripping, not the origin itself.
-      page_url: `${window.location.origin}/private/path`,
-    })
-    expect(openPagePayload).toEqual({
-      url: openedUrl.toString(),
+    expect(
+      getMainButton().compareDocumentPosition(settings) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+    expect(
+      screen.queryByRole("button", { name: "options.floatingButton.tooltips.feedback" }),
+    ).not.toBeInTheDocument()
+    fireEvent.click(hub)
+    expect(sendMessage).toHaveBeenCalledWith("openPage", {
+      url: browser.runtime.getURL("/translation-hub.html"),
       active: true,
     })
   })
-
-  it("shows a Firefox sidebar help link when the browser requires an extension user action", async () => {
-    vi.useFakeTimers()
-    vi.mocked(sendMessage).mockResolvedValue({
-      ok: false,
-      reason: "requires-extension-user-action",
-    })
-    renderFloatingButton({ clickAction: "panel" })
-
-    const mainButton = getMainButton()
-
-    fireEvent.pointerDown(mainButton, {
-      pointerId: 1,
-      pointerType: "mouse",
-      button: 0,
-      clientX: 900,
-      clientY: 500,
-    })
-    vi.advanceTimersByTime(349)
-    fireEvent.pointerUp(mainButton, {
-      pointerId: 1,
-      pointerType: "mouse",
-      button: 0,
-      clientX: 900,
-      clientY: 500,
-    })
-
-    await act(async () => {
-      await Promise.resolve()
-    })
-
-    expect(toastAddMock).toHaveBeenCalledWith({
-      id: "firefox-sidebar-user-action",
-      positionerProps: {
-        anchor: mainButton,
-        side: "left",
-        sideOffset: 8,
-      },
-      type: "info",
-      title: expect.anything(),
-    })
-
-    const toastContent = toastAddMock.mock.calls[0]?.[0]?.title
-    expect(toastContent).toBeDefined()
-    render(<>{toastContent}</>)
-
-    expect(screen.getByText("sidePanel.firefoxUserActionHint")).toBeInTheDocument()
-    const link = screen.getByRole("link", { name: "sidePanel.firefoxUserActionHelpText" })
-    expect(link).toHaveAttribute("href", "sidePanel.firefoxUserActionHelpUrl")
-    expect(link).toHaveAttribute("target", "_blank")
-    expect(link).toHaveAttribute("rel", "noopener noreferrer")
-  })
-
-  it("places Firefox sidebar help to the right of a left-side floating button", async () => {
-    vi.useFakeTimers()
-    vi.mocked(sendMessage).mockResolvedValue({
-      ok: false,
-      reason: "requires-extension-user-action",
-    })
-    renderFloatingButton({ clickAction: "panel", side: "left" })
-
-    const mainButton = getMainButton()
-
-    fireEvent.pointerDown(mainButton, {
-      pointerId: 1,
-      pointerType: "mouse",
-      button: 0,
-      clientX: 20,
-      clientY: 500,
-    })
-    vi.advanceTimersByTime(349)
-    fireEvent.pointerUp(mainButton, {
-      pointerId: 1,
-      pointerType: "mouse",
-      button: 0,
-      clientX: 20,
-      clientY: 500,
-    })
-
-    await act(async () => {
-      await Promise.resolve()
-    })
-
-    expect(toastAddMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        positionerProps: {
-          anchor: mainButton,
-          side: "right",
-          sideOffset: 8,
-        },
-      }),
-    )
-  })
-
   it("keeps translate as a normal click action", () => {
     vi.useFakeTimers()
-    renderFloatingButton({ clickAction: "translate" })
+    renderFloatingButton()
 
     const mainButton = getMainButton()
 
@@ -700,7 +549,9 @@ describe("floatingButton controls", () => {
     const mainButton = getMainButton()
     const hiddenButtons = screen
       .getAllByRole("button")
-      .filter((button) => button !== closeTrigger && button !== lockTrigger)
+      .filter(
+        (button) => button !== closeTrigger && button !== lockTrigger && button !== mainButton,
+      )
 
     expect(mainButton).toHaveClass("rounded-r-full")
     expect(mainButton).toHaveClass("-translate-x-6")

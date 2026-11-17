@@ -1,5 +1,5 @@
 import type { JSONValue } from "ai"
-import { isOpenAICompatibleLLMProvider, supportsTopLevelReasoning } from "@/types/config/provider"
+import { isOpenAICompatibleLLMProvider, isLLMProvider } from "@/types/config/provider"
 import { LLM_MODEL_OPTIONS } from "../constants/models"
 
 export interface RecommendedProviderOptionsMatch {
@@ -116,7 +116,7 @@ export function getProviderOptionsWithOverride(
 
   if (
     reasoning !== undefined &&
-    supportsTopLevelReasoning(provider) &&
+    isLLMProvider(provider) &&
     containsOnlyReasoningProviderOptions(recommendedOptions)
   ) {
     return undefined

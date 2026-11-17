@@ -51,9 +51,6 @@ const GlossaryEditorPage = lazy(() =>
 function AdvancedRedirect() {
   return <Navigate to="/advanced/glossary" replace />
 }
-const HelpAndCommunityPage = lazy(() =>
-  import("./pages/help-and-community").then((module) => ({ default: module.HelpAndCommunityPage })),
-)
 const CustomCssPage = lazy(() =>
   import("./pages/translation/translation-style/custom-css").then((module) => ({
     default: module.CustomCssPage,
@@ -139,7 +136,6 @@ const ROUTE_COMPONENTS: Record<RoutePath, ComponentType> = {
   "/input-translation": InputTranslationPage,
   "/tts": TextToSpeechPage,
   "/advanced": AdvancedRedirect,
-  "/help-and-community": HelpAndCommunityPage,
   "/advanced/glossary": GlossaryPage,
   "/advanced/glossary/:glossaryId": GlossaryEditorPage,
   "/preference/config-backup": ConfigBackupPage,

@@ -1,12 +1,5 @@
 import { RiTranslate } from "@remixicon/react"
-import {
-  IconCheck,
-  IconLock,
-  IconLockOpen,
-  IconMessageCircle,
-  IconSettings,
-  IconX,
-} from "@tabler/icons-react"
+import { IconLock, IconLockOpen, IconSettings, IconX } from "@tabler/icons-react"
 import { useAtomValue } from "jotai"
 import readFrogLogo from "@/assets/icons/read-frog.png"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
@@ -51,7 +44,6 @@ export function FloatingButtonPreview() {
           >
             <span className={hiddenButtonClassName}>
               <RiTranslate className="h-5 w-5" />
-              <IconCheck className="absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full bg-success text-white" />
             </span>
             <div className="relative">
               <div
@@ -77,9 +69,6 @@ export function FloatingButtonPreview() {
             </div>
             <span className={hiddenButtonClassName}>
               <IconSettings className="h-5 w-5" />
-            </span>
-            <span className={hiddenButtonClassName}>
-              <IconMessageCircle className="h-5 w-5" />
             </span>
           </div>
         </PreviewBrowserWindow>

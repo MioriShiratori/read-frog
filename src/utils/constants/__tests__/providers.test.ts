@@ -9,7 +9,6 @@ import {
   PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES,
   apiProviderConfigItemSchema,
   providersConfigSchema,
-  TOP_LEVEL_REASONING_PROVIDER_TYPES,
 } from "@/types/config/provider"
 import {
   DEFAULT_PROVIDER_CONFIG,
@@ -200,43 +199,14 @@ describe("provider constants", () => {
     expect(API_PROVIDER_TYPES.indexOf("azure")).toBe(API_PROVIDER_TYPES.indexOf("bedrock") - 1)
   })
 
-  it("defaults top-level reasoning providers to none", () => {
-    for (const provider of TOP_LEVEL_REASONING_PROVIDER_TYPES) {
-      expect(DEFAULT_PROVIDER_CONFIG[provider].reasoning).toBe("none")
-      expect(apiProviderConfigItemSchema.parse(DEFAULT_PROVIDER_CONFIG[provider])).toEqual(
-        DEFAULT_PROVIDER_CONFIG[provider],
-      )
+  it("persists reasoning choices for every LLM provider", () => {
+    for (const provider of LLM_PROVIDER_TYPES) {
+      const config = DEFAULT_PROVIDER_CONFIG[provider]
+      expect(config.reasoning).toBe("none")
+      expect(apiProviderConfigItemSchema.parse({ ...config, reasoning: "high" })).toEqual({
+        ...config,
+        reasoning: "high",
+      })
     }
-
-    expect(DEFAULT_PROVIDER_CONFIG.azure).not.toHaveProperty("reasoning")
-    expect(DEFAULT_PROVIDER_CONFIG.openrouter).not.toHaveProperty("reasoning")
-    expect(DEFAULT_PROVIDER_CONFIG.minimax).not.toHaveProperty("reasoning")
-    expect(DEFAULT_PROVIDER_CONFIG["openai-compatible"]).not.toHaveProperty("reasoning")
-    expect(DEFAULT_PROVIDER_CONFIG["open-responses"]).not.toHaveProperty("reasoning")
-  })
-
-  it("only allows top-level reasoning on supported provider schemas", () => {
-    expect(
-      apiProviderConfigItemSchema.parse({
-        ...DEFAULT_PROVIDER_CONFIG.openai,
-        reasoning: "minimal",
-      }),
-    ).toEqual({
-      ...DEFAULT_PROVIDER_CONFIG.openai,
-      reasoning: "minimal",
-    })
-
-    expect(() =>
-      apiProviderConfigItemSchema.parse({
-        ...DEFAULT_PROVIDER_CONFIG.openrouter,
-        reasoning: "none",
-      }),
-    ).toThrow(/Unrecognized key/)
-    expect(() =>
-      apiProviderConfigItemSchema.parse({
-        ...DEFAULT_PROVIDER_CONFIG.azure,
-        reasoning: "none",
-      }),
-    ).toThrow(/Unrecognized key/)
   })
 })

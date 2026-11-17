@@ -1,7 +1,6 @@
 name: Read Frog
 extName: "Read Frog - Traducción con IA"
 extDescription: "Traducción bilingüe de páginas web y subtítulos de vídeo, con acciones de IA y tus propios proveedores."
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 dataTypes:
   string: Texto
   number: Número
@@ -45,8 +44,6 @@ popup:
     tooltip: Traduce texto con varios modelos al mismo tiempo
   discord:
     tooltip: Únete a Discord para conectar con desarrolladores y obtener acceso anticipado a nuevas funciones
-  blog:
-    notification: Novedades de Read Frog
   aiSmartContext: Contexto inteligente de IA
   aiSmartContextDescription: Usa el contexto de la página web para mejorar la calidad de la traducción. Requiere un proveedor de traducción LLM.
   storeReview:
@@ -59,8 +56,6 @@ popup:
     help: Ayuda
     tutorial: Tutorial
     emailUs: Escríbenos
-    featureRequest: Sugerir una función
-    bugReport: Informar de un fallo
     diagnosePage: "Diagnosticar esta página"
     community: Comunidad
     joinDiscord: Unirse a Discord
@@ -105,44 +100,8 @@ options:
     settings: Configuración
     features: Funciones
     translation: Traducción
-    product: Producto
   tools:
     translationHub: Centro de traducción
-  product:
-    roadmap: Hoja de ruta
-  helpAndCommunity:
-    title: Ayuda y comunidad
-    pageDescription: Aprende a usar Read Frog, pide ayuda al equipo o únete a otros usuarios en la comunidad.
-    help:
-      title: Ayuda
-    tutorial:
-      title: Tutorial
-      description: Lee la documentación y aprende a usar Read Frog
-    email:
-      title: Escríbenos
-      description: Contacta directamente con el equipo en contact@readfrog.app
-    featureRequest:
-      title: Sugerir una función
-      description: Propón una idea y vota lo que el equipo construirá a continuación
-    bugReport:
-      title: Informar de un fallo
-      description: Abre un ticket de soporte y síguelo hasta que se resuelva
-    troubleshooting:
-      title: "Solución de problemas"
-    diagnostics:
-      title: "Exportar diagnóstico"
-      description: "Guarda los registros recientes y tu configuración, sin las claves de API, para adjuntarlos a un informe de error"
-      exportSuccess: "Diagnóstico guardado"
-      exportFailed: "No se pudo exportar el diagnóstico"
-    community:
-      title: Comunidad
-    discord:
-      title: Discord
-      description: Habla en tiempo real con el equipo y con otros usuarios
-    wechat:
-      title: Grupo de WeChat
-      description: Escanea el código QR para unirte al grupo de discusión de WeChat
-      qrCodeAlt: Código QR de WeChat
   apiProviders:
     title: Proveedores de API
     pageDescription: Conecta los servicios de IA que usa Read Frog y elige cuál se encarga de cada función.
@@ -219,6 +178,8 @@ options:
       temperatureHint: Controla la aleatoriedad en las respuestas. Los valores más bajos (0) son más deterministas; los más altos son más creativos. El rango varía según el proveedor. Déjalo vacío para usar el valor predeterminado del proveedor.
       reasoning:
         title: Reasoning
+        description: "El valor predeterminado es none. Los modelos que requieren razonamiento usan el nivel mínimo compatible."
+        minimum: "Este modelo requiere razonamiento. El modo mínimo compatible es $1."
       headers: Encabezados
       headersHint: Encabezados HTTP personalizados enviados al crear el cliente del proveedor de IA. Déjalo vacío para usar los valores predeterminados; usa {} para desactivarlos.
       providerOptions: Opciones del proveedor
@@ -586,11 +547,6 @@ options:
         description: Configura los sitios web donde se debe desactivar el botón flotante
         enterUrlPattern: Introduce patrón de URL
         urlPattern: Patrón de URL
-    clickAction:
-      title: Acción al hacer clic
-      description: Elige la acción al hacer clic en el botón flotante
-      panel: Abrir panel lateral
-      translate: Alternar traducción de página
     closeMenu:
       title: Ocultar botón flotante
     tooltips:
@@ -599,7 +555,6 @@ options:
       lockPosition: Bloquear posición
       unlockPosition: Desbloquear posición
       settings: Ajustes
-      feedback: Enviar comentarios
   selectionToolbar:
     title: Barra de selección
     pageDescription: Define qué acciones aparecen al seleccionar texto y dónde se muestra la barra.
@@ -1452,11 +1407,6 @@ options:
           confirm: Confirmar
           cancel: Cancelar
           description: Esto eliminará todos los resultados de segmentación AI en caché. La próxima vez que reproduzcas un video con segmentación AI activada, se volverán a procesar los subtítulos.
-  whatsNew:
-    title: Novedades
-    postType:
-      promotion: Promoción
-      update: Actualización
   rateUs:
     title: Calificarnos
   configMigration:

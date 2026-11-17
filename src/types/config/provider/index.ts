@@ -8,7 +8,6 @@ import type {
   ProtocolCompatibleLLMProviderConfig,
   ProviderConfig,
   PureAPIProviderConfig,
-  TopLevelReasoningProviderConfig,
   TranslateProviderConfig,
 } from "./schemas"
 import {
@@ -22,7 +21,6 @@ import {
   isPureAPIProvider,
   isPureTranslateProvider,
   isTranslateProvider,
-  supportsTopLevelReasoning,
 } from "./constants"
 
 export * from "./constants"
@@ -37,12 +35,6 @@ export function isTranslateProviderConfig(
 
 export function isLLMProviderConfig(config: ProviderConfig): config is LLMProviderConfig {
   return isLLMProvider(config.provider)
-}
-
-export function isTopLevelReasoningProviderConfig(
-  config: LLMProviderConfig,
-): config is TopLevelReasoningProviderConfig {
-  return supportsTopLevelReasoning(config.provider)
 }
 
 export function isOpenAICompatibleLLMProviderConfig(

@@ -1,5 +1,4 @@
 import { Icon } from "@iconify/react"
-import { useAtomValue } from "jotai"
 import { browser } from "#imports"
 import {
   DropdownMenu,
@@ -12,10 +11,7 @@ import {
 } from "@/components/ui/base-ui/dropdown-menu"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { env } from "@/env"
-import { configFieldsAtomMap } from "@/utils/atoms/config"
-import { buildFeaturebasePortalUrl } from "@/utils/featurebase"
 import { i18n } from "@/utils/i18n"
-import { resolveUiLocale } from "@/utils/i18n/locale-map"
 import { createLogger } from "@/utils/logging/logger"
 import { sendMessage } from "@/utils/message"
 import { getReviewUrl } from "@/utils/utils"
@@ -50,9 +46,6 @@ async function diagnoseCurrentPage() {
  * under Help, and where to find the other users under Community.
  */
 export function MoreMenu() {
-  const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
-  const locale = resolveUiLocale(uiLanguage)
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -85,27 +78,6 @@ export function MoreMenu() {
           >
             <Icon icon="tabler:mail" className="size-4" strokeWidth={1.6} />
             {i18n.t("popup.more.emailUs")}
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
-            // The portal's own root is the feedback board; `tickets` is the support queue.
-            onClick={() =>
-              openExternal(buildFeaturebasePortalUrl({ destination: "feedback", locale }))
-            }
-            className="cursor-pointer"
-          >
-            <Icon icon="tabler:message-circle" className="size-4" strokeWidth={1.6} />
-            {i18n.t("popup.more.featureRequest")}
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
-            onClick={() =>
-              openExternal(buildFeaturebasePortalUrl({ destination: "tickets", locale }))
-            }
-            className="cursor-pointer"
-          >
-            <Icon icon="tabler:bug" className="size-4" strokeWidth={1.6} />
-            {i18n.t("popup.more.bugReport")}
           </DropdownMenuItem>
 
           <DropdownMenuItem onClick={() => void diagnoseCurrentPage()} className="cursor-pointer">

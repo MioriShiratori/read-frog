@@ -77,11 +77,13 @@ export function FeatureProvidersConfig() {
   const config = useAtomValue(configAtom)
   const setConfig = useSetAtom(writeConfigAtom)
   const viewport = useRef<HTMLDivElement>(null)
+  const matrix = useRef<HTMLDivElement>(null)
   const providers = config.providersConfig.filter((provider) => provider.enabled)
   const rows = buildRows(config)
   useEffect(() => {
     const node = viewport.current
-    if (!node) return undefined
+    const container = matrix.current
+    if (!node || !container) return undefined
     const wheel = (event: WheelEvent) => {
       if (event.ctrlKey || node.scrollWidth <= node.clientWidth) return
       const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
@@ -90,8 +92,8 @@ export function FeatureProvidersConfig() {
       const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? node.clientWidth : 1
       node.scrollLeft += delta * unit
     }
-    node.addEventListener("wheel", wheel, { passive: false })
-    return () => node.removeEventListener("wheel", wheel)
+    container.addEventListener("wheel", wheel, { passive: false })
+    return () => container.removeEventListener("wheel", wheel)
   }, [])
 
   const assign = async (provider: ProviderConfig, rowId?: string) => {
@@ -126,109 +128,105 @@ export function FeatureProvidersConfig() {
     >
       <div className="provider-matrix-container">
         <div
-          className="provider-matrix-viewport"
-          ref={viewport}
-          tabIndex={0}
+          className="provider-matrix-layout"
+          ref={matrix}
           role="region"
           aria-label={i18n.t("options.apiProviders.featureProviders.title")}
+          style={{ gridTemplateRows: `repeat(${rows.length + 1}, minmax(4.5rem, auto))` }}
         >
-          <table
-            className="provider-matrix"
-            style={{ "--provider-count": Math.max(4, providers.length) } as CSSProperties}
-          >
-            <colgroup>
-              <col className="provider-matrix-label-column" />
-              {providers.map((provider) => (
-                <col key={provider.id} />
-              ))}
-              {blanks.map((index) => (
-                <col key={`empty-${index}`} />
-              ))}
-            </colgroup>
-            <thead>
-              <tr>
-                <th scope="col" className="provider-matrix-label">
-                  {i18n.t("options.apiProviders.featureProviders.function")}
-                </th>
-                {providers.map((provider) => (
-                  <th key={provider.id} scope="col" title={provider.name}>
-                    <button
-                      type="button"
-                      className="provider-matrix-header flex w-full flex-col items-center gap-2 overflow-hidden px-2 py-3"
-                      aria-label={i18n.t("options.apiProviders.featureProviders.assignAll", [
-                        provider.name,
-                      ])}
-                      title={i18n.t("options.apiProviders.featureProviders.assignAll", [
-                        provider.name,
-                      ])}
-                      onClick={() => void assign(provider)}
-                    >
-                      <ProviderIcon
-                        logo={PROVIDER_ITEMS[provider.provider].logo(theme)}
-                        className="size-6 shrink-0"
-                      />
-                      <span className="max-w-full truncate">{provider.name}</span>
-                    </button>
-                  </th>
-                ))}
-                {blanks.map((index) => (
-                  <th aria-hidden="true" key={`empty-${index}`} />
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.id}>
-                  <th scope="row" className="provider-matrix-label">
-                    <div className="flex flex-wrap items-center gap-2 font-medium">
-                      {row.name}
-                      <SetApiKeyWarning
-                        providerConfig={
-                          config.providersConfig.find(
-                            (provider) => provider.id === row.providerId,
-                          ) ?? null
-                        }
-                      />
-                    </div>
-                    <span
-                      className="mt-1 block truncate text-xs font-normal text-muted-foreground"
-                      title={row.description}
-                    >
-                      {row.description}
-                    </span>
-                  </th>
-                  {providers.map((provider) => {
-                    const compatible = canAssign(row, provider, config)
-                    const selected = row.providerId === provider.id
-                    return (
-                      <td key={provider.id}>
-                        <button
-                          type="button"
-                          className="provider-matrix-cell"
-                          disabled={!compatible}
-                          aria-pressed={selected}
-                          aria-label={`${row.name}: ${provider.name}`}
-                          title={
-                            !compatible
-                              ? i18n.t("options.apiProviders.featureProviders.incompatible")
-                              : provider.name
-                          }
-                          onClick={() => void assign(provider, row.id)}
-                        >
-                          <span aria-hidden="true" className="provider-matrix-marker">
-                            {selected ? "●" : compatible ? "○" : "—"}
-                          </span>
-                        </button>
-                      </td>
-                    )
-                  })}
+          <div className="provider-matrix-labels">
+            <div className="provider-matrix-label font-semibold">
+              {i18n.t("options.apiProviders.featureProviders.function")}
+            </div>
+            {rows.map((row) => (
+              <div key={row.id} className="provider-matrix-label">
+                <div className="flex flex-wrap items-center gap-2 font-medium">
+                  {row.name}
+                  <SetApiKeyWarning
+                    providerConfig={
+                      config.providersConfig.find((provider) => provider.id === row.providerId) ??
+                      null
+                    }
+                  />
+                </div>
+                <span
+                  className="mt-1 block truncate text-xs text-muted-foreground"
+                  title={row.description}
+                >
+                  {row.description}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="provider-matrix-viewport" ref={viewport} tabIndex={0}>
+            <table
+              className="provider-matrix"
+              style={{ "--provider-count": Math.max(4, providers.length) } as CSSProperties}
+            >
+              <thead>
+                <tr>
+                  {providers.map((provider) => (
+                    <th key={provider.id} scope="col" title={provider.name}>
+                      <button
+                        type="button"
+                        className="provider-matrix-header flex h-full w-full flex-col items-center justify-center gap-2 overflow-hidden px-2 py-3"
+                        aria-label={i18n.t("options.apiProviders.featureProviders.assignAll", [
+                          provider.name,
+                        ])}
+                        title={i18n.t("options.apiProviders.featureProviders.assignAll", [
+                          provider.name,
+                        ])}
+                        onClick={() => void assign(provider)}
+                      >
+                        <ProviderIcon
+                          logo={PROVIDER_ITEMS[provider.provider].logo(theme)}
+                          className="size-6 shrink-0"
+                        />
+                        <span className="max-w-full truncate">{provider.name}</span>
+                      </button>
+                    </th>
+                  ))}
                   {blanks.map((index) => (
-                    <td key={`empty-${index}`} />
+                    <th aria-hidden="true" key={`empty-${index}`} />
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.id} aria-label={row.name}>
+                    {providers.map((provider) => {
+                      const compatible = canAssign(row, provider, config)
+                      const selected = row.providerId === provider.id
+                      return (
+                        <td key={provider.id}>
+                          <button
+                            type="button"
+                            className="provider-matrix-cell"
+                            disabled={!compatible}
+                            aria-pressed={selected}
+                            aria-label={`${row.name}: ${provider.name}`}
+                            title={
+                              !compatible
+                                ? i18n.t("options.apiProviders.featureProviders.incompatible")
+                                : provider.name
+                            }
+                            onClick={() => void assign(provider, row.id)}
+                          >
+                            <span aria-hidden="true" className="provider-matrix-marker">
+                              {selected ? "●" : compatible ? "○" : "—"}
+                            </span>
+                          </button>
+                        </td>
+                      )
+                    })}
+                    {blanks.map((index) => (
+                      <td aria-hidden="true" key={`empty-${index}`} />
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
           {providers.length

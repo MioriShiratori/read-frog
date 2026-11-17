@@ -1,7 +1,6 @@
 name: Read Frog
 extName: "Read Frog - AI-перевод"
 extDescription: "Двуязычный перевод веб-страниц и видеосубтитров, пользовательские AI-действия и собственные провайдеры."
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 dataTypes:
   string: Текст
   number: Число
@@ -45,8 +44,6 @@ popup:
     tooltip: Переводите текст несколькими моделями одновременно
   discord:
     tooltip: Присоединяйтесь к Discord, чтобы связаться с разработчиками и получить ранний доступ к новым функциям
-  blog:
-    notification: Что нового в Read Frog
   aiSmartContext: Умный контекст ИИ
   aiSmartContextDescription: Использует контекст веб-страницы для улучшения качества перевода. Требуется LLM-провайдер перевода.
   storeReview:
@@ -59,8 +56,6 @@ popup:
     help: Помощь
     tutorial: Руководство
     emailUs: Написать нам
-    featureRequest: Предложить функцию
-    bugReport: Сообщить об ошибке
     diagnosePage: "Диагностика страницы"
     community: Сообщество
     joinDiscord: Присоединиться к Discord
@@ -105,44 +100,8 @@ options:
     settings: Настройки
     features: Функции
     translation: Перевод
-    product: Продукт
   tools:
     translationHub: Центр переводов
-  product:
-    roadmap: Дорожная карта
-  helpAndCommunity:
-    title: Помощь и сообщество
-    pageDescription: Узнайте, как пользоваться Read Frog, обратитесь за помощью к команде или присоединяйтесь к сообществу.
-    help:
-      title: Помощь
-    tutorial:
-      title: Руководство
-      description: Прочитайте документацию и узнайте, как пользоваться Read Frog
-    email:
-      title: Написать нам
-      description: Свяжитесь с командой напрямую по адресу contact@readfrog.app
-    featureRequest:
-      title: Предложить функцию
-      description: Предложите идею и голосуйте за то, что команда сделает дальше
-    bugReport:
-      title: Сообщить об ошибке
-      description: Создайте обращение в поддержку и следите за ним до решения
-    troubleshooting:
-      title: "Устранение неполадок"
-    diagnostics:
-      title: "Экспорт диагностики"
-      description: "Сохраните недавние журналы и настройки (без ключей API), чтобы приложить их к сообщению об ошибке"
-      exportSuccess: "Диагностика сохранена"
-      exportFailed: "Не удалось экспортировать диагностику"
-    community:
-      title: Сообщество
-    discord:
-      title: Discord
-      description: Общайтесь с командой и другими пользователями в реальном времени
-    wechat:
-      title: Группа в WeChat
-      description: Отсканируйте QR-код, чтобы вступить в группу обсуждения в WeChat
-      qrCodeAlt: QR-код WeChat
   apiProviders:
     title: API-провайдеры
     pageDescription: Подключите ИИ-сервисы, которые вызывает Read Frog, и выберите провайдера для каждой функции.
@@ -218,6 +177,8 @@ options:
       temperatureHint: Контролирует случайность ответов. Низкие значения (0) более детерминированы, высокие — более креативны. Диапазон зависит от провайдера. Оставьте пустым для использования значения по умолчанию.
       reasoning:
         title: Reasoning
+        description: "По умолчанию используется none. Для моделей с обязательным рассуждением применяется минимальный поддерживаемый уровень."
+        minimum: "Эта модель требует рассуждения. Минимальный поддерживаемый режим: $1."
       headers: Заголовки
       headersHint: Пользовательские HTTP-заголовки для создания клиента AI-провайдера. Оставьте пустым для значений провайдера по умолчанию; используйте {}, чтобы отключить их.
       providerOptions: Параметры провайдера
@@ -585,11 +546,6 @@ options:
         description: Настройте веб-сайты, где плавающая кнопка должна быть отключена
         enterUrlPattern: Введите URL-шаблон
         urlPattern: URL-шаблон
-    clickAction:
-      title: Действие по клику
-      description: Выберите действие при нажатии на плавающую кнопку
-      panel: Открыть боковую панель
-      translate: Переключить перевод страницы
     closeMenu:
       title: Скрыть плавающую кнопку
     tooltips:
@@ -598,7 +554,6 @@ options:
       lockPosition: Закрепить положение
       unlockPosition: Открепить положение
       settings: Настройки
-      feedback: Отправить отзыв
   selectionToolbar:
     title: Панель выделения
     pageDescription: Укажите, какие действия появляются при выделении текста и где показывать панель.
@@ -1447,11 +1402,6 @@ options:
           confirm: Подтвердить
           cancel: Отмена
           description: Все кэшированные результаты AI сегментации будут удалены. При следующем воспроизведении видео с включенной AI сегментацией субтитры будут обработаны заново.
-  whatsNew:
-    title: Что нового
-    postType:
-      promotion: Акция
-      update: Обновление
   rateUs:
     title: Оцените нас
   configMigration:

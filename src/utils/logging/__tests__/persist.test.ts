@@ -65,7 +65,7 @@ describe("local log", () => {
   })
 
   it("keeps only the newest records", async () => {
-    const { MAX_STORED_LOG_RECORDS, readStoredLogRecords, storeLogRecords } =
+    const { MAX_STORED_LOG_RECORDS, flushStoredLogRecords, storeLogRecords } =
       await import("../sinks/persist")
 
     storeLogRecords(
@@ -74,21 +74,23 @@ describe("local log", () => {
     await vi.advanceTimersByTimeAsync(1000)
     storeLogRecords([record("newest")])
 
-    const stored = await readStoredLogRecords()
+    await flushStoredLogRecords()
+    const stored = await logRecordTable.orderBy().toArray()
     expect(stored).toHaveLength(MAX_STORED_LOG_RECORDS)
     expect(stored[0]!.message).toBe("1")
     expect(stored.at(-1)!.message).toBe("newest")
   })
 
-  it("includes records not yet written when read", async () => {
-    const { readStoredLogRecords, storeLogRecords } = await import("../sinks/persist")
+  it("flushes pending records before reading the table", async () => {
+    const { flushStoredLogRecords, storeLogRecords } = await import("../sinks/persist")
 
     storeLogRecords([record("pending")])
-    expect(await readStoredLogRecords()).toEqual([record("pending")])
+    await flushStoredLogRecords()
+    expect(await logRecordTable.orderBy().toArray()).toEqual([record("pending")])
   })
 
   it("stores the background's own records under its name", async () => {
-    const { createPersistSink, readStoredLogRecords } = await import("../sinks/persist")
+    const { createPersistSink, flushStoredLogRecords } = await import("../sinks/persist")
 
     createPersistSink().write({
       time: 1,
@@ -98,7 +100,8 @@ describe("local log", () => {
       fields: {},
     })
 
-    expect(await readStoredLogRecords()).toEqual([
+    await flushStoredLogRecords()
+    expect(await logRecordTable.orderBy().toArray()).toEqual([
       {
         time: 1,
         level: "warn",

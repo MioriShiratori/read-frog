@@ -1,34 +1,14 @@
 import type { AutosaveController } from "@/components/form/autosave-controller"
 import type { APIProviderConfig } from "@/types/config/provider"
-import type { FeatureKey } from "@/utils/constants/feature-providers"
-import { useAtomValue, useSetAtom } from "jotai"
-import { createContext, use } from "react"
+import { createContext, use, useMemo } from "react"
 import { useAutosave } from "@/components/form/use-autosave"
-import { useTheme } from "@/components/providers/theme-provider"
-import { configAtom, writeConfigAtom } from "@/utils/atoms/config"
-import { buildFeatureProviderPatch } from "@/utils/constants/feature-providers"
-import { API_PROVIDER_ITEMS } from "@/utils/constants/providers"
-import { patchSelectionToolbarAction } from "@/utils/custom-actions"
 import { formOpts, useAppForm } from "./provider-config-form/form"
-
-interface ProviderIdentity {
-  id: string
-  logo: string
-  name: string
-}
 
 interface ProviderEditorContextValue {
   state: {
-    identity: ProviderIdentity
-    assignmentTarget: {
-      providerId: string
-      providerType: APIProviderConfig["provider"]
-    }
+    providerId: string
   }
   actions: {
-    assignFeature: (featureKey: FeatureKey) => Promise<void>
-    assignLanguageDetection: () => Promise<void>
-    assignCustomAction: (actionId: string) => Promise<void>
     duplicate: () => Promise<void>
     delete: () => Promise<void>
   }
@@ -42,75 +22,6 @@ export function useProviderEditor() {
     throw new Error("ProviderEditor components must be rendered inside a ProviderEditor Provider")
   }
   return context
-}
-
-function useProviderEditorValue({
-  identity,
-  providerType,
-  duplicate,
-  delete: deleteProvider,
-}: {
-  identity: ProviderIdentity
-  providerType: APIProviderConfig["provider"]
-  duplicate: () => Promise<void>
-  delete: () => Promise<void>
-}): ProviderEditorContextValue {
-  const config = useAtomValue(configAtom)
-  const setConfig = useSetAtom(writeConfigAtom)
-  const providerId = identity.id
-
-  const getEnabledProvidersConfig = () => {
-    const provider = config.providersConfig.find((item) => item.id === providerId)
-    if (!provider || provider.enabled) {
-      return undefined
-    }
-
-    return config.providersConfig.map((item) =>
-      item.id === providerId ? { ...item, enabled: true } : item,
-    )
-  }
-
-  const getAssignmentProvidersPatch = () => {
-    const providersConfig = getEnabledProvidersConfig()
-    return providersConfig ? { providersConfig } : {}
-  }
-
-  return {
-    state: {
-      identity,
-      assignmentTarget: {
-        providerId,
-        providerType,
-      },
-    },
-    actions: {
-      assignFeature: async (featureKey) => {
-        await setConfig({
-          ...buildFeatureProviderPatch({ [featureKey]: providerId }),
-          ...getAssignmentProvidersPatch(),
-        })
-      },
-      assignLanguageDetection: async () => {
-        await setConfig({
-          languageDetection: {
-            mode: "llm",
-            providerId,
-          },
-          ...getAssignmentProvidersPatch(),
-        })
-      },
-      assignCustomAction: async (actionId) => {
-        await setConfig({
-          selectionToolbar: patchSelectionToolbarAction(config.selectionToolbar, actionId, {
-            providerId,
-          }),
-          ...getAssignmentProvidersPatch(),
-        })
-      },
-      duplicate,
-      delete: deleteProvider,
-    },
-  }
 }
 
 export function useProviderForm(
@@ -162,18 +73,15 @@ export function CustomProvider({
   delete: () => Promise<void>
   children: React.ReactNode
 }) {
-  const { theme } = useTheme()
-  const provider = API_PROVIDER_ITEMS[providerConfig.provider]
-  const value = useProviderEditorValue({
-    identity: {
-      id: providerConfig.id,
-      logo: provider.logo(theme),
-      name: providerConfig.name,
-    },
-    providerType: providerConfig.provider,
-    duplicate,
-    delete: deleteProvider,
-  })
+  const value = useMemo<ProviderEditorContextValue>(
+    () => ({
+      state: {
+        providerId: providerConfig.id,
+      },
+      actions: { duplicate, delete: deleteProvider },
+    }),
+    [providerConfig.id, duplicate, deleteProvider],
+  )
 
   return (
     <ProviderEditorContext value={value}>

@@ -61,7 +61,7 @@ async function initApp() {
     {
       path: "*",
       element: (
-        <SidebarProvider>
+        <SidebarProvider style={{ "--sidebar-width": "18rem" } as React.CSSProperties}>
           <ThemeProvider>
             <TooltipProvider>
               <LocaleBoundary>

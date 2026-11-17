@@ -26,8 +26,6 @@ import {
 } from "@/utils/config/helpers"
 import {
   buildFeatureProviderPatch,
-  FEATURE_KEYS,
-  FEATURE_PROVIDER_DEFS,
   getFeatureLabelI18nKey,
 } from "@/utils/constants/feature-providers"
 import { getSelectionToolbarActions } from "@/utils/custom-actions"
@@ -188,10 +186,6 @@ function EditableProviderConfig({ providerConfig }: { providerConfig: APIProvide
   const providerType = providerConfig.provider
   const hasTranslationModelFields = isTranslateProvider(providerType) && isLLMProvider(providerType)
   const hasAdvancedFields = isLLMProvider(providerType)
-  const hasAssignments =
-    hasAdvancedFields ||
-    FEATURE_KEYS.some((featureKey) => FEATURE_PROVIDER_DEFS[featureKey].isProvider(providerType))
-
   return (
     <AutosaveBoundary session={toAutosaveSession(autosave)}>
       <CustomProviderEditor.Provider
@@ -210,13 +204,6 @@ function EditableProviderConfig({ providerConfig }: { providerConfig: APIProvide
               <ProviderEditor.ConnectionFields />
               <ProviderEditor.ProviderSpecificFields />
               {hasTranslationModelFields && <ProviderEditor.TranslationModelFields />}
-              {hasAssignments && (
-                <ProviderEditor.Assignments>
-                  <ProviderEditor.CompatibleFeatureAssignments />
-                  <ProviderEditor.LanguageDetectionAssignment />
-                  <ProviderEditor.CustomActionAssignments />
-                </ProviderEditor.Assignments>
-              )}
               {hasAdvancedFields && <ProviderEditor.AdvancedFields />}
             </EntityEditor.Body>
             <EntityEditor.Footer>

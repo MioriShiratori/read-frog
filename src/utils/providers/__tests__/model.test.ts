@@ -187,7 +187,7 @@ describe("getModelById", () => {
     expect(openAICompatibleLanguageModelMock).toHaveBeenCalledWith("x-ai/grok-4-fast:free")
   })
 
-  it("passes Ollama root base URL and disables think on the language model", async () => {
+  it("passes the Ollama root URL without forcing a model-level thinking setting", async () => {
     getStorageItemMock.mockResolvedValue({
       providersConfig: [createOllamaProviderConfig({ think: true })],
     })
@@ -199,7 +199,7 @@ describe("getModelById", () => {
     expect(createOllamaMock).toHaveBeenCalledWith({
       baseURL: "http://127.0.0.1:11434/",
     })
-    expect(ollamaLanguageModelMock).toHaveBeenCalledWith("gemma3:4b", { think: false })
+    expect(ollamaLanguageModelMock).toHaveBeenCalledWith("gemma3:4b")
   })
 
   it("passes Azure settings and resolves the deployment name with languageModel", async () => {

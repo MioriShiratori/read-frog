@@ -62,6 +62,7 @@ export function LanguageVoiceItem() {
           className="min-w-0 sm:flex-1"
           aria-label={i18n.t("options.tts.voice.language.title")}
           value={selectedLanguageVoice}
+          language={selectedLanguage}
           onValueChange={updateLanguageVoice}
         />
 

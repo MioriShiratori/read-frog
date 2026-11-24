@@ -24,25 +24,6 @@ export function LanguageDetectionConfig() {
   const hasProviders = providerOptions.length > 0
   const isLLMMode = languageDetection.mode === "llm"
 
-  const statusIndicator = useMemo(() => {
-    if (!hasProviders) {
-      return {
-        color: "bg-warning",
-        text: i18n.t("options.apiProviders.languageDetection.status.noProviders"),
-      }
-    }
-    if (!isLLMMode) {
-      return {
-        color: "bg-blue-400",
-        text: i18n.t("options.apiProviders.languageDetection.status.basicRecommend"),
-      }
-    }
-    return {
-      color: "bg-success",
-      text: i18n.t("options.apiProviders.languageDetection.status.llmEnabled"),
-    }
-  }, [hasProviders, isLLMMode])
-
   return (
     <ConfigSection
       id="language-detection"
@@ -50,15 +31,7 @@ export function LanguageDetectionConfig() {
     >
       <ConfigItem
         title={i18n.t("options.apiProviders.languageDetection.provider.label")}
-        description={
-          <>
-            {i18n.t("options.apiProviders.languageDetection.description")}
-            <span className="mt-2 flex items-center gap-1.5">
-              <span className={`size-2 rounded-full ${statusIndicator.color}`} />
-              <span className="text-xs">{statusIndicator.text}</span>
-            </span>
-          </>
-        }
+        description={i18n.t("options.apiProviders.languageDetection.description")}
       >
         <div className="flex flex-col items-end gap-3">
           <RadioGroup

@@ -246,7 +246,6 @@ options:
       saveError: Could not save provider assignment
       title: Feature providers
       description: Choose which provider to use for each feature
-      chooseProvider: Choose a provider
       features:
         pageTranslation: Page translation
         selectionTranslation: Selection toolbar translation
@@ -266,17 +265,11 @@ options:
       provider:
         label: Detection provider
         placeholder: Select a provider
-      status:
-        noProviders: Configure an LLM provider first
-        basicRecommend: Recommend enabling LLM
-        llmEnabled: LLM detection enabled
     aiContentAware:
       title: AI smart context translation
       description: Give the AI context from the page or video so it translates more accurately
       enable: Enable
       enableDescription: The AI reads a summary of the page or video before translating, so wording fits the context. Applies to every translation feature running on an LLM provider. Adds latency on the first request and increases API costs.
-      llmProviderConfigured: LLM provider selected for $1
-      llmProviderNotConfigured: No LLM provider selected for $1
   patterns:
     duplicate: This pattern is already in the list
     gluedWildcard: A "*" has to stand for a whole part of the address, like *.example.com or example.*

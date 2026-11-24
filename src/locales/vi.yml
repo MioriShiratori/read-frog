@@ -245,7 +245,6 @@ options:
       saveError: Could not save provider assignment
       title: Nhà cung cấp tính năng
       description: Chọn nhà cung cấp sử dụng cho mỗi tính năng
-      chooseProvider: Chọn nhà cung cấp
       features:
         pageTranslation: Dịch trang
         selectionTranslation: Dịch thanh công cụ chọn
@@ -265,17 +264,11 @@ options:
       provider:
         label: Nhà cung cấp phát hiện
         placeholder: Chọn nhà cung cấp
-      status:
-        noProviders: Hãy cấu hình nhà cung cấp LLM trước
-        basicRecommend: Khuyến nghị bật LLM
-        llmEnabled: Phát hiện LLM đã bật
     aiContentAware:
       title: Dịch ngữ cảnh thông minh AI
       description: Cung cấp cho AI ngữ cảnh của trang hoặc video để dịch chính xác hơn
       enable: Bật
       enableDescription: AI đọc bản tóm tắt của trang hoặc video trước khi dịch, để cách dùng từ hợp ngữ cảnh. Áp dụng cho mọi tính năng dịch chạy trên nhà cung cấp LLM. Yêu cầu đầu tiên sẽ chậm hơn và làm tăng chi phí API.
-      llmProviderConfigured: Đã chọn nhà cung cấp LLM cho $1
-      llmProviderNotConfigured: Chưa chọn nhà cung cấp LLM cho $1
   patterns:
     duplicate: Mẫu này đã có trong danh sách
     gluedWildcard: Dấu "*" phải thay cho trọn một phần của địa chỉ, ví dụ *.example.com hoặc example.*

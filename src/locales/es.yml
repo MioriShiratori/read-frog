@@ -246,7 +246,6 @@ options:
       saveError: Could not save provider assignment
       title: Proveedores de funciones
       description: Elige qué proveedor usar para cada función
-      chooseProvider: Elegir un proveedor
       features:
         pageTranslation: Traducción de página
         selectionTranslation: Traducción de la barra de selección
@@ -266,17 +265,11 @@ options:
       provider:
         label: Proveedor de detección
         placeholder: Selecciona un proveedor
-      status:
-        noProviders: Configura primero un proveedor LLM
-        basicRecommend: Se recomienda activar LLM
-        llmEnabled: Detección LLM activada
     aiContentAware:
       title: Traducción con contexto inteligente de IA
       description: Da a la IA contexto de la página o el video para que traduzca con más precisión
       enable: Activar
       enableDescription: La IA lee un resumen de la página o el video antes de traducir, para que el vocabulario encaje con el contexto. Se aplica a todas las funciones de traducción que usan un proveedor LLM. Añade latencia en la primera solicitud y aumenta los costos de API.
-      llmProviderConfigured: Proveedor LLM seleccionado para $1
-      llmProviderNotConfigured: No se seleccionó ningún proveedor LLM para $1
   patterns:
     duplicate: Este patrón ya está en la lista
     gluedWildcard: Un "*" debe sustituir una parte completa de la dirección, como *.example.com o example.*

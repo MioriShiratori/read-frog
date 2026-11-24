@@ -245,7 +245,6 @@ options:
       saveError: Could not save provider assignment
       title: Провайдеры функций
       description: Выберите провайдера для каждой функции
-      chooseProvider: Выбрать провайдера
       features:
         pageTranslation: Перевод страницы
         selectionTranslation: Перевод выделения
@@ -265,17 +264,11 @@ options:
       provider:
         label: Провайдер определения
         placeholder: Выберите провайдера
-      status:
-        noProviders: Сначала настройте LLM-провайдер
-        basicRecommend: Рекомендуется включить LLM
-        llmEnabled: LLM-определение включено
     aiContentAware:
       title: Умный контекстный перевод ИИ
       description: Передавайте ИИ контекст страницы или видео, чтобы перевод был точнее
       enable: Включить
       enableDescription: Перед переводом ИИ читает краткое содержание страницы или видео, чтобы подобрать подходящие формулировки. Работает для всех функций перевода на LLM-провайдере. Первый запрос выполняется дольше, а расходы на API растут.
-      llmProviderConfigured: LLM-провайдер выбран для $1
-      llmProviderNotConfigured: LLM-провайдер не выбран для $1
   patterns:
     duplicate: Этот шаблон уже в списке
     gluedWildcard: «*» должна заменять часть адреса целиком, например *.example.com или example.*

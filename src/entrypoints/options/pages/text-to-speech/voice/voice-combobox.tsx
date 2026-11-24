@@ -1,4 +1,6 @@
+import type { LanguageTag } from "@read-frog/definitions"
 import type { TTSVoice, TTSVoiceGroup, TTSVoiceItem } from "@/types/config/tts"
+import { useMemo } from "react"
 import { Badge } from "@/components/ui/base-ui/badge"
 import { Button } from "@/components/ui/base-ui/button"
 import {
@@ -16,9 +18,10 @@ import {
   ComboboxValue,
 } from "@/components/ui/base-ui/combobox"
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/base-ui/item"
-import { EDGE_TTS_VOICE_GROUPS, getEdgeTTSVoiceItem } from "@/types/config/tts"
+import { getEdgeTTSVoiceItem } from "@/types/config/tts"
 import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
+import { getTTSVoiceDisplayName, getTTSVoiceGroups } from "./voice-options"
 
 function getTTSVoiceGenderBadgeClass(gender: TTSVoiceItem["gender"]): string | undefined {
   if (gender.startsWith("Male")) {
@@ -37,7 +40,11 @@ function getTTSVoiceGenderBadgeClass(gender: TTSVoiceItem["gender"]): string | u
 }
 
 function TTSVoiceSelectValue({ voice }: { voice: TTSVoice }) {
-  return <span className="block max-w-full min-w-0 truncate">{voice}</span>
+  return (
+    <span className="block max-w-full min-w-0 truncate" title={voice}>
+      {getTTSVoiceDisplayName(voice)}
+    </span>
+  )
 }
 
 function getTTSVoiceSearchValue(item: TTSVoiceItem): string {
@@ -50,13 +57,16 @@ function filterTTSVoiceItem(item: TTSVoiceItem, query: string): boolean {
 
 function TTSVoiceComboboxItem({ item }: { item: TTSVoiceItem }) {
   return (
-    <ComboboxItem key={item.voice} value={item} className="overflow-hidden py-1.5">
-      {/* Capped by the row it sits in, not by the anchor: the list can now be wider than the
-          trigger, and a name should use every pixel of it before it truncates. */}
+    <ComboboxItem
+      key={item.voice}
+      value={item}
+      title={item.voice}
+      className="min-w-0 overflow-hidden py-1.5"
+    >
       <Item size="sm" className="w-full max-w-full min-w-0 flex-nowrap gap-2 overflow-hidden p-0">
         <ItemContent className="min-w-0 gap-1 overflow-hidden">
           <ItemTitle className="w-full max-w-full min-w-0 overflow-hidden font-mono text-xs">
-            <span className="block min-w-0 truncate">{item.voice}</span>
+            <span className="block min-w-0 truncate">{getTTSVoiceDisplayName(item.voice)}</span>
           </ItemTitle>
           <ItemDescription className="m-0 flex max-w-full min-w-0 flex-wrap items-center gap-1.5 overflow-hidden">
             <Badge variant="secondary" size="sm">
@@ -84,9 +94,11 @@ function TTSVoiceComboboxGroup({ group }: { group: TTSVoiceGroup }) {
       className="[&:last-child_[data-slot=combobox-separator]]:hidden"
     >
       <ComboboxLabel className="max-w-full truncate">{group.language}</ComboboxLabel>
-      <ComboboxCollection>
-        {(item: TTSVoiceItem) => <TTSVoiceComboboxItem key={item.voice} item={item} />}
-      </ComboboxCollection>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,12rem),1fr))] gap-1">
+        <ComboboxCollection>
+          {(item: TTSVoiceItem) => <TTSVoiceComboboxItem key={item.voice} item={item} />}
+        </ComboboxCollection>
+      </div>
       <ComboboxSeparator />
     </ComboboxGroup>
   )
@@ -95,19 +107,22 @@ function TTSVoiceComboboxGroup({ group }: { group: TTSVoiceGroup }) {
 interface TTSVoiceComboboxProps {
   value: TTSVoice
   onValueChange: (voice: TTSVoice) => void
+  language?: LanguageTag
   /** The trigger fills its column by default; callers size it from the row it sits in. */
   className?: string
   "aria-label"?: string
 }
 
-/** Every Edge voice, grouped by the language it speaks. Shared by both rows that pick one. */
+/** Region groups for one language, or all languages when picking the global fallback. */
 export function TTSVoiceCombobox({
   value,
   onValueChange,
+  language,
   className,
   "aria-label": ariaLabel,
 }: TTSVoiceComboboxProps) {
   const selectedItem = getEdgeTTSVoiceItem(value)
+  const groups = useMemo(() => getTTSVoiceGroups(language), [language])
   const placeholder = i18n.t("options.tts.voice.selectPlaceholder")
 
   return (
@@ -119,14 +134,15 @@ export function TTSVoiceCombobox({
         }
         onValueChange(item.voice)
       }}
-      items={EDGE_TTS_VOICE_GROUPS}
+      items={groups}
       filter={filterTTSVoiceItem}
-      itemToStringLabel={(item) => item?.voice ?? ""}
+      itemToStringLabel={(item) => (item ? getTTSVoiceDisplayName(item.voice) : "")}
       itemToStringValue={(item) => item?.voice ?? ""}
       isItemEqualToValue={(item, selectedValue) =>
         !!item && !!selectedValue && item.voice === selectedValue.voice
       }
       autoHighlight
+      grid
     >
       <ComboboxTrigger
         render={
@@ -145,9 +161,10 @@ export function TTSVoiceCombobox({
           {(item: TTSVoiceItem | null) => <TTSVoiceSelectValue voice={item?.voice ?? value} />}
         </ComboboxValue>
       </ComboboxTrigger>
-      {/* Follows the trigger, but never below 18rem — a short name like en-US-AmberNeural would
-          otherwise anchor the list too narrow to read the long names under it. */}
-      <ComboboxContent className="max-h-80 !min-w-[max(var(--anchor-width),18rem)]" align="end">
+      <ComboboxContent
+        className="max-h-80 !min-w-[min(var(--available-width),max(var(--anchor-width),26rem))]"
+        align="end"
+      >
         <ComboboxInput showTrigger={false} placeholder={placeholder} />
         <ComboboxList>
           {(group: TTSVoiceGroup) => <TTSVoiceComboboxGroup key={group.language} group={group} />}

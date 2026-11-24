@@ -246,7 +246,6 @@ options:
       saveError: 保存提供商分配失败
       title: 功能提供商
       description: 为每个功能选择使用的提供商
-      chooseProvider: 选择提供商
       features:
         pageTranslation: 网页翻译
         selectionTranslation: 划词翻译
@@ -266,17 +265,11 @@ options:
       provider:
         label: 检测提供商
         placeholder: 选择提供商
-      status:
-        noProviders: 请先配置 LLM 提供商
-        basicRecommend: 建议启用 LLM
-        llmEnabled: LLM 检测已启用
     aiContentAware:
       title: AI 智能上下文翻译
       description: 把网页或视频的上下文提供给 AI，让翻译更准确
       enable: 启用
       enableDescription: AI 翻译前会先读一份网页或视频的摘要，让用词更贴合上下文。对每个使用 LLM 提供商的翻译功能都生效。首次请求会有延迟，并增加 API 费用。
-      llmProviderConfigured: 已为$1选择 LLM 提供商
-      llmProviderNotConfigured: 没有为$1选择 LLM 提供商
   patterns:
     duplicate: 该模式已在列表中
     gluedWildcard: '"*" 必须代表地址中完整的一段，例如 *.example.com 或 example.*'

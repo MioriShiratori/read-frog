@@ -245,7 +245,6 @@ options:
       saveError: Could not save provider assignment
       title: Özellik sağlayıcıları
       description: Her özellik için kullanılacak sağlayıcıyı seçin
-      chooseProvider: Sağlayıcı seç
       features:
         pageTranslation: Sayfa çevirisi
         selectionTranslation: Seçim araç çubuğu çevirisi
@@ -265,17 +264,11 @@ options:
       provider:
         label: Algılama sağlayıcısı
         placeholder: Bir sağlayıcı seçin
-      status:
-        noProviders: Önce bir LLM sağlayıcısı yapılandırın
-        basicRecommend: LLM etkinleştirmesi önerilir
-        llmEnabled: LLM algılama etkin
     aiContentAware:
       title: AI akıllı bağlam çevirisi
       description: Sayfanın ya da videonun bağlamını yapay zekâya vererek çeviriyi daha isabetli hale getirin
       enable: Etkinleştir
       enableDescription: Yapay zekâ çeviriden önce sayfanın ya da videonun özetini okur, böylece sözcükler bağlama oturur. LLM sağlayıcısıyla çalışan her çeviri özelliğinde geçerlidir. İlk isteğe gecikme ekler ve API maliyetini artırır.
-      llmProviderConfigured: $1 için LLM sağlayıcısı seçildi
-      llmProviderNotConfigured: $1 için LLM sağlayıcısı seçilmedi
   patterns:
     duplicate: Bu desen zaten listede
     gluedWildcard: '"*" adresin bir bölümünün tamamının yerini almalıdır, örneğin *.example.com veya example.*'

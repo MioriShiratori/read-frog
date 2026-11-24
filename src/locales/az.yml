@@ -246,7 +246,6 @@ options:
       saveError: Could not save provider assignment
       title: Funksiya provayderləri
       description: Hər funksiya üçün istifadə ediləcək provayderi seçin
-      chooseProvider: Provayder seç
       features:
         pageTranslation: Səhifə tərcüməsi
         selectionTranslation: Seçim alətlər panelində tərcümə
@@ -266,17 +265,11 @@ options:
       provider:
         label: Dil aşkarlama provayderi
         placeholder: Provayder seçin
-      status:
-        noProviders: Əvvəlcə LLM provayderini tənzimləyin
-        basicRecommend: LLM ilə aşkarlamanın aktivləşdirilməsi tövsiyə olunur
-        llmEnabled: LLM ilə aşkarlama aktivdir
     aiContentAware:
       title: Süni intellektlə kontekstə uyğun tərcümə
       description: Daha dəqiq tərcümə üçün süni intellektə səhifə və ya video kontekstini təqdim edin
       enable: Aktiv et
       enableDescription: İfadələrin kontekstə uyğun olması üçün süni intellekt tərcümədən əvvəl səhifənin və ya videonun xülasəsini oxuyur. LLM provayderi ilə işləyən bütün tərcümə funksiyalarına tətbiq olunur. İlk sorğunu ləngidir və API xərclərini artırır.
-      llmProviderConfigured: $1 üçün LLM provayderi seçilib
-      llmProviderNotConfigured: $1 üçün LLM provayderi seçilməyib
   patterns:
     duplicate: Bu şablon artıq siyahıdadır
     gluedWildcard: '"*" ünvanın bütöv bir hissəsini əvəz etməlidir, məsələn *.example.com və ya example.*'

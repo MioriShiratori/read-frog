@@ -245,7 +245,6 @@ options:
       saveError: Could not save provider assignment
       title: 機能プロバイダー
       description: 各機能に使用するプロバイダーを選択
-      chooseProvider: プロバイダーを選択
       features:
         pageTranslation: ページ翻訳
         selectionTranslation: 選択ツールバー翻訳
@@ -265,17 +264,11 @@ options:
       provider:
         label: 検出プロバイダー
         placeholder: プロバイダーを選択
-      status:
-        noProviders: LLMプロバイダーを設定してください
-        basicRecommend: LLM有効化を推奨
-        llmEnabled: LLM検出が有効
     aiContentAware:
       title: AI スマートコンテキスト翻訳
       description: ページや動画の文脈を AI に渡して、翻訳の精度を上げます
       enable: 有効にする
       enableDescription: AI は翻訳の前にページや動画の要約を読み、文脈に合った訳語を選びます。LLM プロバイダーで動作するすべての翻訳機能に適用されます。最初のリクエストに遅延が生じ、API 費用も増えます。
-      llmProviderConfigured: $1の LLM プロバイダー選択済み
-      llmProviderNotConfigured: $1の LLM プロバイダー未選択
   patterns:
     duplicate: このパターンは既にリストにあります
     gluedWildcard: "「*」はアドレスの一区切り全体を表す必要があります。例: *.example.com、example.*"

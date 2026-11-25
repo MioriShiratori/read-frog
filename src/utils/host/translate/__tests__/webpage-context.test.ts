@@ -61,6 +61,40 @@ describe("getOrCreateWebPageContext", () => {
     expect(mockDefuddleConstructor).toHaveBeenCalledTimes(1)
   })
 
+  it("shares one snapshot across concurrent paragraph requests", async () => {
+    const { getOrCreateWebPageContext } = await loadModule()
+    const contexts = await Promise.all(Array.from({ length: 32 }, getOrCreateWebPageContext))
+    expect(mockDefuddleConstructor).toHaveBeenCalledTimes(1)
+    expect(contexts.every((context) => context === contexts[0])).toBe(true)
+  })
+
+  it("keeps pending snapshots tied to the page that requested them", async () => {
+    const { getOrCreateWebPageContext } = await loadModule()
+    const first = getOrCreateWebPageContext()
+    window.history.replaceState({}, "", "/next-article")
+    document.title = "Next title"
+    document.body.innerHTML = "<main>Next page body</main>"
+    const next = getOrCreateWebPageContext()
+    const [oldContext, newContext] = await Promise.all([first, next])
+    expect(oldContext?.webTitle).toBe("Original Title")
+    expect(newContext?.webTitle).toBe("Next title")
+    expect(mockDefuddleConstructor.mock.calls[0]?.[0].body.textContent).toBe("Page body")
+    expect(mockDefuddleConstructor.mock.calls[1]?.[0].body.textContent).toBe("Next page body")
+    expect(await getOrCreateWebPageContext()).toBe(newContext)
+    expect(mockDefuddleConstructor).toHaveBeenCalledTimes(2)
+  })
+
+  it("discards a pending cache entry when navigation leaves its page", async () => {
+    const { getOrCreateWebPageContext } = await loadModule()
+    const pending = getOrCreateWebPageContext()
+    window.history.replaceState({}, "", "/elsewhere")
+    await pending
+    window.history.replaceState({}, "", "/article")
+    document.title = "Refreshed article"
+    expect((await getOrCreateWebPageContext())?.webTitle).toBe("Refreshed article")
+    expect(mockDefuddleConstructor).toHaveBeenCalledTimes(2)
+  })
+
   it("extracts webpage content with Defuddle and converts it to markdown", async () => {
     const { getOrCreateWebPageContext } = await loadModule()
 

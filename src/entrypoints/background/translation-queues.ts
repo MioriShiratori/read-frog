@@ -184,6 +184,7 @@ export async function executeBatchTranslation<TContext>(
       isBatch: true,
       context,
       signal,
+      requestSessionId: dataList[0]?.scope,
       glossaryTerms: mergeBatchGlossaryTerms(dataList),
     },
   )
@@ -280,6 +281,9 @@ async function createTranslationQueues<TContext>(config: TranslationQueueSetupCo
         // batch can only ever hold one glossary state, which is the only way to
         // represent a REMOVAL: see `mergeBatchGlossaryTerms`.
         `glossaryRevision:${data.glossaryRevision ?? 0}`,
+        // OpenCode routes and caches a conversation by this identity. Keep
+        // unrelated pages out of the same request even when their prompts match.
+        getLocalProviderConfig(data.provider).provider === "opencode" ? (data.scope ?? "") : "",
       )
     },
     getCharacters: (data) => data.text.length,
@@ -313,6 +317,7 @@ async function createTranslationQueues<TContext>(config: TranslationQueueSetupCo
         return executeQueuedTranslation(text, langConfig, data, promptResolver, {
           context,
           signal,
+          requestSessionId: scope,
           // The sender's own terms, NOT the batch union: this is one item again.
           // Dropping them here would let a batch that fell back translate
           // without the glossary and then cache that result under a hash taken

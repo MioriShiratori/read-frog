@@ -12,6 +12,7 @@ export interface CachedWebPageContext extends WebPageContext {
 }
 
 let cachedWebPageContext: CachedWebPageContext | null = null
+const pendingContexts = new Map<string, Promise<CachedWebPageContext>>()
 
 function createDefuddleSnapshotDocument() {
   const clonedDoc = document.implementation.createHTMLDocument(document.title)
@@ -58,22 +59,21 @@ function prepareMarkdownSource(html: string): string {
   return doc.body.innerHTML
 }
 
-async function extractWebpageContent(): Promise<string> {
+async function extractWebpageContent(snapshotDoc: Document, url: string): Promise<string> {
   try {
     const { default: Defuddle, createMarkdownContent } = await import("defuddle/full")
-    const snapshotDoc = createDefuddleSnapshotDocument()
     const result = new Defuddle(snapshotDoc, {
-      url: window.location.href,
+      url,
       useAsync: false,
     }).parse()
 
     if (result.content) {
-      return createMarkdownContent(prepareMarkdownSource(result.content), window.location.href)
+      return createMarkdownContent(prepareMarkdownSource(result.content), url)
     }
   } catch (error) {
     log.warn("Defuddle parsing failed, falling back to body text", { error })
   }
-  return document.body?.textContent || ""
+  return snapshotDoc.body?.textContent || ""
 }
 
 function splitUrlFragment(url: string): [base: string, fragment: string] {
@@ -135,11 +135,27 @@ export async function getOrCreateWebPageContext(): Promise<CachedWebPageContext 
     return cachedWebPageContext
   }
 
-  cachedWebPageContext = {
+  const pending = pendingContexts.get(currentUrl)
+  if (pending) return pending
+
+  const snapshot = createDefuddleSnapshotDocument()
+  const metadata = {
     url: currentUrl,
     webTitle: getSourceDocumentTitle(),
-    webDescription: getDocumentDescription(document),
-    webContent: truncateWebPageContent(await extractWebpageContent()),
+    webDescription: getDocumentDescription(snapshot),
   }
-  return cachedWebPageContext
+  const loading = extractWebpageContent(snapshot, currentUrl).then((content) => ({
+    ...metadata,
+    webContent: truncateWebPageContent(content),
+  }))
+  pendingContexts.set(currentUrl, loading)
+  try {
+    const context = await loading
+    // A router can navigate while the extractor module loads. Keep that old
+    // snapshot for its callers without replacing the new page's cached context.
+    if (window.location.href === currentUrl) cachedWebPageContext = context
+    return context
+  } finally {
+    pendingContexts.delete(currentUrl)
+  }
 }

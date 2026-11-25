@@ -1,3 +1,4 @@
+import type { OpenCodeSessionContext } from "./opencode-headers"
 import type { Config } from "@/types/config/config"
 import type {
   AzureApiMode,
@@ -89,7 +90,7 @@ function getAzureApiMode(providerConfig: LLMProviderConfig): AzureApiMode {
   return apiMode === "chat" ? "chat" : DEFAULT_AZURE_API_MODE
 }
 
-async function getLanguageModelById(providerId: string, sessionSignal?: AbortSignal) {
+async function getLanguageModelById(providerId: string, requestContext?: OpenCodeSessionContext) {
   const config = await storage.getItem<Config>(`local:${CONFIG_STORAGE_KEY}`)
   if (!config) {
     throw new ProviderSetupError("Config not found")
@@ -101,7 +102,7 @@ async function getLanguageModelById(providerId: string, sessionSignal?: AbortSig
     throw new ProviderSetupError(`Provider ${providerId} not found`)
   }
 
-  return getLanguageModelForConfig(providerConfig, sessionSignal)
+  return getLanguageModelForConfig(providerConfig, requestContext)
 }
 
 /**
@@ -114,7 +115,7 @@ async function getLanguageModelById(providerId: string, sessionSignal?: AbortSig
  */
 export function getLanguageModelForConfig(
   providerConfig: LLMProviderConfig,
-  sessionSignal?: AbortSignal,
+  requestContext?: OpenCodeSessionContext,
 ) {
   const headers = getProviderHeadersWithOverride(providerConfig.provider, providerConfig.headers)
   const providerSpecificSettings = getProviderSpecificSettings(providerConfig)
@@ -126,7 +127,7 @@ export function getLanguageModelForConfig(
         baseURL: matchedConfig.baseURL,
         supportsStructuredOutputs: true,
         ...(matchedConfig.provider === "opencode"
-          ? { fetch: createOpenCodeFetch(sessionSignal) }
+          ? { fetch: createOpenCodeFetch(requestContext) }
           : {}),
         ...(matchedConfig.apiKey && { apiKey: matchedConfig.apiKey }),
         ...(headers && { headers }),
@@ -163,6 +164,6 @@ export function getLanguageModelForConfig(
   return provider.languageModel(modelId)
 }
 
-export async function getModelById(providerId: string, sessionSignal?: AbortSignal) {
-  return getLanguageModelById(providerId, sessionSignal)
+export async function getModelById(providerId: string, requestContext?: OpenCodeSessionContext) {
+  return getLanguageModelById(providerId, requestContext)
 }

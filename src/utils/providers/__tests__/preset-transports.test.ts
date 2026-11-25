@@ -42,7 +42,7 @@ describe("preset HTTP transports", () => {
     } as const
     for (let index = 0; index < 2; index++) {
       const result = await generateText({
-        model: getLanguageModelForConfig(config, signal),
+        model: getLanguageModelForConfig(config, { signal }),
         prompt: "Translate",
         maxRetries: 0,
       })

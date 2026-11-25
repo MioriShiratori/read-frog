@@ -41,7 +41,7 @@ async function getWebPagePromptContext(
 ): Promise<
   { webTitle: string; webDescription?: string; webContent: string; webSummary?: string } | undefined
 > {
-  if (!canResolvedProviderRefGenerateText(providerConfig)) {
+  if (!enableAIContentAware || !canResolvedProviderRefGenerateText(providerConfig)) {
     return undefined
   }
 

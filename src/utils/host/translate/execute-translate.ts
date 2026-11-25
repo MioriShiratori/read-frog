@@ -33,6 +33,7 @@ export async function executeTranslate<TContext>(
     // (live-verified); LLM prompts already mandate format preservation.
     preserveLineBreaks?: boolean
     signal?: AbortSignal
+    requestSessionId?: string
     glossaryTerms?: readonly MatchedTerm[]
   },
 ) {

@@ -62,6 +62,7 @@ import {
 import { diagnoseParagraph, settleDisplayedTranslation } from "../paragraph-diagnosis"
 import { translateTextForPage } from "../translate-variants"
 import { setTranslationDirAndLang } from "../translation-attributes"
+import { decorateTranslationNode } from "../ui/decorate-translation"
 import { createSpinnerInside, getTranslatedTextAndRemoveSpinner } from "../ui/spinner"
 import {
   createPageTranslationRequest,
@@ -1098,6 +1099,11 @@ async function translateTranslationOnlyRun(
       return
     }
 
+    await decorateTranslationNode(
+      translatedWrapperNode,
+      config.pageTranslation.translationNodeStyle,
+    )
+
     // Preferred strategy: swap the translation into the site's OWN text nodes,
     // leaving element identity (framework fibers, listeners) untouched. The
     // wrapper was only the spinner vehicle and is removed.
@@ -1130,6 +1136,7 @@ async function translateTranslationOnlyRun(
 
     // Fallback strategy: render into the wrapper and displace the originals,
     // retaining the node objects so restore can re-insert the same nodes (#1846).
+    translatedWrapperNode.style.removeProperty("display")
     translatedWrapperNode.innerHTML = translatedText
 
     // Batch final DOM mutations to reduce layout thrashing

@@ -14,6 +14,7 @@ import {
   type TranslationOnlySwapRecord,
 } from "../core/translation-state"
 import { setTranslationDirAndLang } from "../translation-attributes"
+import { styleTranslationOnlyText } from "../ui/translation-only-style"
 import {
   TRANSLATABLE_ATTRIBUTE_NAMES,
   TRANSLATABLE_INPUT_VALUE_TYPES,
@@ -337,6 +338,12 @@ export function applyInPlaceTextSwap(
   dropTranslationOnlySwapRecords(
     state,
     state.swaps.filter((existing) => swapRecordIntersectsNodes(existing, runNodes)),
+  )
+  record.restoreStyle = styleTranslationOnlyText(
+    items
+      .filter((item) => item.translatedValue.trim() && item.originalValue !== item.translatedValue)
+      .map((item) => item.node),
+    config.pageTranslation.translationNodeStyle,
   )
   state.swaps.push(record)
 }

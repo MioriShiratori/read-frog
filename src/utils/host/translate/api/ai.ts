@@ -26,6 +26,7 @@ export async function aiTranslate<TContext>(
     isBatch?: boolean
     context?: TContext
     signal?: AbortSignal
+    requestSessionId?: string
     // Forwarded verbatim to the prompt resolver: the terms were resolved by the
     // context that knew the page URL, and re-resolving here would scope them
     // wrong (see `TranslatePromptOptions.glossaryTerms`).
@@ -43,7 +44,10 @@ export async function aiTranslate<TContext>(
   const modelName = resolveModelId(providerModel)
   const model =
     provider === "opencode"
-      ? await getModelById(providerId, options?.signal)
+      ? await getModelById(providerId, {
+          signal: options?.signal,
+          sessionId: options?.requestSessionId,
+        })
       : await getModelById(providerId)
 
   const providerOptions = getProviderOptionsWithOverride(

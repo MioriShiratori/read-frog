@@ -269,9 +269,9 @@ async function createLocalTextPartStream(
   const model = providerConfig
     ? getLanguageModelForConfig(
         providerConfig,
-        ...(providerConfig.provider === "opencode" ? [signal] : []),
+        ...(providerConfig.provider === "opencode" ? [{ signal }] : []),
       )
-    : await getModelById(providerId, signal)
+    : await getModelById(providerId, { signal })
   const result = streamText({
     ...(streamTextParams as Parameters<typeof streamText>[0]),
     ...(providerConfig ? buildLocalGenerateTextParams(providerConfig) : {}),
@@ -315,7 +315,7 @@ export async function generateTextForProviderRef(
   // for a row deleted from another tab while the config was already in hand.
   const model = getLanguageModelForConfig(
     providerRef.config,
-    ...(providerRef.config.provider === "opencode" ? [signal] : []),
+    ...(providerRef.config.provider === "opencode" ? [{ signal }] : []),
   )
   const { text } = await generateText({
     model,
@@ -359,7 +359,7 @@ async function createLocalStructuredObjectPartStream<TOutput extends Record<stri
   const { providerId, outputSchema: _outputSchema, ...streamParams } = serializablePayload
   const { signal, onError } = options
 
-  const model = await getModelById(providerId, signal)
+  const model = await getModelById(providerId, { signal })
   const result = streamText({
     ...(streamParams as Parameters<typeof streamText>[0]),
     model,

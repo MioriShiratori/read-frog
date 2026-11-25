@@ -6,6 +6,7 @@ import { NO_TRANSLATION_SENTINEL } from "@/utils/constants/prompt"
 import { detectLanguage } from "@/utils/content/language"
 import { Sha256Hex } from "@/utils/hash"
 import { executeTranslate } from "@/utils/host/translate/execute-translate"
+import { clearInMemoryTranslationCache } from "@/utils/host/translate/in-memory-translation-cache"
 import { MIN_LENGTH_FOR_SKIP_LANGUAGE_DETECTION } from "@/utils/host/translate/translate-text"
 import {
   translateTextForInput,
@@ -432,7 +433,7 @@ describe("translate-text", () => {
       )
     })
 
-    it("should forward document.title to regular page translations", async () => {
+    it("does not collect page metadata when smart context is off", async () => {
       const llmConfig = {
         ...DEFAULT_CONFIG,
         pageTranslation: {
@@ -454,13 +455,47 @@ describe("translate-text", () => {
       const result = await translateTextForPage("Body text")
 
       expect(result).toBe("translated body text")
+      expect(mockGetOrCreateWebPageContext).not.toHaveBeenCalled()
       expect(mockSendMessage).toHaveBeenCalledWith(
         "enqueueTranslateRequest",
-        expect.objectContaining({
-          text: "Body text",
-          webTitle: "Translated Browser Title",
-        }),
+        expect.objectContaining({ text: "Body text", webTitle: undefined, webContent: undefined }),
       )
+    })
+
+    it("reuses the same paragraph after navigation changes the page title with context off", async () => {
+      const config = structuredClone(DEFAULT_CONFIG)
+      config.pageTranslation.providerId = "openai-default"
+      config.pageTranslation.enableAIContentAware = false
+      config.glossary.enabled = false
+      const { getTranslatePromptFromConfig } = await vi.importActual<
+        typeof import("@/utils/prompts/translate")
+      >("@/utils/prompts/translate")
+      mockGetConfigFromStorage.mockResolvedValue(config)
+      mockGetTranslatePrompt.mockImplementation(
+        (
+          target: string,
+          text: string,
+          options: Parameters<typeof getTranslatePromptFromConfig>[3],
+        ) => getTranslatePromptFromConfig(config.pageTranslation, target, text, options),
+      )
+      mockSendMessage.mockResolvedValue("同一段帖子的译文")
+      clearInMemoryTranslationCache()
+      beginPageTranslationSession()
+      try {
+        document.title = "Timeline"
+        expect(await translateTextForPage("The same ordinary post.")).toBe("同一段帖子的译文")
+        document.title = "Post detail"
+        window.history.replaceState({}, "", "/post-detail")
+        expect(await translateTextForPage("The same ordinary post.")).toBe("同一段帖子的译文")
+        const dispatch = vi.mocked((await import("@/utils/message")).sendMessage)
+        expect(
+          dispatch.mock.calls.filter(([name]) => name === "enqueueTranslateRequest"),
+        ).toHaveLength(1)
+        expect(mockGetOrCreateWebPageContext).not.toHaveBeenCalled()
+      } finally {
+        endPageTranslationSession()
+        clearInMemoryTranslationCache()
+      }
     })
   })
 

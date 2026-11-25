@@ -213,6 +213,7 @@ export const translateConfigSchema = z.object({
     // `.default()` for the same reason as `node.forceRetranslation`: pre-v109
     // config must still parse in UI contexts that load before the migration.
     translateTitle: z.boolean().default(true),
+    showOriginalOnHover: z.boolean().default(false),
     autoTranslatePatterns: z.array(z.string()),
     neverAutoTranslatePatterns: z.array(z.string()),
     autoTranslateLanguages: z.array(storedLanguageTagSchema),

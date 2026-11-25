@@ -1065,6 +1065,9 @@ options:
         range:
           main: Contenido principal
           all: Todo el contenido
+      showOriginalOnHover:
+        title: Mostrar el original al pasar el cursor
+        description: En el modo de solo traducción, pasa el cursor sobre la traducción para ver el original en una ayuda del navegador.
       translateTitle:
         title: Traducir el título de la pestaña
         description: Traduce también el título de la página que se muestra en la pestaña del navegador. Desactívalo para conservar el título original.

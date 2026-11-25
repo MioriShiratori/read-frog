@@ -26,6 +26,22 @@ export function PreferenceSection() {
       >
         <TranslationModeSelect />
       </ConfigItem>
+      {translateConfig.mode === "translationOnly" && (
+        <ConfigItem
+          id="show-original-on-hover"
+          title={i18n.t("options.translation.preference.showOriginalOnHover.title")}
+          description={i18n.t("options.translation.preference.showOriginalOnHover.description")}
+        >
+          <Switch
+            checked={translateConfig.page.showOriginalOnHover}
+            onCheckedChange={(checked) => {
+              void setTranslateConfig({
+                page: { ...translateConfig.page, showOriginalOnHover: checked },
+              })
+            }}
+          />
+        </ConfigItem>
+      )}
       <ConfigItem
         id="translate-range"
         title={i18n.t("options.translation.preference.translateRange.title")}

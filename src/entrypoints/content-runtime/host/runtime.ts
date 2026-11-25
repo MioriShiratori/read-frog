@@ -5,6 +5,7 @@ import { storage } from "#imports"
 import { configSchema } from "@/types/config/config"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
 import { detectPageLanguageLightweight } from "@/utils/content/page-language"
+import { setupOriginalTextHover } from "@/utils/host/translate/ui/original-text-hover"
 import { ensurePresetStyles } from "@/utils/host/translate/ui/style-injector"
 import { createLogger } from "@/utils/logging/logger"
 import { onMessage, sendMessage } from "@/utils/message"
@@ -47,19 +48,28 @@ export async function bootstrapHostContent(
 
   const cleanupPageTranslationTriggers = manager.registerPageTranslationTriggers()
 
-  // The tab-title switch applies to an already-translated page at once. Only
-  // the top frame owns the title, so iframes skip parsing every config write.
-  const cleanupTitleTranslationWatch =
-    window === window.top
-      ? storage.watch<Config>(`local:${CONFIG_STORAGE_KEY}`, (config) => {
-          const parsedConfig = configSchema.safeParse(config)
-          if (parsedConfig.success) {
-            manager.setTitleTranslationEnabled(
-              parsedConfig.data.pageTranslation.page.translateTitle,
-            )
-          }
-        })
-      : () => {}
+  const originalTextHover = setupOriginalTextHover(
+    document,
+    initialConfig?.pageTranslation.mode === "translationOnly" &&
+      initialConfig.pageTranslation.page.showOriginalOnHover,
+  )
+
+  // Both switches apply to existing translations without restarting requests.
+  const cleanupTranslationConfigWatch = storage.watch<Config>(
+    `local:${CONFIG_STORAGE_KEY}`,
+    (config) => {
+      const parsedConfig = configSchema.safeParse(config)
+      if (!parsedConfig.success) return
+      const pageConfig = parsedConfig.data.pageTranslation.page
+      originalTextHover.setEnabled(
+        parsedConfig.data.pageTranslation.mode === "translationOnly" &&
+          pageConfig.showOriginalOnHover,
+      )
+      if (window === window.top) {
+        manager.setTitleTranslationEnabled(pageConfig.translateTitle)
+      }
+    },
+  )
 
   const cleanupTranslationShortcut = await bindTranslationShortcutKey(manager)
 
@@ -165,7 +175,8 @@ export async function bootstrapHostContent(
     cleanupUrlListener()
     teardownNodeTranslation()
     cleanupPageTranslationTriggers()
-    cleanupTitleTranslationWatch()
+    cleanupTranslationConfigWatch()
+    originalTextHover.dispose()
     cleanupTranslationShortcut()
     cleanupTranslationModeShortcut()
     cleanupTranslationHubShortcut()

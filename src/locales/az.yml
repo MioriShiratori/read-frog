@@ -1065,6 +1065,9 @@ options:
         range:
           main: Əsas məzmun
           all: Bütün məzmun
+      showOriginalOnHover:
+        title: Üzərinə gətirdikdə orijinalı göstər
+        description: Yalnız tərcümə rejimində orijinal mətni brauzerin ipucunda görmək üçün kursoru tərcümənin üzərinə gətirin.
       translateTitle:
         title: Vərəq başlığını tərcümə et
         description: Brauzer vərəqində görünən səhifə başlığını da tərcümə edir. Orijinal başlığı saxlamaq üçün deaktiv edin.

@@ -1207,6 +1207,9 @@ options:
         range:
           main: Main content
           all: All content
+      showOriginalOnHover:
+        title: Show original on hover
+        description: In translation-only mode, hover over translated text to see the original in a browser tooltip.
       translateTitle:
         title: Translate tab title
         description: Also translate the page title shown in the browser tab. Turn it off to keep the original title.

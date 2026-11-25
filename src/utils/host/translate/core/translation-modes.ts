@@ -63,6 +63,7 @@ import { diagnoseParagraph, settleDisplayedTranslation } from "../paragraph-diag
 import { translateTextForPage } from "../translate-variants"
 import { setTranslationDirAndLang } from "../translation-attributes"
 import { decorateTranslationNode } from "../ui/decorate-translation"
+import { registerOriginalTextHover } from "../ui/original-text-hover"
 import { createSpinnerInside, getTranslatedTextAndRemoveSpinner } from "../ui/spinner"
 import {
   createPageTranslationRequest,
@@ -1138,6 +1139,7 @@ async function translateTranslationOnlyRun(
     // retaining the node objects so restore can re-insert the same nodes (#1846).
     translatedWrapperNode.style.removeProperty("display")
     translatedWrapperNode.innerHTML = translatedText
+    registerOriginalTextHover([translatedWrapperNode], source.filterText)
 
     // Batch final DOM mutations to reduce layout thrashing
     batchDOMOperation(() => {

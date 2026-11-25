@@ -1070,6 +1070,9 @@ options:
         range:
           main: 主要內容
           all: 全部內容
+      showOriginalOnHover:
+        title: 懸停譯文顯示原文
+        description: 僅譯文模式下，滑鼠懸停在譯文上時，透過瀏覽器提示查看對應原文。
       translateTitle:
         title: 翻譯分頁標題
         description: 翻譯網頁時，同時翻譯瀏覽器分頁上的標題。關閉後保留原標題。

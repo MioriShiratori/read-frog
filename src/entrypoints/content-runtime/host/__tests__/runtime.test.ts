@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { storage } from "#imports"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
+import { registerOriginalTextHover } from "@/utils/host/translate/ui/original-text-hover"
 import { bootstrapHostContent } from "../runtime"
 
 const {
@@ -285,6 +286,45 @@ describe("bootstrapHostContent URL changes", () => {
     expect(manager?.getDetectedPageLanguage?.(oldUrl)).toBeUndefined()
     expect(manager?.getDetectedPageLanguage?.(newUrl)).toBe("jpn")
     invalidate()
+  })
+
+  it("switches original hover on existing translations without restarting the page manager", async () => {
+    const config = structuredClone(DEFAULT_CONFIG)
+    config.pageTranslation.mode = "translationOnly"
+    config.pageTranslation.page.showOriginalOnHover = true
+    const { ctx, invalidate } = createContentScriptContext()
+    await bootstrapHostContent(ctx, config)
+    const p = document.createElement("p")
+    p.textContent = "译文"
+    document.body.append(p)
+    const release = registerOriginalTextHover([p], "Original source")
+    const hover = () => p.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }))
+    hover()
+    expect(p.title).toBe("Original source")
+    config.pageTranslation.page.showOriginalOnHover = false
+    await storage.setItem(`local:${CONFIG_STORAGE_KEY}`, config)
+    await flushAsyncWork()
+    expect(p).not.toHaveAttribute("title")
+    hover()
+    expect(p).not.toHaveAttribute("title")
+    config.pageTranslation.page.showOriginalOnHover = true
+    await storage.setItem(`local:${CONFIG_STORAGE_KEY}`, config)
+    await flushAsyncWork()
+    hover()
+    expect(p.title).toBe("Original source")
+    config.pageTranslation.mode = "bilingual"
+    await storage.setItem(`local:${CONFIG_STORAGE_KEY}`, config)
+    await flushAsyncWork()
+    hover()
+    expect(p).not.toHaveAttribute("title")
+    expect(managerInstances[0]!.start).not.toHaveBeenCalled()
+    expect(managerInstances[0]!.stop).not.toHaveBeenCalled()
+    invalidate()
+    expect(p).not.toHaveAttribute("title")
+    hover()
+    expect(p).not.toHaveAttribute("title")
+    release()
+    p.remove()
   })
 
   // The content runtime's parts share one toastManager, and the selection UI

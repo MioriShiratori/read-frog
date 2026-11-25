@@ -14,6 +14,7 @@ import {
   type TranslationOnlySwapRecord,
 } from "../core/translation-state"
 import { setTranslationDirAndLang } from "../translation-attributes"
+import { registerOriginalTextHover } from "../ui/original-text-hover"
 import { styleTranslationOnlyText } from "../ui/translation-only-style"
 import {
   TRANSLATABLE_ATTRIBUTE_NAMES,
@@ -344,6 +345,13 @@ export function applyInPlaceTextSwap(
       .filter((item) => item.translatedValue.trim() && item.originalValue !== item.translatedValue)
       .map((item) => item.node),
     config.pageTranslation.translationNodeStyle,
+  )
+  record.restoreHover = registerOriginalTextHover(
+    items
+      .filter((item) => item.originalValue !== item.translatedValue)
+      .map((item) => item.node.parentElement)
+      .filter((element) => element !== null),
+    items.map((item) => item.originalValue).join(""),
   )
   state.swaps.push(record)
 }

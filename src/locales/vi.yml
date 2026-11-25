@@ -1060,6 +1060,9 @@ options:
         range:
           main: Nội dung chính
           all: Tất cả nội dung
+      showOriginalOnHover:
+        title: Hiện bản gốc khi di chuột
+        description: Ở chế độ chỉ bản dịch, di chuột lên bản dịch để xem bản gốc trong chú giải của trình duyệt.
       translateTitle:
         title: Dịch tiêu đề tab
         description: Dịch cả tiêu đề trang hiển thị trên tab trình duyệt. Tắt để giữ nguyên tiêu đề gốc.

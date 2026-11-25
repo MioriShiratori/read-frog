@@ -104,6 +104,7 @@ export interface TranslationOnlySwapRecord {
   items: TranslationOnlySwapItem[]
   attributeItems: TranslationOnlySwapAttributeItem[]
   restoreStyle?: () => void
+  restoreHover?: () => void
 }
 
 export interface TranslationOnlyAnchorState {
@@ -211,7 +212,10 @@ export function dropTranslationOnlySwapRecords(
   records: readonly TranslationOnlySwapRecord[],
 ): void {
   if (records.length === 0) return
-  records.forEach((record) => record.restoreStyle?.())
+  records.forEach((record) => {
+    record.restoreStyle?.()
+    record.restoreHover?.()
+  })
   state.swaps = state.swaps.filter((record) => !records.includes(record))
 }
 

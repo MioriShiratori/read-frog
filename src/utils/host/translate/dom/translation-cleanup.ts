@@ -223,6 +223,7 @@ function restoreTranslationOnlyWrapper(wrapper: HTMLElement): ChildNode[] {
 
 function restoreSwapRecord(record: TranslationOnlySwapRecord): void {
   record.restoreStyle?.()
+  record.restoreHover?.()
   for (const item of record.items) {
     if (!item.node.isConnected) continue
     // The framework rewrote this node since we swapped it — its current value

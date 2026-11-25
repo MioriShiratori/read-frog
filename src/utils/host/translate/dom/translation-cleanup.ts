@@ -201,7 +201,7 @@ function restoreTranslationOnlyWrapper(wrapper: HTMLElement): ChildNode[] {
 
   const restored: ChildNode[] = []
   for (const node of originals) {
-    if (node.isConnected) continue // the host re-attached this original itself
+    if (node.isConnected && !wrapper.contains(node)) continue // the host re-attached it elsewhere
     parent.insertBefore(node, wrapper)
     restored.push(node)
   }

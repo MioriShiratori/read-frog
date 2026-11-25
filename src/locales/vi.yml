@@ -1062,7 +1062,7 @@ options:
           all: Tất cả nội dung
       showOriginalOnHover:
         title: Hiện bản gốc khi di chuột
-        description: Ở chế độ chỉ bản dịch, di chuột lên bản dịch để xem bản gốc trong chú giải của trình duyệt.
+        description: Di chuột lên bản dịch để thay bằng bản gốc ngay tại chỗ. Di chuột ra ngoài để khôi phục bản dịch.
       translateTitle:
         title: Dịch tiêu đề tab
         description: Dịch cả tiêu đề trang hiển thị trên tab trình duyệt. Tắt để giữ nguyên tiêu đề gốc.

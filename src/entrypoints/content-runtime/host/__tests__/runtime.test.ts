@@ -297,32 +297,37 @@ describe("bootstrapHostContent URL changes", () => {
     const p = document.createElement("p")
     p.textContent = "译文"
     document.body.append(p)
-    const release = registerOriginalTextHover([p], "Original source")
+    const release = registerOriginalTextHover([p], () => {
+      p.textContent = "Original source"
+      return () => {
+        p.textContent = "译文"
+      }
+    })
     const hover = () => p.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }))
     hover()
-    expect(p.title).toBe("Original source")
+    expect(p.textContent).toBe("Original source")
     config.pageTranslation.page.showOriginalOnHover = false
     await storage.setItem(`local:${CONFIG_STORAGE_KEY}`, config)
     await flushAsyncWork()
-    expect(p).not.toHaveAttribute("title")
+    expect(p.textContent).toBe("译文")
     hover()
-    expect(p).not.toHaveAttribute("title")
+    expect(p.textContent).toBe("译文")
     config.pageTranslation.page.showOriginalOnHover = true
     await storage.setItem(`local:${CONFIG_STORAGE_KEY}`, config)
     await flushAsyncWork()
     hover()
-    expect(p.title).toBe("Original source")
+    expect(p.textContent).toBe("Original source")
     config.pageTranslation.mode = "bilingual"
     await storage.setItem(`local:${CONFIG_STORAGE_KEY}`, config)
     await flushAsyncWork()
     hover()
-    expect(p).not.toHaveAttribute("title")
+    expect(p.textContent).toBe("译文")
     expect(managerInstances[0]!.start).not.toHaveBeenCalled()
     expect(managerInstances[0]!.stop).not.toHaveBeenCalled()
     invalidate()
-    expect(p).not.toHaveAttribute("title")
+    expect(p.textContent).toBe("译文")
     hover()
-    expect(p).not.toHaveAttribute("title")
+    expect(p.textContent).toBe("译文")
     release()
     p.remove()
   })

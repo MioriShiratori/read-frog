@@ -1062,7 +1062,7 @@ options:
           all: Tüm içerik
       showOriginalOnHover:
         title: Üzerine gelince özgün metni göster
-        description: Yalnızca çeviri modunda özgün metni tarayıcı ipucunda görmek için çevirinin üzerine gelin.
+        description: Çevirinin üzerine gelince metin aynı yerde özgün metne dönüşür. İmleci uzaklaştırınca çeviri geri gelir.
       translateTitle:
         title: Sekme başlığını çevir
         description: Tarayıcı sekmesinde görünen sayfa başlığını da çevirir. Orijinal başlığı korumak için devre dışı bırakın.

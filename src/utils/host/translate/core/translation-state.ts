@@ -57,16 +57,24 @@ export const translatingNodes = new WeakSet<ChildNode>()
 // framework-owned node identity and untouched sibling content (#1846).
 // WeakMap so a wrapper deleted by the site (SPA re-renders) releases its
 // retained originals instead of pinning them for the page's lifetime.
-const translationOnlyOriginalNodes = new WeakMap<HTMLElement, ChildNode[]>()
+const translationOnlyOriginalNodes = new WeakMap<
+  HTMLElement,
+  { nodes: ChildNode[]; restoreHover: () => void }
+>()
 
-export function registerTranslationOnlyOriginals(wrapper: HTMLElement, nodes: ChildNode[]): void {
-  translationOnlyOriginalNodes.set(wrapper, nodes)
+export function registerTranslationOnlyOriginals(
+  wrapper: HTMLElement,
+  nodes: ChildNode[],
+  restoreHover: () => void,
+): void {
+  translationOnlyOriginalNodes.set(wrapper, { nodes, restoreHover })
 }
 
 export function takeTranslationOnlyOriginals(wrapper: HTMLElement): ChildNode[] | undefined {
-  const nodes = translationOnlyOriginalNodes.get(wrapper)
-  if (nodes) translationOnlyOriginalNodes.delete(wrapper)
-  return nodes
+  const entry = translationOnlyOriginalNodes.get(wrapper)
+  entry?.restoreHover()
+  translationOnlyOriginalNodes.delete(wrapper)
+  return entry?.nodes
 }
 
 // ---- In-place text swap state (translationOnly preferred strategy) ----

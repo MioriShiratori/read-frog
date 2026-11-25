@@ -1062,7 +1062,7 @@ options:
           all: 전체 내용
       showOriginalOnHover:
         title: 마우스를 올려 원문 보기
-        description: 번역만 보기 모드에서 번역문 위에 마우스를 올리면 브라우저 툴팁에 원문을 표시합니다.
+        description: 번역문 위에 마우스를 올리면 같은 위치에서 원문으로 바뀌고, 마우스를 떼면 번역문으로 돌아갑니다.
       translateTitle:
         title: 탭 제목 번역
         description: 페이지를 번역할 때 브라우저 탭에 표시되는 제목도 번역합니다. 끄면 원래 제목이 유지됩니다.

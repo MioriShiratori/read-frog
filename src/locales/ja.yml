@@ -1062,7 +1062,7 @@ options:
           all: すべてのコンテンツ
       showOriginalOnHover:
         title: ホバーで原文を表示
-        description: 翻訳のみのモードで翻訳文にマウスを合わせると、ブラウザーのツールチップで原文を表示します。
+        description: 翻訳文にマウスを合わせると、その場で原文に切り替わります。離すと翻訳文に戻ります。
       translateTitle:
         title: タブのタイトルを翻訳
         description: ページを翻訳するときに、ブラウザのタブに表示されるタイトルも翻訳します。オフにすると元のタイトルのままです。

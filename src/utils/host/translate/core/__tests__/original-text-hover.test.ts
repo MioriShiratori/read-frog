@@ -68,8 +68,12 @@ it("shows originals over in-place text and nested links, then removes metadata o
   const translationCalls = translate.mock.calls.length
   controller.setEnabled(true)
   hover(originalLink)
-  expect(originalLink.title).toBe("Read this source carefully.")
+  expect(source.textContent).toBe("Read this source carefully.")
+  expect(originalLink).not.toHaveAttribute("title")
+  originalLink.dispatchEvent(new MouseEvent("mouseout", { bubbles: true, composed: true }))
+  expect(source.textContent).toBe("请仔细阅读此源码。")
   expect(translate).toHaveBeenCalledTimes(translationCalls)
+  hover(originalLink)
   removeAllTranslatedWrapperNodes()
   expect(originalLink).not.toHaveAttribute("title")
   expect(source.textContent).toBe("Read this source carefully.")
@@ -79,15 +83,40 @@ it("shows originals over in-place text and nested links, then removes metadata o
   expect(originalLink).not.toHaveAttribute("title")
 })
 
-it("supports fallback HTML without displaying markup in the original tooltip", async () => {
+it("switches fallback HTML to the original nodes and restores translated nodes on exit", async () => {
+  const originalLink = document.querySelector("a")!
+  const click = vi.fn<() => void>()
+  originalLink.addEventListener("click", click)
   translate.mockResolvedValue('<a href="/different">无法对齐的译文。</a>')
   const source = await translateSource("translationOnly")
   const link = source.querySelector("a")!
   expect(link.getAttribute("href")).toBe("/different")
   controller.setEnabled(true)
   hover(link)
-  expect(link.title).toBe("Read this source carefully.")
+  expect(source.textContent).toBe("Read this source carefully.")
+  expect(source.querySelector("a")).toBe(originalLink)
+  originalLink.dispatchEvent(new MouseEvent("click"))
+  expect(click).toHaveBeenCalledOnce()
+  expect(source.querySelector("a")!.getAttribute("href")).toBe("/source")
+  source
+    .querySelector("a")!
+    .dispatchEvent(new MouseEvent("mouseout", { bubbles: true, composed: true }))
+  expect(source.querySelector("a")).toBe(link)
+  hover(link)
   removeAllTranslatedWrapperNodes()
   expect(source.textContent).toBe("Read this source carefully.")
   expect(source.querySelector("a")!.getAttribute("href")).toBe("/source")
+})
+
+it("preserves a site update made to fallback originals while hovered, including on global restore", async () => {
+  const originalLink = document.querySelector("a")!
+  translate.mockResolvedValue('<a href="/different">无法对齐的译文。</a>')
+  const source = await translateSource("translationOnly")
+  controller.setEnabled(true)
+  hover(source.querySelector("a")!)
+  originalLink.firstChild!.textContent = "updated source"
+  removeAllTranslatedWrapperNodes()
+  expect(source.querySelector("a")).toBe(originalLink)
+  expect(source.textContent).toBe("Read updated source carefully.")
+  expect(source.querySelectorAll("a")).toHaveLength(1)
 })

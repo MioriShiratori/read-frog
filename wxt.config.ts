@@ -4,6 +4,7 @@ import ViteYaml from "@modyfi/vite-plugin-yaml"
 import { defineConfig } from "wxt"
 import { z } from "zod"
 import { escapeNoncharactersPlugin } from "./scripts/escape-noncharacters"
+import firefoxRelease from "./scripts/firefox-release-config.json"
 import {
   createExtensionClientEnvSchema,
   isLocalPackagesEnabled,
@@ -39,7 +40,7 @@ export default defineConfig({
       }
     : {},
   manifest: ({ mode, browser }) => ({
-    name: "__MSG_extName__",
+    name: browser === "firefox" ? "__MSG_extName__ (Fork)" : "__MSG_extName__",
     description: "__MSG_extDescription__",
     default_locale: "en",
     // Fixed extension ID for development
@@ -93,7 +94,7 @@ export default defineConfig({
       },
       browser_specific_settings: {
         gecko: {
-          id: "{bd311a81-4530-4fcc-9178-74006155461b}",
+          ...firefoxRelease.gecko,
           strict_min_version: "140.0",
           data_collection_permissions: {
             required: ["none"],

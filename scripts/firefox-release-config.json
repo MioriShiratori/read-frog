@@ -1,0 +1,7 @@
+{
+  "repository": "MioriShiratori/read-frog",
+  "gecko": {
+    "id": "read-frog-fork@miorishiratori.github.io",
+    "update_url": "https://github.com/MioriShiratori/read-frog/releases/download/firefox-nightly-updates/updates.json"
+  }
+}

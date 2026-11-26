@@ -1,6 +1,6 @@
 {
   "name": "@read-frog/extension",
-  "version": "1.60.0",
+  "version": "2.0.0",
   "private": true,
   "description": "Read Frog browser extension for language learning",
   "type": "module",
@@ -20,6 +20,7 @@
     "postinstall": "WXT_SKIP_ENV_VALIDATION=true wxt prepare",
     "test": "vitest run",
     "test:dev-local": "node --test scripts/dev-local.node-test.mjs",
+    "test:firefox-release": "node --test scripts/firefox-release.node-test.mjs",
     "test:cov": "vitest run --coverage",
     "test:watch": "vitest",
     "type-check": "oxlint --type-aware --type-check",
@@ -27,6 +28,7 @@
     "zip": "wxt zip",
     "zip:edge": "wxt zip -b edge",
     "zip:firefox": "wxt zip -b firefox --mv3",
+    "package:firefox-release": "node scripts/prepare-firefox-release.mjs",
     "zip:all": "pnpm zip && pnpm zip:edge && pnpm zip:firefox",
     "release": "changeset git-tag",
     "prepare": "husky"

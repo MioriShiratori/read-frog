@@ -1,5 +1,11 @@
 # @read-frog/extension
 
+## 2.1.0
+
+### Minor Changes
+
+- feat(image-translation): translate selected screen areas and webpage images from the floating tools using local OCR, the configured webpage translation provider, and in-place image rendering with original-image recovery.
+
 ## 1.60.0
 
 ### Minor Changes

@@ -15,6 +15,7 @@ import {
   isDraggingButtonAtom,
   isFloatingButtonHiddenUntilReloadAtom,
 } from "../../atoms"
+import { ImageTranslationButton } from "../image-translation"
 import HiddenButton from "./components/hidden-button"
 import { FloatingButtonCloseMenu, FloatingButtonLockControl } from "./controls"
 import { MainFloatingButton } from "./main-button"
@@ -329,6 +330,11 @@ export default function FloatingButton() {
       {!isDraggingButton && (
         <TranslationHubButton side={floatingButtonSide} expanded={isFloatingButtonExpanded} />
       )}
+      <ImageTranslationButton
+        side={floatingButtonSide}
+        expanded={isFloatingButtonExpanded}
+        dragging={isDraggingButton}
+      />
       <div className="relative">
         <MainFloatingButton
           ref={mainButtonRef}

@@ -1,5 +1,10 @@
 # AGENTS.md
 
+## Fork Release Workflow
+
+- Standing user authorization (2026-11-27): after each completed update to this fork, validate, commit and push the changes, then publish a new GitHub release and advance the Firefox update channel. Complete these steps without requesting approval again unless the user changes this instruction.
+- For releases, follow `FIREFOX-UPDATES.md`. Build Firefox only, increase the version, and verify the published XPI and matching update manifest before reporting completion.
+
 ## Testing Notes
 
 - `src/utils/host/translate/api/__tests__/free-api.test.ts` depends on live external translation services.

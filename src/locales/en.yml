@@ -1738,3 +1738,35 @@ translationHub:
   translationFailed: Translation Failed
   translationFailedFallback: Translation failed
   retryTranslation: Retry translation
+
+imageTranslation:
+  title: Image translation
+  area: Translate a selected area
+  image: Translate a webpage image
+  cancel: Cancel
+  restore: Restore original
+  retry: Retry
+  visibleArea: Translate visible area instead
+  showOriginal: Show original
+  showTranslation: Show translation
+  loading: Loading image tools…
+  selectArea: Drag to select an area. Escape to cancel.
+  selectImage: Click a webpage image. Escape to cancel.
+  providerHint: Uses the webpage translation provider and target language. OCR runs locally.
+  stages:
+    selecting: Select the image or area to translate.
+    capturing: Loading the image…
+    recognizing: Recognizing text locally…
+    translating: Translating…
+    rendering: Removing original text and placing translations…
+    done: Image translated. Close to restore the page.
+    error: Image translation failed.
+  errors:
+    noText: No text was recognized. Try selecting a clearer or smaller area.
+    large: This image is too large. Select a smaller area to translate.
+    tabChanged: The active tab changed. Return to the page and try again.
+    unsupported: This image cannot be loaded directly. Use the visible-area option or select an area.
+    busy: Two images are already being recognized. Try again shortly.
+    timeout: Recognition timed out. Try a smaller area.
+    empty: The provider returned an empty translation. Check its settings and retry.
+    tooLong: The translation is too long to fit this text region. Try a shorter translation or another provider.

@@ -30,6 +30,7 @@ import { setupEdgeTTSMessageHandlers } from "./edge-tts"
 import { setupFeatureUsedEventHandlers } from "./feature-used-event"
 import { setupGlossaryMessageHandlers } from "./glossary"
 import { setupIframeInjection } from "./iframe-injection"
+import { setupImageTranslationHandlers } from "./image-translation"
 import { setupLLMGenerateTextMessageHandlers } from "./llm-generate-text"
 import { initMockData } from "./mock-data"
 import { newUserGuide } from "./new-user-guide"
@@ -142,6 +143,7 @@ export default defineBackground({
     setupPageTranslationHandlers()
     setupSubtitlesTranslationHandlers()
     setupVideoSummaryHandlers()
+    setupImageTranslationHandlers()
     void setUpDatabaseCleanup()
     setUpConfigBackup()
     setUpSiteRulesUpdate()

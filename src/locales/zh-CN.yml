@@ -1601,3 +1601,35 @@ translationHub:
   translationFailed: 翻译失败
   translationFailedFallback: 翻译失败
   retryTranslation: 重试翻译
+
+imageTranslation:
+  title: 图片翻译
+  area: 框选区域翻译
+  image: 点选网页图片翻译
+  cancel: 取消
+  restore: 恢复原图
+  retry: 重试
+  visibleArea: 改为翻译可见区域
+  showOriginal: 查看原图
+  showTranslation: 查看译图
+  loading: 正在加载图片工具…
+  selectArea: 拖动框选区域，按 Escape 取消。
+  selectImage: 点击网页中的图片，按 Escape 取消。
+  providerHint: 使用网页翻译的提供商和目标语言，OCR 在本地运行。
+  stages:
+    selecting: 请选择要翻译的图片或区域。
+    capturing: 正在读取图片…
+    recognizing: 正在本地识别文字…
+    translating: 正在翻译…
+    rendering: 正在去除原文字并排入译文…
+    done: 图片已翻译，关闭即可恢复页面。
+    error: 图片翻译失败。
+  errors:
+    noText: 未识别到文字，请选择更清晰或更小的区域。
+    large: 图片过大，请框选其中较小的区域翻译。
+    tabChanged: 当前标签页已切换，请回到原页面重试。
+    unsupported: 无法直接读取该图片，请改为翻译可见区域或框选区域。
+    busy: 已有两张图片正在识别，请稍后重试。
+    timeout: 识别超时，请尝试较小的区域。
+    empty: 提供商返回了空译文，请检查设置后重试。
+    tooLong: 译文过长，无法放入原文字区域。请使用更简短的译文或更换翻译提供商。

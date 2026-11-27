@@ -1,6 +1,6 @@
 {
   "name": "@read-frog/extension",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Read Frog browser extension for language learning",
   "type": "module",
@@ -111,6 +111,7 @@
     "lucide-react": "^1.72.0",
     "morphdom": "^2.7.8",
     "motion": "^14.13.0",
+    "onnxruntime-web": "1.30.0",
     "posthog-js": "^1.447.15",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

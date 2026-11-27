@@ -399,7 +399,7 @@ describe("floatingButton controls", () => {
     renderFloatingButton()
 
     const mainButton = getMainButton()
-    expect(screen.getAllByRole("button")).toHaveLength(5)
+    expect(screen.getByRole("button", { name: "imageTranslation.title" })).toBeInTheDocument()
 
     fireEvent.pointerDown(mainButton, {
       pointerId: 1,

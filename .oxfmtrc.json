@@ -21,7 +21,10 @@
     ".cursor/**",
     "pnpm-lock.yaml",
     "CHANGELOG.md",
-    "**/*.svg"
+    "**/*.svg",
+    "public/image-translation/ort-*.mjs",
+    "public/image-translation/licenses/KITES-NOTICES.md",
+    "public/image-translation/licenses/SCREEN-THIRD-PARTY.md"
   ],
   "sortTailwindcss": {
     "stylesheet": "./src/assets/styles/theme.css",

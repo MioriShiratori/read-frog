@@ -65,7 +65,7 @@ export default defineConfig({
       ...(browser !== "firefox" ? ["offscreen", "sidePanel"] : []),
     ],
     host_permissions: [
-      "*://*/*", // Required for scripting.executeScript in any frame
+      "<all_urls>", // Includes the captureVisibleTab permission for the in-page image tool.
     ],
     // Allow images/SVGs referenced by content-script UI <img> tags to be loaded from
     // moz-extension:// URLs on regular pages. Firefox enforces this more strictly.
@@ -161,6 +161,13 @@ export default defineConfig({
   },
   vite: (configEnv) => ({
     resolve: {
+      // Load the packaged WASM through wasmPaths instead of embedding it in JS.
+      conditions: [
+        "onnxruntime-web-use-extern-wasm",
+        "module",
+        "browser",
+        "development|production",
+      ],
       // CodeMirror breaks with "Unrecognized extension value in extension set"
       // if the bundle contains more than one copy of these packages (#1782).
       dedupe: [

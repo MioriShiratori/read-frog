@@ -1,4 +1,5 @@
 import type { LanguageTag } from "@read-frog/definitions"
+import type { ImageCaptureRequest, ImageOcrResult } from "./image-translation/types"
 import type { FeatureUsageContext, FeatureUsedEventProperties } from "@/types/analytics"
 import type {
   BackgroundGenerateTextPayload,
@@ -27,6 +28,9 @@ import type { EdgeTTSVoice } from "@/utils/server/edge-tts/types"
 import { defineExtensionMessaging } from "@webext-core/messaging"
 
 interface ProtocolMap {
+  captureImageTranslation: (data: ImageCaptureRequest) => Promise<string>
+  recognizeImageTranslation: (data: { id: string; image: string }) => Promise<ImageOcrResult>
+  cancelImageTranslation: (data: { id: string }) => void
   // navigation
   openPage: (data: { url: string; active?: boolean }) => void
   openOptionsPage: (data?: { route?: `/${string}` }) => void

@@ -17,6 +17,9 @@ const EXEMPT = new Set([
   "subtitles-loader.content.ts",
   "iframe-selection-trigger.content.ts",
   "ebook-section.content.ts",
+  // Dedicated workers report errors through their typed response channel;
+  // they have neither window nor extension messaging APIs for these sinks.
+  "image-ocr-worker.ts",
 ])
 
 // WXT builds a folder only when it has an index file in it

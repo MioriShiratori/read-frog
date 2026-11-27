@@ -22,7 +22,12 @@ import {
 import { TRANSLATION_HUB_PAGE_PATH } from "@/utils/constants/translation-hub"
 import { i18n } from "@/utils/i18n"
 
-const OVERLAY_TOOLS_PATHS = ["/floating-button", "/selection-toolbar", "/context-menu"] as const
+const OVERLAY_TOOLS_PATHS = [
+  "/floating-button",
+  "/image-translation",
+  "/selection-toolbar",
+  "/context-menu",
+] as const
 /**
  * The three in-extension translation pages. Grouped because they are one feature
  * seen in three surfaces — a page, a video, a text box — and listing them flat
@@ -132,6 +137,14 @@ export function FeaturesNav() {
                       isActive={pathname === "/floating-button"}
                     >
                       <span>{i18n.t("options.floatingButton.title")}</span>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton
+                      render={<Link to="/image-translation" />}
+                      isActive={pathname === "/image-translation"}
+                    >
+                      <span>{i18n.t("imageTranslation.title")}</span>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
                   <SidebarMenuSubItem>

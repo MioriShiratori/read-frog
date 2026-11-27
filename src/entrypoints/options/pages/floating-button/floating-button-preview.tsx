@@ -1,4 +1,4 @@
-import { RiTranslate } from "@remixicon/react"
+import { RiImageLine, RiTranslate } from "@remixicon/react"
 import { IconLock, IconLockOpen, IconSettings, IconX } from "@tabler/icons-react"
 import { useAtomValue } from "jotai"
 import readFrogLogo from "@/assets/icons/read-frog.png"
@@ -44,6 +44,9 @@ export function FloatingButtonPreview() {
           >
             <span className={hiddenButtonClassName}>
               <RiTranslate className="h-5 w-5" />
+            </span>
+            <span className={hiddenButtonClassName}>
+              <RiImageLine className="h-5 w-5" />
             </span>
             <div className="relative">
               <div

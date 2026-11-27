@@ -26,6 +26,9 @@ const VideoSubtitlesPage = lazy(() =>
 const FloatingButtonPage = lazy(() =>
   import("./pages/floating-button").then((module) => ({ default: module.FloatingButtonPage })),
 )
+const ImageTranslationPage = lazy(() =>
+  import("./pages/image-translation").then((module) => ({ default: module.ImageTranslationPage })),
+)
 const SelectionToolbarPage = lazy(() =>
   import("./pages/selection-toolbar").then((module) => ({ default: module.SelectionToolbarPage })),
 )
@@ -131,6 +134,7 @@ const ROUTE_COMPONENTS: Record<RoutePath, ComponentType> = {
   "/page-translation": TranslationPage,
   "/video-subtitles": VideoSubtitlesPage,
   "/floating-button": FloatingButtonPage,
+  "/image-translation": ImageTranslationPage,
   "/selection-toolbar": SelectionToolbarPage,
   "/context-menu": ContextMenuPage,
   "/input-translation": InputTranslationPage,

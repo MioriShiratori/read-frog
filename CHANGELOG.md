@@ -1,5 +1,11 @@
 # @read-frog/extension
 
+## 2.1.1
+
+### Patch Changes
+
+- fix(image-translation): add the missing Image Translation settings page under Overlay Tools, link to shared configuration, and show its icon in the floating-button preview.
+
 ## 2.1.0
 
 ### Minor Changes

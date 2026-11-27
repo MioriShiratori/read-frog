@@ -7,6 +7,7 @@ export const ROUTE_DEFS = [
   { path: "/page-translation" },
   { path: "/video-subtitles" },
   { path: "/floating-button" },
+  { path: "/image-translation" },
   { path: "/selection-toolbar" },
   { path: "/context-menu" },
   { path: "/input-translation" },

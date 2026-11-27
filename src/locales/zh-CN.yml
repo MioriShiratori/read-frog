@@ -1633,3 +1633,20 @@ imageTranslation:
     timeout: 识别超时，请尝试较小的区域。
     empty: 提供商返回了空译文，请检查设置后重试。
     tooLong: 译文过长，无法放入原文字区域。请使用更简短的译文或更换翻译提供商。
+
+  settings:
+    description: 从网页悬浮按钮发起图片或框选翻译，在原图位置显示译文。
+    configuration: 翻译设置
+    localOcr: 文字识别在本地运行，只有识别出的文本会发送给翻译提供商。
+    floatingButtonDescription: 设置按钮停靠位置和禁用网站，网页中没有出现图片翻译入口时先检查这里。
+    usage:
+      title: 使用方法
+      open: 回到要翻译的网页，把鼠标移到页面边缘的青蛙悬浮按钮上，点击展开的图片图标。
+      select: 选择「框选区域翻译」或「点选网页图片翻译」，再拖动框选或点击图片。
+      restore: 完成后可「查看原图」进行对照，点击「恢复原图」或按 Escape 退出。
+    provider:
+      title: 翻译提供商
+      description: 与网页翻译共用提供商和词库，请在提供商页面配置「网页翻译」。
+    languages:
+      title: 源语言和目标语言
+      description: 与网页翻译共用语言设置，修改后同样影响网页翻译。

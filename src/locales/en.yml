@@ -1770,3 +1770,20 @@ imageTranslation:
     timeout: Recognition timed out. Try a smaller area.
     empty: The provider returned an empty translation. Check its settings and retry.
     tooLong: The translation is too long to fit this text region. Try a shorter translation or another provider.
+
+  settings:
+    description: Translate webpage images or selected areas from the floating button, with translations displayed over the original image.
+    configuration: Translation settings
+    localOcr: Text recognition runs locally. Only the recognized text is sent to your translation provider.
+    floatingButtonDescription: Set the button’s side and disabled websites. Check here if the image tool is missing from a webpage.
+    usage:
+      title: How to use
+      open: Return to a webpage, hover over the frog button at the edge of the page, and click the image icon that appears.
+      select: Choose “Translate a selected area” or “Translate a webpage image”, then drag a rectangle or click an image.
+      restore: Use “Show original” to compare. Click “Restore original” or press Escape to close the result.
+    provider:
+      title: Translation provider
+      description: Uses the webpage translation provider and glossary. Configure “Page Translation” on the providers page.
+    languages:
+      title: Source and target languages
+      description: Shares the webpage translation languages. Changes here also affect webpage translation.

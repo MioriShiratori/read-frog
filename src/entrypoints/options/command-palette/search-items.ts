@@ -229,6 +229,13 @@ export const SEARCH_ITEMS: SearchItem[] = [
   },
 
   ...PAGE_TRANSLATION_SEARCH_ITEMS,
+  {
+    sectionId: "image-translation-usage",
+    route: "/image-translation",
+    titleKey: "imageTranslation.title",
+    descriptionKey: "imageTranslation.settings.description",
+    pageKey: "imageTranslation.title",
+  },
   // Floating Button page
   {
     sectionId: "floating-button-toggle",
